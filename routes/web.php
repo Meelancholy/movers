@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\EmployeeController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -20,10 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/employees', function () {
-        return view('livewire.employees');
-    })->name('employees');
-
+    Route::resource('employees', EmployeeController::class);
     Route::resource('departments', DepartmentController::class);
     Route::resource('positions', PositionController::class);
 

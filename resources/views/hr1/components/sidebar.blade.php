@@ -30,7 +30,7 @@
                 </svg>
             </a>
             <ul x-show="open" class="pl-4 mt-2 space-y-1">
-                <li><a href="{{ route('employees') }}" class="block py-2 text-blue-600 hover:text-blue-800">Employees</a></li>
+                <li><a href="{{ route('employees.index') }}" class="block py-2 text-blue-600 hover:text-blue-800">Employees</a></li>
                 <li><a href="{{ route('departments.index') }}" class="block py-2 text-blue-600 hover:text-blue-800">Departments</a></li>
                 <li><a href="{{ route('positions.index') }}" class="block py-2 text-blue-600 hover:text-blue-800">Positions</a></li>
                 <li><a href="{{ route('driver-management') }}" class="block py-2 text-blue-600 hover:text-blue-800">Drivers</a></li>

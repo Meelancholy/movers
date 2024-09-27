@@ -13,7 +13,10 @@
 
                 <!-- Search Positions -->
                 <div class="mb-6">
-                    <input type="text" placeholder="Search Positions..." class="w-full p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200" id="positionSearch">
+                    <form action="{{ route('positions.index') }}" method="GET" class="flex">
+                        <input type="text" name="search" value="{{ old('search', $search ?? '') }}" placeholder="Search Positions..." class="w-full p-2 border border-gray-300 rounded-l-lg focus:ring focus:ring-blue-200" id="positionSearch">
+                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-r-lg hover:bg-blue-700">Search</button>
+                    </form>
                 </div>
 
                 <!-- Position Table -->
@@ -34,11 +37,11 @@
                                     <td class="px-6 py-4">{{ $position->department->department_name }}</td>
                                     <td class="px-6 py-4">${{ number_format($position->base_salary, 2) }}</td>
                                     <td class="px-6 py-4">
-                                        <a href="{{ route('positions.edit', $position->position_id) }}" class="text-blue-600 hover:underline">Edit</a> |
-                                        <form action="{{ route('positions.destroy', $position->position_id) }}" method="POST" class="inline-block">
+                                        <a href="{{ route('positions.edit', $position->position_id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">Edit</a>
+                                        <form action="{{ route('positions.destroy', $position->position_id) }}" method="POST" class="inline-block ml-2">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:underline">Delete</button>
+                                            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Delete</button>
                                         </form>
                                     </td>
                                 </tr>
