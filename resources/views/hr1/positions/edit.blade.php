@@ -2,6 +2,7 @@
 
 @section('content')
 <section class="container mx-auto px-4 py-10">
+
     <div class="max-w-lg mx-auto bg-white shadow-md rounded-lg p-6">
         <h2 class="text-3xl font-bold mb-4">Edit Position</h2>
 

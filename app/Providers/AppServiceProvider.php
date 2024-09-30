@@ -22,5 +22,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Blade::component('hr1.components.sidebar', 'hr1-sidebar');
         Blade::component('hr1.components.navbar', 'hr1-navbar');
+        Blade::component('hr1.components.breadcrumbs', 'breadcrumbs');
     }
 }

@@ -1,6 +1,7 @@
 @extends('hr1.layouts.app')
 
 @section('content')
+
     <!-- Single root element -->
     <div class="content-wrapper">
         <div class="content bg-gray">

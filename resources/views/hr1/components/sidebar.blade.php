@@ -1,18 +1,20 @@
 <!-- resources/views/components/hr1-sidebar.blade.php -->
 <div class="sidebar">
 <aside x-data="{ open: $parent.open }" :class="open ? 'translate-x-0' : '-translate-x-full'" class="p-4 w-64 bg-white font-bold min-h-full border-2 text-blue-600 fixed transform transition-transform duration-300 ease-in-out">
-    <a href="{{ route('dashboard') }}"><img class="py-9" src="{{ asset('images/logo.png') }}" alt="Logo"></a>
-    <ul class="text-l">
-        <li>
-            <a href="{{ route('dashboard') }}" class="flex text-blue-600 hover:text-blue-800 cursor-pointer">
-                <!-- SVG Icon -->
-                <svg class="pr-2" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
-                    <rect width="7" height="9" x="3" y="3" rx="1"/>
-                    <rect width="7" height="5" x="14" y="3" rx="1"/>
-                    <rect width="7" height="9" x="14" y="12" rx="1"/>
-                    <rect width="7" height="5" x="3" y="16" rx="1"/>
-                </svg>
-                Dashboard
+    <a href="{{ route('dashboard') }}"><img class="py-7" src="{{ asset('images/logo.png') }}" alt="Logo"></a>
+        <!-- Add horizontal line -->
+        <hr class="border-gray-300 my-4">
+        <ul class="text-l">
+            <li>
+                <a href="{{ route('dashboard') }}" class="flex text-blue-600 hover:text-blue-800 cursor-pointer">
+                    <!-- SVG Icon -->
+                    <svg class="pr-2" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="7" height="9" x="3" y="3" rx="1"/>
+                        <rect width="7" height="5" x="14" y="3" rx="1"/>
+                        <rect width="7" height="9" x="14" y="12" rx="1"/>
+                        <rect width="7" height="5" x="3" y="16" rx="1"/>
+                    </svg>
+                    Dashboard
             </a>
         </li>
         <li x-data="{ open: false }">
@@ -22,7 +24,7 @@
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
-                    Employee Management
+                    HR Management
                 </span>
                 <!-- Dropdown Arrow -->
                 <svg class="w-5 h-5 transition-transform duration-300" :class="{ '-rotate-90': !open }" fill="none" stroke="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -33,7 +35,6 @@
                 <li><a href="{{ route('employees.index') }}" class="block py-2 text-blue-600 hover:text-blue-800">Employees</a></li>
                 <li><a href="{{ route('departments.index') }}" class="block py-2 text-blue-600 hover:text-blue-800">Departments</a></li>
                 <li><a href="{{ route('positions.index') }}" class="block py-2 text-blue-600 hover:text-blue-800">Positions</a></li>
-                <li><a href="{{ route('driver-management') }}" class="block py-2 text-blue-600 hover:text-blue-800">Drivers</a></li>
             </ul>
         </li>
         <li x-data="{ open: false }">

@@ -13,7 +13,7 @@
     <div class="flex-1 flex flex-col">
         <!-- Navbar Component -->
         <x-hr1-navbar />
-
+        <x-breadcrumbs />
         <!-- Main Content -->
         <main :class="open ? 'ml-64' : 'ml-0'" class="flex-1 p-6 transition-transform duration-300 ease-in-out">
             @yield('content')
