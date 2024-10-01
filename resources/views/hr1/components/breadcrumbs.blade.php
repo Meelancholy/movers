@@ -18,8 +18,7 @@
         @foreach ($segments as $index => $segment)
             <li>
                 <div class="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevrons-right"><path d="m6 17 5-5-5-5"/><path d="m13 17 5-5-5-5"/></svg>
-
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 2 22"/></svg>
                     @php
                         // Construct the URL for each breadcrumb item up to the current segment
                         $url = '/' . collect($segments)->slice(0, $index + 1)->implode('/');
