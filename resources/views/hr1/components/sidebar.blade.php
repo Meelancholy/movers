@@ -14,7 +14,7 @@
         <hr class="border-gray-300 my-4">
         <ul class="text-l">
             <li>
-                <a href="dashboard') }}" class="flex items-center px-2 rounded-lg text-blue-600 hover:bg-blue-200 active:bg-blue-400 hover:text-blue-800 cursor-pointer py-4">
+                <a href="{{route('dashboard')}}" class="flex items-center px-2 rounded-lg text-blue-600 hover:bg-blue-200 active:bg-blue-400 hover:text-blue-800 cursor-pointer py-4">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
 
                     <div class="h-8 w-px bg-blue-800 mx-2"></div>
