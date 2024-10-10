@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\CompensationBenefitsController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -25,6 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('departments', DepartmentController::class);
     Route::resource('positions', PositionController::class);
 
+
+    Route::get('/compensation-benefits', [CompensationBenefitsController::class, 'index'])->name('compensation-benefits');
+    Route::post('/compensation-benefits/store', [CompensationBenefitsController::class, 'store'])->name('compensation-benefits.store');
 
     Route::get('/driver', function () {
         return view('livewire.driver-management');

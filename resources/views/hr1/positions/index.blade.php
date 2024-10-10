@@ -35,7 +35,7 @@
                                 <tr class="border-b hover:bg-gray-100">
                                     <td class="px-6 py-4">{{ $position->position_name }}</td>
                                     <td class="px-6 py-4">{{ $position->department->department_name }}</td>
-                                    <td class="px-6 py-4">${{ number_format($position->base_salary, 2) }}</td>
+                                    <td class="px-6 py-4">₱{{ number_format($position->base_salary, 2) }}</td>
                                     <td class="px-6 py-4">
                                         <a href="{{ route('positions.edit', $position->position_id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">Edit</a>
                                         <form action="{{ route('positions.destroy', $position->position_id) }}" method="POST" class="inline-block ml-2">
