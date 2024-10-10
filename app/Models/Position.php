@@ -1,21 +1,19 @@
 <?php
-
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Position extends Model
 {
-    use HasFactory;
+    protected $fillable = ['title', 'department_id', 'base_salary'];
 
-    protected $primaryKey = 'position_id'; // Define custom primary key
+    public function employees()
+    {
+        return $this->hasMany(Employee::class);
+    }
 
-    protected $fillable = ['position_name', 'department_id', 'base_salary'];
-
-    // Relationship with Department
     public function department()
     {
-        return $this->belongsTo(Department::class, 'department_id', 'department_id');
+        return $this->belongsTo(Department::class);
     }
 }

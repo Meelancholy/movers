@@ -3,7 +3,7 @@
     $segments = Request::segments();
 @endphp
 
-<nav :class="open ? 'translate-x-64' : 'translate-x-0'" class="flex px-5 py-3 shadow-lg text-gray-700 bg-blue-50 border transition-transform duration-300 ease-in-out">
+<nav :class="open ? 'translate-x-80' : 'translate-x-0'" class="flex px-5 py-3 shadow-lg text-gray-700 bg-blue-50 border transition-transform duration-300 ease-in-out">
     <ol class="inline-flex items-center space-x-1 md:space-x-3">
         <li class="inline-flex items-center">
             <a href="{{ route('dashboard') }}" class="flex items-center ml-1 text-sm font-medium text-blue-400 hover:text-blue-800 md:ml-2">

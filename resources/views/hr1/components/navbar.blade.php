@@ -1,7 +1,7 @@
 <nav class="bg-white p-4 shadow-lg flex">
     <div class="container flex justify-between items-center w-full">
         <!-- Sidebar toggle button -->
-        <button :class="open ? 'translate-x-64' : 'translate-x-0'" @click="open = !open; rotate = !rotate" class="text-blue-600 hover:text-blue-800 focus:outline-none transition-transform duration-300 ease-in-out">
+        <button :class="open ? 'translate-x-80' : 'translate-x-0'" @click="open = !open; rotate = !rotate" class="text-blue-600 hover:text-blue-800 focus:outline-none transition-transform duration-300 ease-in-out">
             <svg :class="{ 'rotate-180': rotate }" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-300 ease-in-out">
                 <rect width="18" height="18" x="3" y="3" rx="2"/>
                 <path d="M15 3v18"/>
