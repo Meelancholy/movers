@@ -10,12 +10,12 @@
 
         <div class="mb-4">
             <label for="title" class="block text-gray-700 font-semibold mb-2">Position Title</label>
-            <input type="text" name="title" id="title" value="{{ $position->title }}" required class="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <input type="text" name="title" id="title" value="{{ old('title', $position->title) }}" required class="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
         <div class="mb-4">
             <label for="base_salary" class="block text-gray-700 font-semibold mb-2">Base Salary</label>
-            <input type="number" name="base_salary" id="base_salary" value="{{ $position->base_salary }}" required class="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <input type="number" name="base_salary" id="base_salary" value="{{ old('base_salary', $position->base_salary) }}" required class="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
         <div class="mb-4">

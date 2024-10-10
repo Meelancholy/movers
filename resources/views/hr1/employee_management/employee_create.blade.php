@@ -1,53 +1,71 @@
 @extends('hr1.layouts.app')
 
 @section('content')
-<div class="container mx-auto">
-    <h1 class="text-2xl font-bold">Add New Employee</h1>
+<div class="container mx-auto bg-white p-6 rounded-lg shadow-md">
+    <h1 class="text-2xl font-bold mb-6">Add New Employee</h1>
 
-    <form method="POST" action="{{ route('employee.store') }}">
+    <form method="POST" action="{{ route('employee.store') }}" class="space-y-6">
         @csrf
+
+        <!-- First Name -->
         <div>
-            <label for="first_name">First Name</label>
-            <input type="text" name="first_name" class="form-input" required>
+            <label for="first_name" class="block text-lg font-semibold mb-2">First Name</label>
+            <input type="text" name="first_name" id="first_name" class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300" required>
         </div>
+
+        <!-- Last Name -->
         <div>
-            <label for="last_name">Last Name</label>
-            <input type="text" name="last_name" class="form-input" required>
+            <label for="last_name" class="block text-lg font-semibold mb-2">Last Name</label>
+            <input type="text" name="last_name" id="last_name" class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300" required>
         </div>
+
+        <!-- Email -->
         <div>
-            <label for="email">Email</label>
-            <input type="email" name="email" class="form-input" required>
+            <label for="email" class="block text-lg font-semibold mb-2">Email</label>
+            <input type="email" name="email" id="email" class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300" required>
         </div>
+
+        <!-- Department -->
         <div>
-            <label for="department_id">Department</label>
-            <select name="department_id" class="form-select" required>
+            <label for="department_id" class="block text-lg font-semibold mb-2">Department</label>
+            <select name="department_id" id="department_id" class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300" required>
                 @foreach($departments as $department)
                     <option value="{{ $department->id }}">{{ $department->name }}</option>
                 @endforeach
             </select>
         </div>
+
+        <!-- Position -->
         <div>
-            <label for="position_id">Position</label>
-            <select name="position_id" class="form-select" required>
+            <label for="position_id" class="block text-lg font-semibold mb-2">Position</label>
+            <select name="position_id" id="position_id" class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300" required>
                 @foreach($positions as $position)
                     <option value="{{ $position->id }}">{{ $position->title }}</option>
                 @endforeach
             </select>
         </div>
+
+        <!-- Status -->
         <div>
-            <label for="status">Status</label>
-            <select name="status" class="form-select" required>
+            <label for="status" class="block text-lg font-semibold mb-2">Status</label>
+            <select name="status" id="status" class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300" required>
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
                 <option value="on leave">On Leave</option>
                 <option value="terminated">Terminated</option>
             </select>
         </div>
+
+        <!-- Contact (Optional) -->
         <div>
-            <label for="contact">Contact</label>
-            <input type="text" name="contact" class="form-input" placeholder="Optional">
+            <label for="contact" class="block text-lg font-semibold mb-2">Contact</label>
+            <input type="text" name="contact" id="contact" class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300" placeholder="Optional">
         </div>
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Add Employee</button>
+
+        <!-- Submit Button -->
+        <button type="submit" class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-2 rounded-full shadow-lg transition transform hover:scale-105 mt-6">
+            Add Employee
+        </button>
     </form>
 </div>
 @endsection
