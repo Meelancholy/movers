@@ -56,7 +56,7 @@
         <h2 class="text-2xl font-bold text-gray-800 mb-6">Positions</h2>
         <div class="overflow-hidden rounded-xl shadow-lg">
             <table class="w-full bg-white border-collapse">
-                <thead class="bg-blue-600 text-white">
+                <thead class="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white">
                     <tr>
                         <th class="p-4 text-left">Position</th>
                         <th class="p-4 text-left">Base Salary</th>
@@ -94,7 +94,7 @@
         <h2 class="text-2xl font-bold text-gray-800 mb-6">Departments</h2>
         <div class="overflow-hidden rounded-xl shadow-lg">
             <table class="w-full bg-white border-collapse">
-                <thead class="bg-blue-600 text-white">
+                <thead class="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white">
                     <tr>
                         <th class="p-4 text-left">Department Name</th>
                         <th class="p-4 text-center">Actions</th>

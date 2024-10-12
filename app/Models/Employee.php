@@ -18,4 +18,20 @@ class Employee extends Model
     {
         return $this->belongsTo(Position::class);
     }
+
+    public function contributions()
+    {
+        return $this->hasMany(Contribution::class);
+    }
+
+    public function deductions()
+    {
+        return $this->hasMany(Deduction::class);
+    }
+
+    public function bonuses()
+    {
+        return $this->hasMany(Bonus::class);
+    }
+
 }

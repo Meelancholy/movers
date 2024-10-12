@@ -4,6 +4,7 @@ use App\Http\Controllers\EmployeeDashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\CompensationController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -34,6 +35,23 @@ Route::middleware('auth')->group(function () {
         Route::resource('position', PositionController::class);
 
     });
+
+    Route::prefix('compensation')->name('compensation.')->group(function () {
+        Route::get('/', [CompensationController::class, 'index'])->name('index');
+        Route::get('/create-contribution', [CompensationController::class, 'createContribution'])->name('create_contribution');
+        Route::post('/store-contribution', [CompensationController::class, 'storeContribution'])->name('store_contribution');
+        Route::get('/create-deduction', [CompensationController::class, 'createDeduction'])->name('create_deduction');
+        Route::post('/store-deduction', [CompensationController::class, 'storeDeduction'])->name('store_deduction');
+        Route::get('/create-bonus', [CompensationController::class, 'createBonus'])->name('create_bonus');
+        Route::post('/store-bonus', [CompensationController::class, 'storeBonus'])->name('store_bonus');
+        Route::get('/edit/{id}', [CompensationController::class, 'editEmployee'])->name('edit');
+        Route::put('/update/{id}', [CompensationController::class, 'updateEmployee'])->name('update');
+        Route::get('/view/{id}', [CompensationController::class, 'viewEmployee'])->name('view');
+        Route::delete('/deduction/{id}', [CompensationController::class, 'deleteDeduction'])->name('deduction.delete');
+        Route::delete('/bonus/{id}', [CompensationController::class, 'deleteBonus'])->name('bonus.delete');
+    });
+
+
 
 });
 
