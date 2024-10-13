@@ -1,106 +1,110 @@
 @extends('hr1.layouts.app')
 
 @section('content')
+    <div class="p-8 min-h-screen">
+        <!-- Dashboard Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-5xl font-bold text-gray-900">Welcome Back!  </h1>
+        </div>
 
-    <!-- Single root element -->
-    <div class="content-wrapper">
-        <div class="content bg-gray">
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-                <!-- Card 1: Employees Overview -->
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                    <div class="flex items-center mb-4">
-                        <h2 class="text-xl font-bold text-gray-800">Employees Overview</h2>
-                    </div>
-                    <p class="text-gray-600">Total Employees: <span class="font-bold">120</span></p>
-                    <p class="text-gray-600">Active Employees: <span class="font-bold">110</span></p>
-                    <p class="text-gray-600">On Leave: <span class="font-bold">10</span></p>
-
-                    <!-- Progress Bar for Active Employees -->
-                    <div class="relative pt-1 mt-4">
-                        <div class="flex mb-2 items-center justify-between">
-                            <span class="text-sm font-medium text-blue-600">Active Employees</span>
-                            <span class="text-sm font-medium text-blue-600">{{ number_format((110 / 120) * 100, 2) }}%</span>
-                        </div>
-                        <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                            <div style="width:{{ (110 / 120) * 100 }}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600"></div>
-                        </div>
-                    </div>
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 mb-10">
+            <!-- Employees Card -->
+            <div class="bg-gradient-to-r from-purple-500 to-blue-500 p-6 rounded-lg shadow-lg flex items-center justify-between text-white">
+                <div>
+                    <h3 class="text-lg font-semibold">Total Employees</h3>
+                    <p class="mt-2 text-5xl font-bold">120</p>
                 </div>
-
-                <!-- Card 2: Drivers Overview -->
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                    <div class="flex items-center mb-4">
-                        <h2 class="text-xl font-bold text-gray-800">Drivers Overview</h2>
-                    </div>
-                    <p class="text-gray-600">Total Drivers: <span class="font-bold">80</span></p>
-                    <p class="text-gray-600">Active Drivers: <span class="font-bold">48</span></p>
-                    <p class="text-gray-600">Resting Drivers: <span class="font-bold">32</span></p>
-
-                    <!-- Progress Bar for Active Drivers -->
-                    <div class="relative pt-1 mt-4">
-                        <div class="flex mb-2 items-center justify-between">
-                            <span class="text-sm font-medium text-green-600">Active Drivers</span>
-                            <span class="text-sm font-medium text-green-600">{{ number_format((48 / 80) * 100, 2) }}%</span>
-                        </div>
-                        <div class="overflow-hidden h-2 text-xs flex rounded bg-green-200">
-                            <div style="width:{{ (48 / 80) * 100 }}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-600"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 3: Vehicles Overview -->
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                    <div class="flex items-center mb-4">
-                        <h2 class="text-xl font-bold text-gray-800">Vehicles Overview</h2>
-                    </div>
-                    <ul class="text-gray-600">
-                        <li>Total Vehicles: <span class="font-bold">50</span></li>
-                        <li>Active Vehicles: <span class="font-bold">48</span></li>
-                        <li>Unused Vehicles: <span class="font-bold">2</span></li>
-                    </ul>
-
-                    <!-- Progress Bar for Active Vehicles -->
-                    <div class="relative pt-1 mt-4">
-                        <div class="flex mb-2 items-center justify-between">
-                            <span class="text-sm font-medium text-yellow-500">Active Vehicles</span>
-                            <span class="text-sm font-medium text-yellow-500">{{ number_format((48 / 50) * 100, 2) }}%</span>
-                        </div>
-                        <div class="overflow-hidden h-2 text-xs flex rounded bg-yellow-200">
-                            <div style="width:{{ (48 / 50) * 100 }}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-yellow-600"></div>
-                        </div>
-                    </div>
+                <div class="bg-white bg-opacity-30 p-4 rounded-full">
+                    <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+                    </svg>
                 </div>
             </div>
 
-            <!-- Separate Div for Recent Activity and Alerts -->
-            <div class="grid grid-cols-1 gap-6 mt-8 md:grid-cols-2">
-                <!-- Card 4: Recent Activity -->
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                    <h2 class="text-xl font-bold text-gray-800 mb-4">Recent Activity</h2>
-                    <ul class="text-gray-600">
-                        <li class="mb-2">New employee hired: John Doe (Sep 15, 2024)</li>
-                        <li class="mb-2">Driver license renewed: Jane Smith (Sep 12, 2024)</li>
-                        <li class="mb-2">Vehicle maintenance completed: Vehicle ID #432 (Sep 10, 2024)</li>
-                    </ul>
+            <!-- Payroll Processed -->
+            <div class="bg-gradient-to-r from-green-400 to-teal-500 p-6 rounded-lg shadow-lg flex items-center justify-between text-white">
+                <div>
+                    <h3 class="text-lg font-semibold">Monthly Payroll Processed</h3>
+                    <p class="mt-2 text-5xl font-bold">₱ 1.25M</p>
+                </div>
+                <div class="bg-white bg-opacity-30 p-4 rounded-full">
+                    <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M3 3h18v2H3V3zm0 6h12v2H3V9zm0 6h9v2H3v-2z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Pending Requests -->
+            <div class="bg-gradient-to-r from-yellow-400 to-orange-500 p-6 rounded-lg shadow-lg flex items-center justify-between text-white">
+                <div>
+                    <h3 class="text-lg font-semibold">Pending Requests</h3>
+                    <p class="mt-2 text-5xl font-bold">5</p>
+                </div>
+                <div class="bg-white bg-opacity-30 p-4 rounded-full">
+                    <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M21 12l-18 9v-18z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Open Positions -->
+            <div class="bg-gradient-to-r from-red-400 to-pink-500 p-6 rounded-lg shadow-lg flex items-center justify-between text-white">
+                <div>
+                    <h3 class="text-lg font-semibold">Open Positions</h3>
+                    <p class="mt-2 text-5xl font-bold">3</p>
+                </div>
+                <div class="bg-white bg-opacity-30 p-4 rounded-full">
+                    <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2l1.664 6h6.174l-4.85 3.61 1.664 6-4.85-3.61-4.85 3.61 1.664-6-4.85-3.61h6.174L12 2z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Recent Activities -->
+            <div class="col-span-2 bg-white p-8 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-gray-700 mb-6">Recent Employee Activities</h2>
+                <ul class="space-y-6">
+                    <li class="flex justify-between">
+                        <span class="text-gray-600">John Doe added a new employee</span>
+                        <span class="text-sm text-gray-500">2 hours ago</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span class="text-gray-600">Jane Smith updated payroll details</span>
+                        <span class="text-sm text-gray-500">1 day ago</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span class="text-gray-600">Sarah Lee requested leave</span>
+                        <span class="text-sm text-gray-500">3 days ago</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Payroll Summary (Chart Placeholder) -->
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-gray-700 mb-6">Payroll Summary</h2>
+                <div class="h-44 bg-gradient-to-br from-gray-100 to-gray-50 rounded-lg flex items-center justify-center">
+                    <!-- Placeholder for chart -->
+                    <span class="text-gray-400">[Graph Placeholder]</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Employee Statistics (Optional Charts) -->
+        <div class="mt-12 bg-white p-8 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-bold text-gray-700 mb-6">Employee Statistics</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Chart or Summary 1 -->
+                <div class="bg-gradient-to-r from-blue-400 to-indigo-500 p-6 rounded-lg text-white flex items-center justify-center">
+                    <span class="text-lg font-bold">[Chart Placeholder]</span>
                 </div>
 
-                <!-- Card 5: Alerts and Notifications -->
-                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                    <h2 class="text-xl font-bold text-gray-800 mb-4">Alerts & Notifications</h2>
-                    <ul class="text-gray-600">
-                        <li class="flex justify-between mb-2">
-                            <span>Driver License Expiring: Mark White</span>
-                            <span class="text-red-500">In 5 days</span>
-                        </li>
-                        <li class="flex justify-between mb-2">
-                            <span>Payroll Approval Pending</span>
-                            <span class="text-yellow-500">Due in 2 days</span>
-                        </li>
-                        <li class="flex justify-between mb-2">
-                            <span>Vehicle Maintenance Required: Vehicle ID #123</span>
-                            <span class="text-red-500">Overdue</span>
-                        </li>
-                    </ul>
+                <!-- Chart or Summary 2 -->
+                <div class="bg-gradient-to-r from-teal-400 to-green-500 p-6 rounded-lg text-white flex items-center justify-center">
+                    <span class="text-lg font-bold">[Chart Placeholder]</span>
                 </div>
             </div>
         </div>

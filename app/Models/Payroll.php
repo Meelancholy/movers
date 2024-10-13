@@ -1,21 +1,21 @@
 <?php
 
-// app/Models/Deduction.php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Deduction extends Model
+class Payroll extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'employee_id',
-        'deduction_name',
-        'amount',
-        'frequency',
+        'salary',
+        'bonus',
+        'deductions',
+        'benefits',
+        'net_pay',
     ];
 
     public function employee()

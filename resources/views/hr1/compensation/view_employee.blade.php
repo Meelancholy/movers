@@ -21,7 +21,7 @@
 
     <!-- Contributions Section -->
     <div class="bg-purple-100 shadow-lg rounded-lg p-6">
-        <h4 class="font-bold text-lg text-purple-700">Social</h4>
+        <h4 class="font-bold text-lg text-purple-700">Social Benefits</h4>
         <table class="min-w-full divide-y divide-gray-300 rounded-lg overflow-hidden mt-4">
             <thead class="bg-purple-600 text-white">
                 <tr>

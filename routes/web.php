@@ -5,7 +5,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\CompensationController;
+use App\Http\Controllers\PayrollController;
 use Illuminate\Support\Facades\Route;
+
 
 
 Route::get('/', function () {
@@ -30,7 +32,6 @@ Route::middleware('auth')->group(function () {
         Route::put('/{id}', [EmployeeDashboardController::class, 'update'])->name('employee.update');
         Route::delete('/{id}', [EmployeeDashboardController::class, 'destroy'])->name('employee.delete');
         Route::get('/{id}', [EmployeeDashboardController::class, 'profile'])->name('employee.profile');
-
         Route::resource('department', DepartmentController::class);
         Route::resource('position', PositionController::class);
 
@@ -51,6 +52,12 @@ Route::middleware('auth')->group(function () {
         Route::delete('/bonus/{id}', [CompensationController::class, 'deleteBonus'])->name('bonus.delete');
     });
 
+    Route::group(['prefix' => 'payroll', 'as' => 'payroll.'], function () {
+        Route::get('/generate', [PayrollController::class, 'create'])->name('create');
+        Route::post('/generate', [PayrollController::class, 'store'])->name('store');
+        Route::get('/records', [PayrollController::class, 'records'])->name('records');
+        Route::get('/{id}', [PayrollController::class, 'show'])->name('show');
+    });
 
 
 });

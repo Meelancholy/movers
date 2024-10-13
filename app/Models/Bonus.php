@@ -13,7 +13,6 @@ class Bonus extends Model
         'employee_id',
         'bonus_name',
         'amount',
-        'bonus_type',
         'frequency',
     ];
 

@@ -25,7 +25,7 @@ class CompensationController extends Controller
     } */
 
     // Store a new contribution
-    public function storeContribution(Request $request)
+/*     public function storeContribution(Request $request)
     {
         $request->validate([
             'employee_id' => 'required|exists:employees,id',
@@ -41,7 +41,7 @@ class CompensationController extends Controller
         );
 
         return redirect()->route('compensation.index')->with('success', 'Contribution added successfully.');
-    }
+    } */
 
     // Display form for creating a new deduction
     public function createDeduction()
@@ -50,7 +50,6 @@ class CompensationController extends Controller
         return view('hr1.compensation.create_deduction', compact('employees'));
     }
 
-    // Store a new deduction
     public function storeDeduction(Request $request)
     {
         // Validate the incoming request data
@@ -58,22 +57,34 @@ class CompensationController extends Controller
             'employee_id' => 'required|exists:employees,id',
             'deduction_name' => 'required|string|max:255',
             'amount' => 'required|numeric|min:1',
-            'deduction_type' => 'required|in:one_time,recurring,recurring_indefinitely',
-            'frequency' => 'nullable|integer|min:1', // Frequency is only required for recurring type
+            'deduction_type' => 'required|string|in:one_time,recurring,recurring_indefinitely',
+            'frequency' => 'nullable|integer|min:1', // Optional frequency for recurring deductiones
         ]);
 
-        // Check if frequency is required based on deduction type
-        if ($request->deduction_type == 'recurring' && !$request->filled('frequency')) {
-            return back()->withErrors(['frequency' => 'Frequency is required for recurring deductions.']);
+        // Prepare frequency based on deduction type
+        $frequency = null;
+
+        switch ($request->deduction_type) {
+            case 'one_time':
+                $frequency = 1; // For one-time deductiones
+                break;
+            case 'recurring':
+                $frequency = $request->frequency; // User-defined frequency
+                break;
+            case 'recurring_indefinitely':
+                $frequency = -1; // For recurring indefinitely
+                break;
+            default:
+                // Handle unexpected cases (if needed)
+                return redirect()->route('compensation.index')->with('error', 'Invalid deduction type.');
         }
 
-        // Prepare data for storing the deduction
+        // Prepare deduction data
         $deductionData = [
             'employee_id' => $request->employee_id,
             'deduction_name' => $request->deduction_name,
             'amount' => $request->amount,
-            'deduction_type' => $request->deduction_type,
-            'frequency' => $request->deduction_type == 'recurring' ? $request->frequency : null,
+            'frequency' => $frequency,
         ];
 
         // Create or update deduction record
@@ -102,24 +113,36 @@ class CompensationController extends Controller
         // Validate the incoming request data
         $request->validate([
             'employee_id' => 'required|exists:employees,id',
-            'bonus_name' => 'required|string|max:255', // Added max length for bonus_name
-            'amount' => 'required|numeric|min:1', // Minimum amount validation
-            'bonus_type' => 'required|in:one_time,recurring,recurring_indefinitely', // Validate bonus type
-            'frequency' => 'nullable|integer|min:1', // Frequency is only required for recurring type
+            'bonus_name' => 'required|string|max:255',
+            'amount' => 'required|numeric|min:1',
+            'bonus_type' => 'required|string|in:one_time,recurring,recurring_indefinitely',
+            'frequency' => 'nullable|integer|min:1', // Optional frequency for recurring bonuses
         ]);
 
-        // Check if frequency is required based on bonus type
-        if ($request->bonus_type == 'recurring' && !$request->filled('frequency')) {
-            return back()->withErrors(['frequency' => 'Frequency is required for recurring bonuses.']);
+        // Prepare frequency based on bonus type
+        $frequency = null;
+
+        switch ($request->bonus_type) {
+            case 'one_time':
+                $frequency = 1; // For one-time bonuses
+                break;
+            case 'recurring':
+                $frequency = $request->frequency; // User-defined frequency
+                break;
+            case 'recurring_indefinitely':
+                $frequency = -1; // For recurring indefinitely
+                break;
+            default:
+                // Handle unexpected cases (if needed)
+                return redirect()->route('compensation.index')->with('error', 'Invalid bonus type.');
         }
 
-        // Prepare data for storing the bonus
+        // Prepare bonus data
         $bonusData = [
             'employee_id' => $request->employee_id,
             'bonus_name' => $request->bonus_name,
             'amount' => $request->amount,
-            'bonus_type' => $request->bonus_type,
-            'frequency' => $request->bonus_type == 'recurring' ? $request->frequency : null, // Store frequency only for recurring bonuses
+            'frequency' => $frequency,
         ];
 
         // Create or update bonus record
@@ -134,8 +157,6 @@ class CompensationController extends Controller
         // Redirect to the compensation index with success message
         return redirect()->route('compensation.index')->with('success', 'Bonus added successfully.');
     }
-
-
 
     // Display employee for editing their contributions, deductions, and bonuses
     public function editEmployee($id)

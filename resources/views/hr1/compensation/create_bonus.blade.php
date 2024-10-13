@@ -1,4 +1,3 @@
-<!-- resources/views/hr1/compensation/create_bonus.blade.php -->
 @extends('hr1.layouts.app')
 
 @section('content')
@@ -8,9 +7,9 @@
     <form action="{{ route('compensation.store_bonus') }}" method="POST" class="bg-white shadow-xl rounded-lg p-8 space-y-6" x-data="{ bonusType: 'one_time' }">
         @csrf
 
-        <!-- Employee selection remains the same -->
+        <!-- Employee selection -->
         <div class="mb-6">
-            <label for="employee_id" class="block text-gray-700 font-semibold mb-2">Employee:</label>
+            <label for="search" class="block text-gray-700 font-semibold mb-2">Employee:</label>
             <div class="relative">
                 <input type="text" id="search" placeholder="Search by Name or ID" class="form-input border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out" onkeyup="filterEmployees()" autocomplete="off" required>
                 <ul id="employee-list" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-40 overflow-auto shadow-lg hidden opacity-0 transition-opacity duration-300 ease-in-out">
@@ -39,22 +38,18 @@
             <label for="amount" class="block text-gray-700 font-semibold mb-2">Amount:</label>
             <input type="number" name="amount" id="amount" class="form-input border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out" step="0.01" required>
 
-            <!-- Suggested amounts -->
             <div class="mt-4 space-x-2">
-                <button type="button" class="suggest-button bg-green-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-green-600 hover:scale-105 transition duration-200 ease-in-out" onclick="fillAmount(300)">₱300</button>
-                <button type="button" class="suggest-button bg-green-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-green-600 hover:scale-105 transition duration-200 ease-in-out" onclick="fillAmount(500)">₱500</button>
-                <button type="button" class="suggest-button bg-green-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-green-600 hover:scale-105 transition duration-200 ease-in-out" onclick="fillAmount(1000)">₱1,000</button>
-                <button type="button" class="suggest-button bg-green-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-green-600 hover:scale-105 transition duration-200 ease-in-out" onclick="fillAmount(2000)">₱2,000</button>
-                <button type="button" class="suggest-button bg-green-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-green-600 hover:scale-105 transition duration-200 ease-in-out" onclick="fillAmount(5000)">₱5,000</button>
-                <button type="button" class="suggest-button bg-green-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-green-600 hover:scale-105 transition duration-200 ease-in-out" onclick="fillAmount(10000)">₱10,000</button>
+                @foreach([300, 500, 1000, 2000, 5000, 10000] as $suggestedAmount)
+                    <button type="button" class="suggest-button bg-green-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-green-600 hover:scale-105 transition duration-200 ease-in-out" onclick="fillAmount({{ $suggestedAmount }})">₱{{ number_format($suggestedAmount, 2) }}</button>
+                @endforeach
             </div>
         </div>
 
         <!-- Bonus Type (Dropdown) -->
-        <div class="mb-6">
+        <div>
             <label for="bonus_type" class="block text-gray-700 font-semibold mb-2">Bonus Type:</label>
-            <select name="bonus_type" id="bonus_type" class="form-select border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out" x-model="bonusType">
-                <option value="one_time">One-time</option>
+            <select name="bonus_type" id="bonus_type" x-model="bonusType" class="form-select">
+                <option value="one_time">One-Time</option>
                 <option value="recurring">Recurring</option>
                 <option value="recurring_indefinitely">Recurring Indefinitely</option>
             </select>
@@ -63,8 +58,9 @@
         <!-- Frequency Input (shown when Recurring is selected) -->
         <div class="mb-6" x-show="bonusType === 'recurring'">
             <label for="frequency" class="block text-gray-700 font-semibold mb-2">Frequency:</label>
-            <input type="number" name="frequency" id="frequency" class="form-input border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out" min="1" required>
+            <input type="number" name="frequency" id="frequency" class="form-input border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out" min="1">
         </div>
+
 
         <!-- Submit and Return -->
         <div class="flex justify-between">
@@ -77,7 +73,6 @@
 </div>
 
 <script>
-    // Same script for employee filtering and amount suggestion
     function filterEmployees() {
         const searchInput = document.getElementById('search').value.toLowerCase();
         const employeeList = document.getElementById('employee-list');
