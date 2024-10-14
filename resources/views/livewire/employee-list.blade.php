@@ -5,7 +5,11 @@
             Add New Employee
         </a>
     </div>
-
+    @if(session('success'))
+    <div class="bg-green-100 text-green-800 p-4 rounded-lg shadow-md mb-6">
+        {{ session('success') }}
+    </div>
+    @endif
     <!-- Filter and Search Form -->
     <form method="GET" class="mb-8" wire:submit.prevent="filterEmployees">
         <div class="flex items-center justify-between w-full">

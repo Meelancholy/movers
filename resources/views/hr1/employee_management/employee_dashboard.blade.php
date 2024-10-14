@@ -4,7 +4,11 @@
 <div class="p-10 container min-w-full bg-white rounded-lg shadow-md">
     <!-- Title Section -->
     <h1 class="text-3xl font-bold text-gray-800 mb-8">Employee Dashboard</h1>
-
+    @if(session('success'))
+    <div class="bg-green-100 text-green-800 p-4 rounded-lg shadow-md mb-6">
+        {{ session('success') }}
+    </div>
+    @endif
     <!-- Employee Stats Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         <div class="bg-blue-400 text-white p-6 rounded-xl shadow-md hover:bg-blue-300 transition duration-300 ease-in-out">
