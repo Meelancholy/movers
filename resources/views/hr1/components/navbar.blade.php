@@ -2,7 +2,7 @@
     <div class="flex w-full items-center">
 
         <!-- Sidebar toggle button (aligned to the left) -->
-        <button :class="open ? 'translate-x-80' : 'translate-x-0'" @click="open = !open; rotate = !rotate" class="text-blue-600 hover:text-blue-800 focus:outline-none transition-transform duration-300 ease-in-out">
+        <button :class="open ? 'translate-x-72' : 'translate-x-0'" @click="open = !open; rotate = !rotate" class="text-blue-600 hover:text-blue-800 focus:outline-none transition-transform duration-300 ease-in-out">
             <svg :class="{ 'rotate-180': rotate }" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-300 ease-in-out">
                 <rect width="18" height="18" x="3" y="3" rx="2"/>
                 <path d="M15 3v18"/>
@@ -17,19 +17,11 @@
             <div class="flex items-center space-x-4">
                 <!-- Notifications Icon -->
                 <button class="relative focus:outline-none">
-                    <svg class="h-6 w-6 text-gray-600 hover:text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405C19.835 14.979 20 14.257 20 13.5V11c0-3.039-1.312-5.466-3.354-7.007A9.965 9.965 0 0012 3c-2.602 0-4.975 1.047-6.646 2.793C3.477 7.367 3 9.633 3 12v1.5c0 .757.165 1.479.405 2.095L2 17h5m6 4v1m-4 0h4" />
-                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
                     <!-- Notification Badge -->
                     <span class="absolute top-0 right-0 inline-block w-2 h-2 transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full"></span>
                 </button>
 
-                <!-- Messages Icon -->
-                <button class="relative focus:outline-none">
-                    <svg class="h-6 w-6 text-gray-600 hover:text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V10a2 2 0 012-2h2m4-4h2a2 2 0 012 2v4H9V6a2 2 0 012-2z" />
-                    </svg>
-                </button>
             </div>
 
             <!-- Right-side profile dropdown -->
@@ -37,7 +29,7 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <img src="{{ asset('images/logo.png') }}" alt="Profile Picture" class="w-10 h-10 rounded-full object-cover">
+                            <img src="{{ asset('images/logo.png') }}" alt="Profile Picture" class="w-10 h-10 rounded-full object-cover border border-gray-100">
                             <div class="hidden sm:block pl-2">{{ Auth::user()->name }}</div>
 
                             <!-- Mobile-friendly dropdown icon -->

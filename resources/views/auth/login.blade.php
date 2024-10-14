@@ -10,12 +10,12 @@
             <img src="{{ asset('images/logo.png') }}" alt="Logo" class="object-contain transition-transform duration-300 transform hover:scale-110">
         </div>
 
-        <!-- Email Address -->
+        <!-- Email or Name Address -->
         <div class="mb-6">
-            <x-input-label for="email" :value="__('Email')" class="text-gray-700 font-semibold" />
-            <x-text-input id="email" class="block mt-2 w-full px-5 py-3 border border-gray-300 bg-gray-50 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition duration-300 ease-in-out transform hover:scale-105"
-                type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2 text-red-600" />
+            <x-input-label for="login" :value="__('Username or Email')" class="text-gray-700 font-semibold" />
+            <x-text-input id="login" class="block mt-2 w-full px-5 py-3 border border-gray-300 bg-gray-50 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition duration-300 ease-in-out transform hover:scale-105"
+                type="text" name="login" :value="old('login')" required autofocus />
+            <x-input-error :messages="$errors->get('login')" class="mt-2 text-red-600" />
         </div>
 
         <!-- Password -->
@@ -53,7 +53,7 @@
 
         <!-- Submit Button -->
         <div class="flex justify-end">
-            <x-primary-button class="w-full py-3 px-6 bg-blue-600 hover:bg-blue-700 focus:bg-blue-800 text-white font-semibold rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg">
+            <x-primary-button class="w-full py-3 px-8 bg-blue-600 hover:bg-blue-700 focus:bg-blue-800 text-white font-semibold rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg">
                 {{ __('Log in') }}
             </x-primary-button>
         </div>

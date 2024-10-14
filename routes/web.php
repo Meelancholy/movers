@@ -32,9 +32,20 @@ Route::middleware('auth')->group(function () {
         Route::put('/{id}', [EmployeeDashboardController::class, 'update'])->name('employee.update');
         Route::delete('/{id}', [EmployeeDashboardController::class, 'destroy'])->name('employee.delete');
         Route::get('/{id}', [EmployeeDashboardController::class, 'profile'])->name('employee.profile');
-        Route::resource('department', DepartmentController::class);
-        Route::resource('position', PositionController::class);
 
+        Route::get('/department', [DepartmentController::class, 'index'])->name('department.index');
+        Route::get('/department/create', [DepartmentController::class, 'create'])->name('department.create');
+        Route::post('/department', [DepartmentController::class, 'store'])->name('department.store');
+        Route::get('/department/{id}/edit', [DepartmentController::class, 'edit'])->name('department.edit');
+        Route::put('/department/{id}', [DepartmentController::class, 'update'])->name('department.update');
+        Route::delete('/department/{id}', [DepartmentController::class, 'destroy'])->name('department.destroy');
+
+        Route::get('/position', [PositionController::class, 'index'])->name('position.index');
+        Route::get('/position/create', [PositionController::class, 'create'])->name('position.create');
+        Route::post('/position', [PositionController::class, 'store'])->name('position.store');
+        Route::get('/position/{id}/edit', [PositionController::class, 'edit'])->name('position.edit');
+        Route::put('/position/{id}', [PositionController::class, 'update'])->name('position.update');
+        Route::delete('/position/{id}', [PositionController::class, 'destroy'])->name('position.destroy');
     });
 
     Route::prefix('compensation')->name('compensation.')->group(function () {

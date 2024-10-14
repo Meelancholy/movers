@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name', 'Movers') }}</title>
+    @livewireStyles
     @vite('resources/css/app.css')
 </head>
 <body x-data="{ open: false, rotate: false }" class="bg-blue-100 flex">
@@ -15,11 +16,11 @@
         <x-hr1-navbar />
         <x-breadcrumbs />
         <!-- Main Content -->
-        <main :class="open ? 'ml-80' : 'ml-0'" class="flex-1 pt-6 px-4 transition-transform duration-300 ease-in-out">
+        <main :class="open ? 'ml-72' : 'ml-0'" class="flex-1 pt-6 px-4 transition-transform duration-300 ease-in-out">
             @yield('content')
         </main>
     </div>
-
+    @livewireScripts
     @vite('resources/js/app.js')
 </body>
 </html>

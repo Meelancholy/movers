@@ -9,9 +9,14 @@ use Illuminate\Http\Request;
 
 class EmployeeDashboardController extends Controller
 {
+    public function list()
+    {
+        return view('hr1.employee_management.employee_list'); // This is your Blade view with the Livewire component
+    }
     // Display Employee Dashboard
     public function index()
     {
+        // Total counts for employee stats
         $totalEmployees = Employee::count();
         $activeEmployees = Employee::where('status', 'active')->count();
         $inactiveEmployees = Employee::where('status', 'inactive')->count();
@@ -19,35 +24,15 @@ class EmployeeDashboardController extends Controller
         // Fetch departments with employee count
         $departments = Department::withCount('employees')->get();
 
-        // Fetch all positions
-        $positions = Position::all();
+        // Fetch positions with employee count
+        $positions = Position::withCount('employees')->get();
 
+        // Pass the data to the view
         return view('hr1.employee_management.employee_dashboard', compact('totalEmployees', 'activeEmployees', 'inactiveEmployees', 'departments', 'positions'));
     }
 
-    // Display Employee List
-    public function list(Request $request)
-    {
-        $employees = Employee::query();
 
-        // Apply filters
-        if ($request->filled('department_id')) {
-            $employees->where('department_id', $request->department_id);
-        }
-        if ($request->filled('position_id')) {
-            $employees->where('position_id', $request->position_id);
-        }
-        if ($request->filled('status')) {
-            $employees->where('status', $request->status);
-        }
 
-        $employees = $employees->paginate(10);
-
-        $departments = Department::all();
-        $positions = Position::all();
-
-        return view('hr1.employee_management.employee_list', compact('employees', 'departments', 'positions'));
-    }
 
     // Display Employee Profile/Management
     public function profile($id)

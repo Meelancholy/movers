@@ -9,78 +9,36 @@ use Illuminate\Http\Request;
 class PayrollController extends Controller
 {
     /**
-     * Show the Generate Payroll page.
+     * Show the Generate Payroll page with calculated values.
      */
     public function create()
     {
         // Get all employees with their positions and base salary
-        $employees = Employee::with('position')->get();
-        return view('hr1.payroll.generate', compact('employees'));
-    }
+        $employees = Employee::with('position', 'bonuses')->get();
 
-    /**
-     * Store generated payroll.
-     */
-    public function store(Request $request)
-    {
-        // Loop through each employee and calculate payroll
-        foreach ($request->bonus as $employeeId => $bonus) {
-            $employee = Employee::findOrFail($employeeId);
+        // Calculate for each employee
+        $employeePayrollData = $employees->map(function ($employee) {
             $baseSalary = $employee->position->base_salary;
-
-            // Tax computation (using your provided tax table)
+            $totalBonus = $employee->bonuses->sum('amount'); // Assuming bonuses are linked via relation
             $tax = $this->calculateTax($baseSalary);
+            $deductions = 0; // Add your logic here
+            $benefits = 0; // Add your logic here
+            $netSalary = $baseSalary + $totalBonus - $tax - $deductions - $benefits;
 
-            // Get deductions, benefits, and net salary calculations
-            $deductions = $request->deductions[$employeeId] ?? 0;
-            $benefits = $request->benefits[$employeeId] ?? 0;
-            $netSalary = $baseSalary - $tax + $bonus - $deductions + $benefits;
-
-            // Store payroll in the database
-            Payroll::create([
-                'employee_id' => $employee->id,
-                'salary' => $baseSalary,
-                'bonus' => $bonus,
+            return [
+                'id' => $employee->id,
+                'name' => $employee->last_name . ', ' . $employee->first_name,
+                'baseSalary' => $baseSalary,
+                'totalBonus' => $totalBonus,
+                'tax' => $tax,
                 'deductions' => $deductions,
                 'benefits' => $benefits,
-                'net_pay' => $netSalary,
-            ]);
-        }
+                'netSalary' => $netSalary,
+            ];
+        });
 
-        // Redirect to Payroll Records page
-        return redirect()->route('payroll.records')->with('success', 'Payroll generated successfully.');
-    }
-
-    /**
-     * Show payroll records.
-     */
-    public function records(Request $request)
-    {
-        // If search by employee name is used, filter results
-        $payrolls = Payroll::with('employee')
-            ->when($request->employee_name, function ($query) use ($request) {
-                $query->whereHas('employee', function ($q) use ($request) {
-                    $q->where('name', 'like', '%' . $request->employee_name . '%');
-                });
-            })
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
-
-        // Get recent payroll transactions (e.g., last 5)
-        $recentTransactions = Payroll::with('employee')->latest()->limit(5)->get();
-
-        return view('hr1.payroll.records', compact('payrolls', 'recentTransactions'));
-    }
-
-    /**
-     * Show detailed payroll for an employee.
-     */
-    public function show($id)
-    {
-        // Get payroll for the specific employee
-        $payroll = Payroll::with('employee')->findOrFail($id);
-
-        return view('hr1.payroll.show', compact('payroll'));
+        // Pass calculated data to the view
+        return view('hr1.payroll.generate', compact('employeePayrollData'));
     }
 
     /**

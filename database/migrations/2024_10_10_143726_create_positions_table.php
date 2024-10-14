@@ -11,7 +11,7 @@ class CreatePositionsTable extends Migration
         Schema::create('positions', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->decimal('base_salary', 10, 2);
+            $table->decimal('base_salary', 20, 2);
             // Ensure 'department_id' is defined correctly
             $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('cascade');
             $table->timestamps();
