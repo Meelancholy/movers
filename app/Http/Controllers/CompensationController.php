@@ -262,97 +262,54 @@ class CompensationController extends Controller
 
         // PhilHealth Calculation
         if ($philhealthContribution && $philhealthContribution->philhealth == 1) {
-            if ($salary <= 10000) {
-                $philhealth_employee_share = 200.00;
-                $philhealth_employer_share = 200.00;
-            } elseif ($salary > 10000 && $salary <= 80000) {
-                $philhealth_total = $salary * 0.04;
+            if ($salary >= 10000) {
+                $philhealth_total = min($salary * 0.05, 5000);
                 $philhealth_employee_share = $philhealth_total / 2;
                 $philhealth_employer_share = $philhealth_total / 2;
             } else {
-                $philhealth_employee_share = 1600.00;
-                $philhealth_employer_share = 1600.00;
+                $philhealth_employee_share = 0;
+                $philhealth_employer_share = 0;
             }
         }
 
-        // SSS Calculation
         if ($sssContributionData && $sssContributionData->sss == 1) {
-            $sssTable = [
-                [4250, 380, 180],
-                [4749.99, 427.50, 202.50],
-                [5249.99, 475, 225],
-                [5749.99, 522.50, 247.50],
-                [6249.99, 570, 270],
-                [6749.99, 617.50, 292.50],
-                [7249.99, 665, 315],
-                [7749.99, 712.50, 337.50],
-                [8249.99, 760, 360],
-                [8749.99, 807.50, 382.50],
-                [9249.99, 855, 405],
-                [9749.99, 902.50, 427.50],
-                [10249.99, 950, 450],
-                [10749.99, 997.50, 472.50],
-                [11249.99, 1045, 495],
-                [11749.99, 1092.50, 517.50],
-                [12249.99, 1140, 540],
-                [12749.99, 1187.50, 562.50],
-                [13249.99, 1235, 585],
-                [13749.99, 1282.50, 607.50],
-                [14249.99, 1330, 630],
-                [14749.99, 1377.50, 652.50],
-                [15249.99, 1425, 675],
-                [15749.99, 1472.50, 697.50],
-                [16249.99, 1520, 720],
-                [16749.99, 1567.50, 742.50],
-                [17249.99, 1615, 765],
-                [17749.99, 1662.50, 787.50],
-                [18249.99, 1710, 810],
-                [18749.99, 1757.50, 832.50],
-                [19249.99, 1805, 855],
-                [19749.99, 1852.50, 877.50],
-                [20249.99, 1900, 900],
-                [20749.99, 1947.50, 922.50],
-                [21249.99, 1995, 945],
-                [21749.99, 2042.50, 967.50],
-                [22249.99, 2090, 990],
-                [22749.99, 2137.50, 1012.50],
-                [23249.99, 2185, 1035],
-                [23749.99, 2232.50, 1057.50],
-                [24249.99, 2280, 1080],
-                [24749.99, 2327.50, 1102.50],
-                [25249.99, 2375, 1125],
-                [25749.99, 2422.50, 1147.50],
-                [26249.99, 2470, 1170],
-                [26749.99, 2517.50, 1192.50],
-                [27249.99, 2565, 1215],
-                [27749.99, 2612.50, 1237.50],
-                [28249.99, 2660, 1260],
-                [28749.99, 2707.50, 1282.50],
-                [29249.99, 2755, 1305],
-                [29749.99, 2802.50, 1327.50],
-            ];
-            if ($salary <= 29750) {
-                foreach ($sssTable as $bracket) {
-                    if ($salary <= $bracket[0]) {
-                        $sssContribution['employee_share'] = $bracket[1];
-                        $sssContribution['employer_share'] = $bracket[2];
-                        break;
-                    }
-                }
+            if ($salary < 4000) {
+                $sss_employee_share = 0;
+                $sss_employer_share = 0;
+            } elseif ($salary <= 30000) {
+                $sss_employee_share = $salary * 0.095;
+                $sss_employer_share = $salary * 0.045;
             } else {
-                $sssContribution['employee_share'] = 2802.50;
-                $sssContribution['employer_share'] = 1327.50;
+                $sss_employee_share = 30000 * 0.095;
+                $sss_employer_share = 30000 * 0.045;
             }
-        }
 
+            $total_sss_contribution = $sss_employee_share + $sss_employer_share;
+
+            $sssContribution = [
+                'employee_share' => $sss_employee_share,
+                'employer_share' => $sss_employer_share,
+                'total_contribution' => $total_sss_contribution,
+            ];
+        } else {
+            $sssContribution = [
+                'employee_share' => 0,
+                'employer_share' => 0,
+                'total_contribution' => 0,
+            ];
+        }
         // Pag-IBIG Calculation
         if ($pagibigContribution && $pagibigContribution->pagibig == 1) {
-            if ($salary <= 1500) {
-                $pagibig_employee_share = 15.00;
-                $pagibig_employer_share = 30.00;
+            $monthly_compensation = min($salary, 5000);
+            if ($monthly_compensation <= 1500) {
+                $pagibig_employee_share = $monthly_compensation * 0.01;
+                $pagibig_employer_share = $monthly_compensation * 0.02;
+            } elseif ($monthly_compensation <= 5000) {
+                $pagibig_employee_share = $monthly_compensation * 0.02;
+                $pagibig_employer_share = $monthly_compensation * 0.02;
             } else {
-                $pagibig_employee_share = min($salary * 0.02, 200);
-                $pagibig_employer_share = min($salary * 0.02, 200);
+                $pagibig_employee_share = 5000 * 0.02;
+                $pagibig_employer_share = 5000 * 0.02;
             }
         }
         // Pass all variables to the view

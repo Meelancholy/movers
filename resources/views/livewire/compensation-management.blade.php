@@ -16,11 +16,6 @@
         </a>
     </div>
 
-    <!-- Searchable Dropdown -->
-    <div class="mb-6 relative">
-        <input wire:model="search" type="text" placeholder="Search by name or ID..." class="p-2 border border-gray-300 rounded-lg w-full mb-2">
-    </div>
-
     <div class="overflow-hidden rounded-lg shadow-lg bg-white">
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-blue-100">
@@ -28,14 +23,8 @@
                     <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Employee ID</th>
                     <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Employee</th>
                     <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Social Benefits</th>
-                    <th wire:click="sort('deductions')" class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider cursor-pointer">
-                        Total Deductions
-                        @if ($deductionsSortOrder === 'asc') ↑ @else ↓ @endif
-                    </th>
-                    <th wire:click="sort('bonuses')" class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider cursor-pointer">
-                        Total Compensation Enhancements
-                        @if ($bonusesSortOrder === 'asc') ↑ @else ↓ @endif
-                    </th>
+                    <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Total Deductions</th>
+                    <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Total Compensation Enhancements</th>
                     <th class="px-6 py-4 text-left text-sm font-bold text-gray-700 uppercase tracking-wider flex justify-center">Actions</th>
                 </tr>
             </thead>
