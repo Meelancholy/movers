@@ -62,10 +62,14 @@
             <input type="text" name="contact" id="contact" class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300" placeholder="Optional">
         </div>
 
-        <!-- Submit Button -->
-        <button type="submit" class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-2 rounded-full shadow-lg transition transform hover:scale-105 mt-6">
-            Add Employee
-        </button>
+        <div class="flex justify-end space-x-4 mt-6">
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full shadow-lg transition transform hover:scale-105">
+                Add Employee
+            </button>
+            <a href="{{ route('employee.list') }}" class="bg-gray-300 hover:bg-gray-4   00 text-gray-800 px-8 py-3 rounded-full transition transform hover:scale-105">
+                Back to Employee list
+            </a>
+        </div>
     </form>
 </div>
 @endsection

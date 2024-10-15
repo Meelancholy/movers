@@ -1,5 +1,7 @@
 <?php
 
+// CompensationManagement.php
+
 namespace App\Livewire;
 
 use App\Models\Employee;
@@ -18,7 +20,6 @@ class CompensationManagement extends Component
 
     public function render()
     {
-        // Fetch employees with their contributions, deductions, and bonuses
         $employees = Employee::with(['contributions', 'deductions', 'bonuses'])
             ->when($this->search, function($query) {
                 $query->where('first_name', 'like', '%' . $this->search . '%')

@@ -38,9 +38,12 @@
     </div>
 
     <!-- Back Button -->
-    <div class="mt-6">
-        <a href="{{ route('employee.list') }}" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-2 rounded-full shadow-lg hover:bg-blue-600 transition transform hover:scale-105 duration-200">
-            Back to Employee List
+    <div class="flex justify-end space-x-4 mt-6">
+        <a href="{{ route('employee.edit', $employee->id) }}" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full transition transform hover:scale-105">
+            Edit Employee
+        </a>
+        <a href="{{ route('employee.list') }}" class="bg-gray-300 hover:bg-gray-4   00 text-gray-800 px-8 py-3 rounded-full transition transform hover:scale-105">
+            Back to Employee list
         </a>
     </div>
 </div>

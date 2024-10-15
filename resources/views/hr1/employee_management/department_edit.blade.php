@@ -28,12 +28,12 @@
         </div>
 
         <!-- Buttons -->
-        <div class="flex space-x-4">
-            <button type="submit" class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-2 rounded-full shadow-lg transition transform hover:scale-105">
+        <div class="flex justify-end space-x-4 mt-6">
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full shadow-lg transition transform hover:scale-105">
                 Update Department
             </button>
-            <a href="{{ route('employee.dashboard') }}" class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 py-2 rounded-full shadow-lg transition transform hover:scale-105">
-                Cancel
+            <a href="{{ route('employee.dashboard') }}" class="bg-gray-300 hover:bg-gray-4 text-gray-800 px-8 py-3 rounded-full transition transform hover:scale-105">
+                Back to Employee Dashboard
             </a>
         </div>
     </form>
