@@ -15,8 +15,10 @@
         <div class="flex items-center justify-between w-full">
             <!-- Left-aligned Filters -->
             <div class="flex">
-                <input type="text" wire:model="search" placeholder="Search by name or id..." class="form-input border border-gray-300 rounded-l-full pl-4 pr-24 py-2" />
-
+                <div class="flex items-center border border-gray-300 rounded-l-full py-2 pl-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <input type="text" wire:model="search" placeholder="Search by name or id..." class="form-input focus:outline-none w-64" />
+                </div>
                 <select wire:model="department_id" class="form-select border border-gray-300 px-6 py-2">
                     <option value="">All Departments</option>
                     @foreach($departments as $department)
@@ -24,21 +26,21 @@
                     @endforeach
                 </select>
 
-                <select wire:model="position_id" class="form-select border border-gray-300 px-6 py-2">
+                <select wire:model="position_id" class="form-select border border-gray-300 px-6 py-2 ">
                     <option value="">All Positions</option>
                     @foreach($positions as $position)
                         <option value="{{ $position->id }}">{{ $position->title }}</option>
                     @endforeach
                 </select>
 
-                <select wire:model="status" class="form-select border border-gray-300 rounded-r-full px-6 py-2">
+                <select wire:model="status" class="form-select border border-gray-300 px-6 py-2">
                     <option value="">All Statuses</option>
                     <option value="active">Active</option>
                     <option value="inactive">Inactive</option>
                     <option value="on leave">On Leave</option>
                     <option value="terminated">Terminated</option>
                 </select>
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold ml-4 px-10 py-2 rounded-full transition transform hover:scale-105 shadow-lg">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-10 py-2 rounded-r-full transition shadow-lg">
                     Search
                 </button>
             </div>
