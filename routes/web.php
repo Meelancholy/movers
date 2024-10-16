@@ -59,8 +59,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit/{id}', [CompensationController::class, 'editEmployee'])->name('edit');
         Route::put('/update/{id}', [CompensationController::class, 'updateEmployee'])->name('update');
         Route::get('/view/{id}', [CompensationController::class, 'viewEmployee'])->name('view');
-        Route::delete('/deduction/{id}', [CompensationController::class, 'deleteDeduction'])->name('deduction.delete');
-        Route::delete('/bonus/{id}', [CompensationController::class, 'deleteBonus'])->name('bonus.delete');
+        Route::delete('/deduction/delete/{id}', [CompensationController::class, 'deleteDeduction'])->name('deleteDeduction');
+        Route::delete('/bonus/delete/{id}', [CompensationController::class, 'deleteBonus'])->name('deleteBonus');
     });
 
     Route::group(['prefix' => 'payroll', 'as' => 'payroll.'], function () {

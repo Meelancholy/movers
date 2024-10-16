@@ -8,12 +8,14 @@
         @csrf
         @method('PUT')
 
+        <!-- Employee Info -->
         <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
             <h3 class="text-xl font-semibold text-gray-800">{{ $employee->last_name }}, {{ $employee->first_name }}</h3>
             <p class="text-gray-600"><strong>Employee ID:</strong> {{ $employee->id }}</p>
             <p class="text-gray-600"><strong>Email:</strong> {{ $employee->email }}</p>
         </div>
 
+        <!-- Social Benefits -->
         <div class="bg-white rounded-lg shadow-md p-5 mb-6">
             <h2 class="text-lg font-semibold mb-4">Social Benefits</h2>
             <div class="flex flex-col space-y-4">
@@ -32,12 +34,7 @@
             </div>
         </div>
 
-
-
-
-
-
-
+        <!-- Deductions and Bonuses -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Deductions -->
             <div class="bg-orange-100 shadow-lg rounded-lg p-6">
@@ -62,7 +59,7 @@
                                         <input type="hidden" name="deductions[{{ $deduction->id }}][deduction_name]" value="{{ $deduction->deduction_name }}">
                                     </td>
                                     <td class="border px-4 py-2">
-                                        <button type="button" class="text-red-600 hover:underline" onclick="openModal('deduction', {{ $deduction->id }})">Delete</button>
+                                        <button type="button" class="text-red-600 hover:underline" onclick="openDeleteModal('deduction', {{ $deduction->id }})">Delete</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -94,7 +91,7 @@
                                         <input type="hidden" name="bonuses[{{ $bonus->id }}][bonus_name]" value="{{ $bonus->bonus_name }}">
                                     </td>
                                     <td class="border px-4 py-2">
-                                        <button type="button" class="text-red-600 hover:underline" onclick="openModal('bonus', {{ $bonus->id }})">Delete</button>
+                                        <button type="button" class="text-red-600 hover:underline" onclick="openDeleteModal('bonus', {{ $bonus->id }})">Delete</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -104,10 +101,53 @@
             </div>
         </div>
 
+        <!-- Buttons -->
         <div class="mt-8 flex space-x-4">
             <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-200">Update Compensation</button>
             <a href="{{ route('compensation.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-200">Cancel</a>
         </div>
     </form>
 </div>
+
+<!-- Delete Modal -->
+<div id="deleteModal" class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-50 z-50">
+    <div class="bg-white rounded-lg p-6 w-96 shadow-lg">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Confirm Deletion</h2>
+        <p class="text-gray-600 mb-6">Are you sure you want to delete this <span id="deleteItemType"></span>?</p>
+
+        <div class="flex justify-end space-x-4">
+            <button id="cancelDelete" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-200">Cancel</button>
+
+            <form id="deleteForm" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-200">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openDeleteModal(itemType, itemId) {
+        // Set the action URL for the delete form
+        const deleteForm = document.getElementById('deleteForm');
+        if (itemType === 'deduction') {
+            deleteForm.action = `/compensation/deduction/delete/${itemId}`;
+        } else if (itemType === 'bonus') {
+            deleteForm.action = `/compensation/bonus/delete/${itemId}`;
+        }
+
+        // Set the text for the modal
+        document.getElementById('deleteItemType').textContent = itemType;
+
+        // Show the modal
+        document.getElementById('deleteModal').style.display = 'flex';
+    }
+
+    // Cancel button
+    document.getElementById('cancelDelete').addEventListener('click', function() {
+        document.getElementById('deleteModal').style.display = 'none';
+    });
+</script>
+
 @endsection

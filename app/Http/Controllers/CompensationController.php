@@ -227,19 +227,39 @@ class CompensationController extends Controller
         return redirect()->route('compensation.index')->with('success', 'Employee updated successfully.');
     }
 
+    /**
+     * Delete a deduction.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function deleteDeduction($id)
     {
+        // Find the deduction by its ID or throw a 404 if not found
         $deduction = Deduction::findOrFail($id);
+
+        // Delete the deduction
         $deduction->delete();
 
+        // Redirect back with a success message
         return redirect()->back()->with('success', 'Deduction deleted successfully.');
     }
 
+    /**
+     * Delete a bonus.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function deleteBonus($id)
     {
+        // Find the bonus by its ID or throw a 404 if not found
         $bonus = Bonus::findOrFail($id);
+
+        // Delete the bonus
         $bonus->delete();
 
+        // Redirect back with a success message
         return redirect()->back()->with('success', 'Bonus deleted successfully.');
     }
 
