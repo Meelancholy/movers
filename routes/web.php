@@ -71,8 +71,6 @@ Route::middleware('auth')->group(function () {
     });
 
 });
-Route::get('/data', [App\Http\Controllers\DataController::class, 'index']);
-
 
 require __DIR__.'/auth.php';
 
