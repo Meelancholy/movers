@@ -102,9 +102,14 @@
         </div>
 
         <!-- Buttons -->
-        <div class="mt-8 flex space-x-4">
-            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-200">Update Compensation</button>
-            <a href="{{ route('compensation.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-200">Cancel</a>
+        <div class="flex justify-end space-x-4 mt-6">
+            <!-- Submit Button -->
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full shadow-lg transition transform hover:scale-105">
+                Update Employee
+            </button>
+            <a href="{{ route('compensation.index') }}" class="bg-gray-300 hover:bg-gray-4   00 text-gray-800 px-8 py-3 rounded-full transition transform hover:scale-105">
+                Back to Compensation and Benefits
+            </a>
         </div>
     </form>
 </div>

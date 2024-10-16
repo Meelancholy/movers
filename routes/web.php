@@ -48,7 +48,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/position/{id}', [PositionController::class, 'destroy'])->name('position.destroy');
     });
 
-    Route::prefix('compensation')->name('compensation.')->group(function () {
+    Route::prefix('compensationbenefits')->name('compensation.')->group(function () {
         Route::get('/', [CompensationController::class, 'index'])->name('index');
         Route::get('/create-contribution', [CompensationController::class, 'createContribution'])->name('create_contribution');
         Route::post('/store-contribution', [CompensationController::class, 'storeContribution'])->name('store_contribution');
