@@ -53,19 +53,18 @@ test('email verification status is unchanged when the email address is unchanged
 test('user can delete their account', function () {
     $user = User::factory()->create();
 
-    // Log the user in
     $response = $this
-        ->actingAs($user) // Ensure the user is authenticated
+        ->actingAs($user)
         ->delete('/profile', [
-            'password' => 'password', // Ensure this is the correct password
+            'password' => 'password',
         ]);
 
     $response
         ->assertSessionHasNoErrors()
-        ->assertRedirect('/'); // Check redirection to the correct route
+        ->assertRedirect('/');
 
-    $this->assertGuest(); // Assert that the user is logged out
-    $this->assertNull($user->fresh()); // Ensure the user is deleted
+    $this->assertGuest();
+    $this->assertNull($user->fresh());
 });
 
 test('correct password must be provided to delete account', function () {

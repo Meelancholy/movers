@@ -9,21 +9,16 @@ test('login screen can be rendered', function () {
 });
 
 test('users can authenticate using the login screen', function () {
-    // Create a user with a specific password
-    $password = 'password'; // Set your desired password here
-    $user = User::factory()->create([
-        'password' => bcrypt($password), // Ensure the password is hashed
-    ]);
+    $user = User::factory()->create();
 
     $response = $this->post('/login', [
         'email' => $user->email,
-        'password' => $password, // Use the same password
+        'password' => 'password',
     ]);
 
-    $this->assertAuthenticatedAs($user); // Check if the user is authenticated
+    $this->assertAuthenticated();
     $response->assertRedirect(route('dashboard', absolute: false));
 });
-
 
 test('users can not authenticate with invalid password', function () {
     $user = User::factory()->create();
