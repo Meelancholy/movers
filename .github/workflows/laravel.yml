@@ -29,24 +29,26 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y mysql-server
         sudo service mysql start
-        # Wait for MySQL to be fully up and running
-        sleep 5
-        # Create the database and user with proper permissions
+        # Create the database and set up user privileges
         sudo mysql -e "CREATE DATABASE IF NOT EXISTS movers;"
-        sudo mysql -e "CREATE USER 'root'@'localhost' IDENTIFIED BY 'password';"
+        sudo mysql -e "CREATE USER 'root'@'localhost' IDENTIFIED BY '';"
         sudo mysql -e "GRANT ALL PRIVILEGES ON movers.* TO 'root'@'localhost';"
         sudo mysql -e "FLUSH PRIVILEGES;"
     - name: Run Migrations
       env:
         DB_CONNECTION: mysql
+        DB_HOST: 127.0.0.1
+        DB_PORT: 3306
         DB_DATABASE: movers
         DB_USERNAME: root
-        DB_PASSWORD: password
+        DB_PASSWORD: ""
       run: php artisan migrate
     - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest
       env:
         DB_CONNECTION: mysql
+        DB_HOST: 127.0.0.1
+        DB_PORT: 3306
         DB_DATABASE: movers
         DB_USERNAME: root
-        DB_PASSWORD: password
+        DB_PASSWORD: ""
       run: php artisan test
