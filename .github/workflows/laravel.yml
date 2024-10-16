@@ -29,7 +29,9 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y mysql-server
         sudo service mysql start
-        # Create a user and set a password for the root user
+        # Wait for MySQL to be fully up and running
+        sleep 5
+        # Create the database and user with proper permissions
         sudo mysql -e "CREATE DATABASE IF NOT EXISTS movers;"
         sudo mysql -e "CREATE USER 'root'@'localhost' IDENTIFIED BY 'password';"
         sudo mysql -e "GRANT ALL PRIVILEGES ON movers.* TO 'root'@'localhost';"
