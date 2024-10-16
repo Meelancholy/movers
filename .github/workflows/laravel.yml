@@ -26,10 +26,14 @@ jobs:
       run: chmod -R 777 storage bootstrap/cache
     - name: Set up MySQL
       run: |
+        sudo apt-get update
         sudo apt-get install -y mysql-server
         sudo service mysql start
-        sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';"
+        # Create a user and set a password for the root user
         sudo mysql -e "CREATE DATABASE IF NOT EXISTS movers;"
+        sudo mysql -e "CREATE USER 'root'@'localhost' IDENTIFIED BY 'password';"
+        sudo mysql -e "GRANT ALL PRIVILEGES ON movers.* TO 'root'@'localhost';"
+        sudo mysql -e "FLUSH PRIVILEGES;"
     - name: Run Migrations
       env:
         DB_CONNECTION: mysql
