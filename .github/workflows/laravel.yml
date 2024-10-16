@@ -48,6 +48,9 @@ jobs:
     - name: Generate application key
       run: php artisan key:generate
 
+    - name: Build Resources
+      run: npm run build
+      
     - name: Wait for MySQL
       run: |
         while ! mysqladmin ping -h"127.0.0.1" --silent; do
