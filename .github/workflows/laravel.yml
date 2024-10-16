@@ -35,12 +35,23 @@ jobs:
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.2' 
+        php-version: '8.0'  # Ensure this matches your Laravel version requirements
         extensions: mbstring, mysqli, pdo_mysql
         coverage: none
 
     - name: Install Composer dependencies
       run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'  # Specify the Node.js version you want to use
+
+    - name: Install NPM dependencies
+      run: npm install
+
+    - name: Build assets
+      run: npm run build
 
     - name: Copy .env.example to .env
       run: cp .env.example .env
@@ -48,9 +59,6 @@ jobs:
     - name: Generate application key
       run: php artisan key:generate
 
-    - name: Build Resources
-      run: npm run build
-      
     - name: Wait for MySQL
       run: |
         while ! mysqladmin ping -h"127.0.0.1" --silent; do
