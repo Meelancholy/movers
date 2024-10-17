@@ -140,9 +140,14 @@
         </div>
     </div>
 
-    <div class="mt-8">
-        <a href="{{ route('compensation.edit', $employee->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition duration-200">Edit Employee</a>
-        <a href="{{ route('compensation.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-200">Back to Dashboard</a>
+
+    <div class="flex justify-end space-x-4 mt-6">
+        <a href="{{ route('compensation.edit', $employee->id) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full transition transform hover:scale-105">
+            Edit Employee
+        </a>
+        <a href="{{ route('compensation.index') }}" class="bg-gray-300 hover:bg-gray-4 text-gray-800 px-8 py-3 rounded-full transition transform hover:scale-105">
+            Back to Compensation and Benefits
+        </a>
     </div>
 </div>
 @endsection

@@ -55,11 +55,11 @@
                                 <tr class="hover:bg-orange-200">
                                     <td class="border px-4 py-2 text-gray-800">{{ $deduction->deduction_name }}</td>
                                     <td class="border px-4 py-2 text-orange-800">
-                                        <input type="number" name="deductions[{{ $deduction->id }}][amount]" value="{{ $deduction->amount }}" required class="border rounded px-2 py-1 w-24">
+                                        <input type="number" class="min-w-full rounded-full py-2" name="deductions[{{ $deduction->id }}][amount]" value="{{ $deduction->amount }}" required class="border rounded px-2 py-1 w-24">
                                         <input type="hidden" name="deductions[{{ $deduction->id }}][deduction_name]" value="{{ $deduction->deduction_name }}">
                                     </td>
                                     <td class="border px-4 py-2">
-                                        <button type="button" class="text-red-600 hover:underline" onclick="openDeleteModal('deduction', {{ $deduction->id }})">Delete</button>
+                                        <button type="button" class="text-white bg-red-500 hover:bg-red-600 py-2 px-4 rounded-full transition transform hover:scale-105" onclick="openDeleteModal('deduction', {{ $deduction->id }})">Delete</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -87,11 +87,11 @@
                                 <tr class="hover:bg-blue-200">
                                     <td class="border px-4 py-2 text-gray-800">{{ $bonus->bonus_name }}</td>
                                     <td class="border px-4 py-2 text-blue-800">
-                                        <input type="number" name="bonuses[{{ $bonus->id }}][amount]" value="{{ $bonus->amount }}" required class="border rounded px-2 py-1 w-24">
+                                        <input class="min-w-full rounded-full py-2" type="number" name="bonuses[{{ $bonus->id }}][amount]" value="{{ $bonus->amount }}" required class="border rounded px-2 py-1 w-24">
                                         <input type="hidden" name="bonuses[{{ $bonus->id }}][bonus_name]" value="{{ $bonus->bonus_name }}">
                                     </td>
                                     <td class="border px-4 py-2">
-                                        <button type="button" class="text-red-600 hover:underline" onclick="openDeleteModal('bonus', {{ $bonus->id }})">Delete</button>
+                                        <button type="button" class="text-white bg-red-500 hover:bg-red-600 py-2 px-4 rounded-full transition transform hover:scale-105" onclick="openDeleteModal('bonus', {{ $bonus->id }})">Delete</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -107,7 +107,7 @@
             <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full shadow-lg transition transform hover:scale-105">
                 Update Employee
             </button>
-            <a href="{{ route('compensation.index') }}" class="bg-gray-300 hover:bg-gray-4   00 text-gray-800 px-8 py-3 rounded-full transition transform hover:scale-105">
+            <a href="{{ route('compensation.index') }}" class="bg-gray-300 hover:bg-gray-4 text-gray-800 px-8 py-3 rounded-full transition transform hover:scale-105">
                 Back to Compensation and Benefits
             </a>
         </div>

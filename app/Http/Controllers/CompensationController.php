@@ -3,13 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
-use App\Models\Contribution;
+use App\Services\ContributionService;
 use App\Models\Deduction;
 use App\Models\Bonus;
 use Illuminate\Http\Request;
 
 class CompensationController extends Controller
 {
+    protected $contributionService;
+
+    public function __construct(ContributionService $contributionService)
+    {
+        $this->contributionService = $contributionService;
+    }
     // Display all employees with their contributions, deductions, and bonuses
     public function index()
     {
@@ -267,73 +273,13 @@ class CompensationController extends Controller
     public function viewEmployee($id)
     {
         $employee = Employee::with('position', 'contributions')->findOrFail($id);
-        // Check if the employee has a position and retrieve the base salary, otherwise set to 0
-        $salary = $employee->position ? $employee->position->base_salary : 0;
-        // Initialize contribution variables
-        $philhealth_employee_share = 0;
-        $philhealth_employer_share = 0;
-        $sssContribution = ['employee_share' => 0, 'employer_share' => 0];
-        $pagibig_employee_share = 0;
-        $pagibig_employer_share = 0;
+        $contributions = $this->contributionService->calculateContributions($employee);
 
-        $philhealthContribution = $employee->contributions->firstWhere('philhealth', 1);
-        $sssContributionData = $employee->contributions->firstWhere('sss', 1);
-        $pagibigContribution = $employee->contributions->firstWhere('pagibig', 1);
-
-        // PhilHealth Calculation
-        if ($philhealthContribution && $philhealthContribution->philhealth == 1) {
-            if ($salary >= 10000) {
-                $philhealth_total = min($salary * 0.05, 5000);
-                $philhealth_employee_share = $philhealth_total / 2;
-                $philhealth_employer_share = $philhealth_total / 2;
-            } else {
-                $philhealth_employee_share = 0;
-                $philhealth_employer_share = 0;
-            }
-        }
-
-        if ($sssContributionData && $sssContributionData->sss == 1) {
-            if ($salary < 4000) {
-                $sss_employee_share = 0;
-                $sss_employer_share = 0;
-            } elseif ($salary <= 30000) {
-                $sss_employee_share = $salary * 0.095;
-                $sss_employer_share = $salary * 0.045;
-            } else {
-                $sss_employee_share = 30000 * 0.095;
-                $sss_employer_share = 30000 * 0.045;
-            }
-
-            $total_sss_contribution = $sss_employee_share + $sss_employer_share;
-
-            $sssContribution = [
-                'employee_share' => $sss_employee_share,
-                'employer_share' => $sss_employer_share,
-                'total_contribution' => $total_sss_contribution,
-            ];
-        } else {
-            $sssContribution = [
-                'employee_share' => 0,
-                'employer_share' => 0,
-                'total_contribution' => 0,
-            ];
-        }
-        // Pag-IBIG Calculation
-        if ($pagibigContribution && $pagibigContribution->pagibig == 1) {
-            $monthly_compensation = min($salary, 5000);
-            if ($monthly_compensation <= 1500) {
-                $pagibig_employee_share = $monthly_compensation * 0.01;
-                $pagibig_employer_share = $monthly_compensation * 0.02;
-            } elseif ($monthly_compensation <= 5000) {
-                $pagibig_employee_share = $monthly_compensation * 0.02;
-                $pagibig_employer_share = $monthly_compensation * 0.02;
-            } else {
-                $pagibig_employee_share = 5000 * 0.02;
-                $pagibig_employer_share = 5000 * 0.02;
-            }
-        }
-        // Pass all variables to the view
-        return view('hr1.compensation.view_employee', compact('employee', 'salary', 'sssContribution', 'philhealth_employee_share', 'philhealth_employer_share', 'pagibig_employee_share', 'pagibig_employer_share'));
+        // Pass contributions along with the employee data to the view
+        return view('hr1.compensation.view_employee', array_merge([
+            'employee' => $employee
+        ], $contributions));
     }
+
 
 }

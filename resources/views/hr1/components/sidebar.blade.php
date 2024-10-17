@@ -78,7 +78,7 @@
                     class="pl-4 mt-2 space-y-1 overflow-hidden">
 
                     <li>
-                        <a href="{{ route('payroll.create') }}" class="flex items-center py-4 px-2 rounded-lg text-blue-500 hover:bg-blue-200 active:bg-blue-400 hover:text-blue-800">
+                        <a href="{{ route('payroll.generate') }}" class="flex items-center py-4 px-2 rounded-lg text-blue-500 hover:bg-blue-200 active:bg-blue-400 hover:text-blue-800">
                             <svg xmlns="http://www.w3.org/2000/svg"  class="mr-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
 
                             Generate Payroll

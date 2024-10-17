@@ -48,7 +48,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/position/{id}', [PositionController::class, 'destroy'])->name('position.destroy');
     });
 
-    Route::prefix('compensationbenefits')->name('compensation.')->group(function () {
+    Route::prefix('compensation-benefits')->name('compensation.')->group(function () {
         Route::get('/', [CompensationController::class, 'index'])->name('index');
         Route::get('/create-contribution', [CompensationController::class, 'createContribution'])->name('create_contribution');
         Route::post('/store-contribution', [CompensationController::class, 'storeContribution'])->name('store_contribution');
@@ -64,11 +64,16 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::group(['prefix' => 'payroll', 'as' => 'payroll.'], function () {
-        Route::get('/generate', [PayrollController::class, 'create'])->name('create');
+        // Use 'generatePayroll' for the GET request
+        Route::get('/generate', [PayrollController::class, 'generatePayroll'])->name('generate');
+        // Post request to store the payroll
         Route::post('/generate', [PayrollController::class, 'store'])->name('store');
+        // List payroll records
         Route::get('/records', [PayrollController::class, 'records'])->name('records');
+        // Show specific payroll record
         Route::get('/{id}', [PayrollController::class, 'show'])->name('show');
     });
+
 
 });
 

@@ -1,4 +1,4 @@
-<div class="container min-w-full bg-white p-6 rounded-lg shadow-md">
+<div class="container min-w-full bg-white p-6 rounded-lg shadow-md md:p-12">
     <div class="flex justify-between items-center mb-8">
         <h1 class="text-3xl font-bold text-gray-800">Employee List</h1>
         <a href="{{ route('employee.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-full transition transform hover:scale-105 shadow-lg text-center">
@@ -48,8 +48,8 @@
     </form>
 
     <!-- Employee Table -->
-    <div class="overflow-x-auto rounded-lg shadow-lg mb-8">
-        <table class="min-w-full bg-white border-collapse table-auto">
+    <div class="overflow-x-auto rounded-lg shadow-lg mb-8 md:overflow-x-visible">
+        <table class="min-w-full bg-white border-collapse table-auto md:w-full">
             <thead class="bg-blue-100 text-gray-800">
                 <tr>
                     <th class="p-4 text-left">Id</th>
@@ -98,7 +98,7 @@
     </div>
 
     <!-- Pagination -->
-    <div class="mt-6">
+    <div class="mt-6 flex justify-center">
         {{ $employees->links() }}
     </div>
 </div>

@@ -47,7 +47,6 @@ class EmployeeList extends Component
         if ($this->status) {
             $employees->where('status', $this->status);
         }
-            $this->resetPage();
         $employees = $employees->paginate(10);
         $departments = Department::all();
         $positions = Position::all();
