@@ -6,6 +6,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\CompensationController;
 use App\Http\Controllers\PayrollController;
+
 use Illuminate\Support\Facades\Route;
 
 
@@ -63,16 +64,13 @@ Route::middleware('auth')->group(function () {
         Route::delete('/bonus/delete/{id}', [CompensationController::class, 'deleteBonus'])->name('deleteBonus');
     });
 
-    Route::group(['prefix' => 'payroll', 'as' => 'payroll.'], function () {
-        // Use 'generatePayroll' for the GET request
+    Route::prefix('payroll')->name('payroll.')->group(function () {
         Route::get('/generate', [PayrollController::class, 'generatePayroll'])->name('generate');
-        // Post request to store the payroll
         Route::post('/generate', [PayrollController::class, 'store'])->name('store');
-        // List payroll records
         Route::get('/records', [PayrollController::class, 'records'])->name('records');
-        // Show specific payroll record
-        Route::get('/{id}', [PayrollController::class, 'show'])->name('show');
     });
+
+
 
 
 });

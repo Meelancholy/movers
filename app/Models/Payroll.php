@@ -9,15 +9,21 @@ class Payroll extends Model
 {
     use HasFactory;
 
+    // Define the table name
+    protected $table = 'payrolls';
+
+    // Define the fillable attributes
     protected $fillable = [
         'employee_id',
         'salary',
-        'bonus',
-        'deductions',
-        'benefits',
-        'net_pay',
+        'gross_salary',
+        'withholdings',
+        'net_salary',
     ];
 
+    /**
+     * Get the employee associated with the payroll.
+     */
     public function employee()
     {
         return $this->belongsTo(Employee::class);
