@@ -25,7 +25,7 @@
                     <th class="px-3 sm:px-6 py-4 text-left text-xs sm:text-sm font-bold text-gray-700 uppercase tracking-wider">Employee</th>
                     <th class="px-3 sm:px-6 py-4 text-left text-xs sm:text-sm font-bold text-gray-700 uppercase tracking-wider">Social Benefits</th>
                     <th class="px-3 sm:px-6 py-4 text-left text-xs sm:text-sm font-bold text-gray-700 uppercase tracking-wider">Total Deductions</th>
-                    <th class="px-3 sm:px-6 py-4 text-left text-xs sm:text-sm font-bold text-gray-700 uppercase tracking-wider">Total Compensation Enhancements</th>
+                    <th class="px-3 sm:px-6 py-4 text-left text-xs sm:text-sm font-bold text-gray-700 uppercase tracking-wider">Total Incentives</th>
                     <th class="px-3 sm:px-6 py-4 text-left text-xs sm:text-sm font-bold text-gray-700 uppercase tracking-wider flex justify-center">Actions</th>
                 </tr>
             </thead>

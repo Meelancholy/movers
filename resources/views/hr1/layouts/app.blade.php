@@ -16,7 +16,7 @@
         <x-hr1-navbar />
         <x-breadcrumbs />
         <!-- Main Content -->
-        <main :class="open ? 'ml-72' : 'ml-0'" class="flex-1 pt-6 px-4 transition-transform duration-300 ease-in-out">
+        <main :class="open ? 'ml-72' : 'ml-0'" class="flex-1 p-6 transition-transform duration-300 ease-in-out">
             @yield('content')
         </main>
     </div>

@@ -16,8 +16,6 @@ class CreateBonusesTable extends Migration
             $table->string('bonus_name');
             $table->decimal('amount', 10, 2);
             $table->integer('frequency')->nullable(); // Use integer type for frequency
-            $table->boolean('processed')->default(false); // New field for tracking processing status
-            $table->date('date_processed')->nullable();
             $table->timestamps();
         });
     }

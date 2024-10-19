@@ -14,8 +14,6 @@ class CreateDeductionsTable extends Migration
             $table->string('deduction_name');
             $table->decimal('amount', 10, 2);
             $table->string('frequency')->nullable();
-            $table->boolean('processed')->default(false); // New field for tracking processing status
-            $table->date('date_processed')->nullable(); // New field for processing date
             $table->timestamps();
         });
     }

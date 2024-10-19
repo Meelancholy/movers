@@ -20,12 +20,21 @@ class Payroll extends Model
         'withholdings',
         'net_salary',
     ];
-
-    /**
-     * Get the employee associated with the payroll.
-     */
     public function employee()
     {
         return $this->belongsTo(Employee::class);
+    }
+    public function bonuses()
+    {
+        return $this->belongsToMany(Bonus::class, 'payroll_bonus')
+                    ->withPivot('amount')
+                    ->withTimestamps();
+    }
+
+    public function deductions()
+    {
+        return $this->belongsToMany(Deduction::class, 'payroll_deduction')
+                    ->withPivot('amount')
+                    ->withTimestamps();
     }
 }

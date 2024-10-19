@@ -3,19 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
-use App\Services\ContributionService;
-use App\Models\Bonus;
-use App\Models\Deduction;
 use App\Models\Payroll;
+use App\Livewire\GeneratePayroll;
+use App\Models\DeductionHistory;
+use App\Models\BonusHistory;
 use Illuminate\Http\Request;
 
 class PayrollController extends Controller
 {
-    protected $contributionService;
-
-    public function __construct(ContributionService $contributionService)
+    public function show($employeeId)
     {
-        $this->contributionService = $contributionService;
+        $employee = Employee::with('contributions', 'bonuses', 'deductions')->findOrFail($employeeId);
+        $payrollData = (new GeneratePayroll)->calculateContributions($employee);
+
+        return view('hr1.payroll.show', compact('payrollData', 'employee'));
     }
 
     public function generatePayroll()
@@ -23,103 +24,76 @@ class PayrollController extends Controller
         return view('hr1.payroll.generate'); // This should load the Livewire component
     }
 
-    public function store(Request $request)
+    public function finalizePayroll($employeeId)
     {
-        // Validate the incoming request
-        $request->validate([
-            'employee_id' => 'required|exists:employees,id',
-            // Add any other validation rules here if necessary
-        ]);
+        // Fetch employee with contributions, bonuses, and deductions
+        $employee = Employee::with(['contributions', 'bonuses', 'deductions'])->findOrFail($employeeId);
 
-        // Get the employee ID from the request
-        $employeeId = $request->input('employee_id');
+        // Instantiate the payroll component to calculate contributions
+        $payrollComponent = new GeneratePayroll();
+        $payrollData = $payrollComponent->calculateContributions($employee);
 
-        // Find the employee by their ID
-        $employee = Employee::with('position', 'contributions')->findOrFail($employeeId);
-
-        // Use ContributionService to calculate salary and contributions
-        $contributions = $this->contributionService->calculateContributions($employee);
-
-        // Get bonuses and deductions for the employee
-        $bonuses = Bonus::where('employee_id', $employeeId)->get();
-        $deductions = Deduction::where('employee_id', $employeeId)->get();
-
-        // Sum up total bonus and deductions
-        $totalBonus = $bonuses->sum('amount');
-        $totalDeduction = $deductions->sum('amount');
-
-        // Calculate gross salary by adding base salary and total bonus
-        $grossSalary = $contributions['salary'] + $totalBonus;
-        $salary = $contributions['salary'];
-
-        // Calculate total withholdings
-        $withholdings = $contributions['sssContribution']['employee_share'] +
-                        $contributions['philhealth_employee_share'] +
-                        $contributions['pagibig_employee_share'] +
-                        $totalDeduction +
-                        $contributions['tax'];
-
-        // Calculate the net salary after deductions
-        $netSalary = $grossSalary - $withholdings;
-
-        // Store a new payroll record in the database (allow multiple records per employee)
-        Payroll::create([
+        // Create the payroll record
+        $payroll = Payroll::create([
             'employee_id' => $employeeId,
-            'salary' => $salary,
-            'gross_salary' => $grossSalary,
-            'withholdings' => $withholdings,
-            'net_salary' => $netSalary,
+            'salary' => $payrollData['baseSalary'],
+            'gross_salary' => $payrollData['grossSalary'],
+            'withholdings' => $payrollData['withholdings'],
+            'net_salary' => $payrollData['netSalary'],
         ]);
 
-        // Decrease the frequency of bonuses and deductions
-        $this->updateBonusAndDeductionFrequency($bonuses, $deductions);
+        // Process bonuses
+        foreach ($employee->bonuses as $bonus) {
+            // Insert bonus history
+            BonusHistory::create([
+                'employee_id' => $employeeId,
+                'payroll_id' => $payroll->id,
+                'description' => $bonus->bonus_name,
+                'amount' => $bonus->amount,
+            ]);
 
-        // Redirect back with success message
-        return redirect()->back()->with('success', 'Payroll generated successfully for ' . $employee->first_name . ' ' . $employee->last_name);
-    }
-
-    protected function updateBonusAndDeductionFrequency($bonuses, $deductions)
-    {
-        // Update frequency for bonuses
-        foreach ($bonuses as $bonus) {
+            // Decrement frequency if greater than 0
             if ($bonus->frequency > 0) {
                 $bonus->frequency--;
-
-                // Delete bonus if frequency becomes zero
                 if ($bonus->frequency == 0) {
-                    $bonus->delete();
+                    $bonus->delete(); // Delete if frequency is 0
                 } else {
-                    $bonus->save();
+                    $bonus->save(); // Save updated frequency
                 }
             }
         }
 
-        // Update frequency for deductions
-        foreach ($deductions as $deduction) {
+        // Process deductions
+        foreach ($employee->deductions as $deduction) {
+            // Insert deduction history
+            DeductionHistory::create([
+                'employee_id' => $employeeId,
+                'payroll_id' => $payroll->id,
+                'description' => $deduction->deduction_name,
+                'amount' => $deduction->amount,
+            ]);
+
+            // Decrement frequency if greater than 0
             if ($deduction->frequency > 0) {
                 $deduction->frequency--;
-
-                // Delete deduction if frequency becomes zero
                 if ($deduction->frequency == 0) {
-                    $deduction->delete();
+                    $deduction->delete(); // Delete if frequency is 0
                 } else {
-                    $deduction->save();
+                    $deduction->save(); // Save updated frequency
                 }
             }
         }
+
+        // Redirect after successful payroll finalization
+        return redirect()->route('payroll.generate')->with('success', 'Payroll finalized successfully!');
     }
 
-    public function records(Request $request)
-    {
-        $payrolls = Payroll::with('employee')
-            ->when($request->employee_name, function ($query) use ($request) {
-                $query->whereHas('employee', function ($q) use ($request) {
-                    $q->where('first_name', 'like', '%' . $request->employee_name . '%')
-                      ->orWhere('last_name', 'like', '%' . $request->employee_name . '%');
-                });
-            })
-            ->get();
 
+
+    public function records()
+    {
+        // Assuming you want to display a list of payroll records
+        $payrolls = Payroll::with('employee')->get(); // Adjust as needed
         return view('hr1.payroll.records', compact('payrolls'));
     }
 }

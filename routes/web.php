@@ -64,11 +64,16 @@ Route::middleware('auth')->group(function () {
         Route::delete('/bonus/delete/{id}', [CompensationController::class, 'deleteBonus'])->name('deleteBonus');
     });
 
+
     Route::prefix('payroll')->name('payroll.')->group(function () {
         Route::get('/generate', [PayrollController::class, 'generatePayroll'])->name('generate');
-        Route::post('/generate', [PayrollController::class, 'store'])->name('store');
         Route::get('/records', [PayrollController::class, 'records'])->name('records');
+        Route::get('/show/{employeeId}', [PayrollController::class, 'show'])->name('show');
+        Route::post('/finalize/{employeeId}', [PayrollController::class, 'finalizePayroll'])->name('finalize');
     });
+
+
+
 
 
 
