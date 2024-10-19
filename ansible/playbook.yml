@@ -1,22 +1,22 @@
 ---
 - name: Deploy Laravel Application
-  hosts: local
+  hosts: localhost  # Adjusted to 'localhost' for running locally
   tasks:
     - name: Ensure the Laravel project directory exists
       file:
-        path: ~/laravel_project  # Use a path with write permissions
+        path: ~/Movers  # Ensure this is the intended path
         state: directory
 
     - name: Copy application files
       copy:
-        src: ./laravel  # Adjust this based on your actual project structure
-        dest: ~/laravel_project
-        owner: runner  # Adjust owner if necessary
+        src: ./Movers  # Ensure this path is correct and files exist
+        dest: ~/Movers
+        owner: $USER  # Use the current user
         mode: '0755'
 
     - name: Run Laravel migrations
       command: php artisan migrate --force
       args:
-        chdir: ~/laravel_project  # Adjust path to where your project files are
+        chdir: ~/Movers  # Ensure this matches your project structure
 
     # Add additional tasks as needed
