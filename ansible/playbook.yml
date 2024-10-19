@@ -35,7 +35,7 @@
       copy:
         src: ../app  # Adjust this based on where your application files are
         dest: ~/Movers
-        owner: $USER
+        owner: "{{ ansible_env.USER }}"  # Use ansible_env to get the current user
         mode: '0755'
 
     - name: Run Laravel migrations
