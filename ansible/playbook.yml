@@ -7,38 +7,24 @@
         path: ~/Movers
         state: directory
 
-    - name: Print current working directory
-      command: pwd
-      register: pwd_output
-
-    - name: Display current directory
-      debug:
-        msg: "Current working directory: {{ pwd_output.stdout }}"
-
-    - name: List files in the current directory
-      command: ls -la
-      register: ls_output
-
-    - name: Display files
-      debug:
-        msg: "{{ ls_output.stdout }}"
-
-    - name: List files in the parent directory
-      command: ls -la ..
-      register: parent_ls_output
-
-    - name: Display files in parent directory
-      debug:
-        msg: "Files in parent directory: {{ parent_ls_output.stdout }}"
-
     - name: Copy application files
       copy:
-        src: ../app  # Adjust this based on where your application files are
+        src: ~/Movers/  # Adjust based on where your application files are
         dest: ~/Movers
-        owner: "{{ ansible_env.USER }}"  # Use ansible_env to get the current user
+        owner: "{{ ansible_env.USER }}"
         mode: '0755'
+
+    - name: Check if artisan file exists
+      stat:
+        path: ~/Movers/artisan  # Check for artisan in the destination
+      register: artisan_file
+
+    - name: Display artisan file status
+      debug:
+        msg: "Artisan file exists: {{ artisan_file.stat.exists }}"
 
     - name: Run Laravel migrations
       command: php artisan migrate --force
       args:
-        chdir: ~/Movers
+        chdir: ~/Movers  # Ensure this matches your project structure
+      when: artisan_file.stat.exists
