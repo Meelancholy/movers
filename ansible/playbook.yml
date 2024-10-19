@@ -1,10 +1,10 @@
 ---
 - name: Deploy Laravel Application
-  hosts: localhost  # Adjusted to 'localhost' for running locally
+  hosts: localhost
   tasks:
     - name: Ensure the Laravel project directory exists
       file:
-        path: ~/Movers  # Ensure this is the intended path
+        path: ~/Movers
         state: directory
 
     - name: Print current working directory
@@ -23,16 +23,22 @@
       debug:
         msg: "{{ ls_output.stdout }}"
 
+    - name: List files in the parent directory
+      command: ls -la ..
+      register: parent_ls_output
+
+    - name: Display files in parent directory
+      debug:
+        msg: "Files in parent directory: {{ parent_ls_output.stdout }}"
+
     - name: Copy application files
       copy:
-        src: ./Movers  # Ensure this path is correct and files exist
+        src: /home/runner/work/movers/movers/Movers  # Adjust based on actual location
         dest: ~/Movers
-        owner: $USER  # Use the current user
+        owner: $USER
         mode: '0755'
 
     - name: Run Laravel migrations
       command: php artisan migrate --force
       args:
-        chdir: ~/Movers  # Ensure this matches your project structure
-
-    # Add additional tasks as needed
+        chdir: ~/Movers
