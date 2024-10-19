@@ -33,7 +33,7 @@
 
     - name: Copy application files
       copy:
-        src: /home/runner/work/movers/movers/Movers  # Adjust based on actual location
+        src: ../app  # Adjust this based on where your application files are
         dest: ~/Movers
         owner: $USER
         mode: '0755'
