@@ -7,6 +7,22 @@
         path: ~/Movers  # Ensure this is the intended path
         state: directory
 
+    - name: Print current working directory
+      command: pwd
+      register: pwd_output
+
+    - name: Display current directory
+      debug:
+        msg: "Current working directory: {{ pwd_output.stdout }}"
+
+    - name: List files in the current directory
+      command: ls -la
+      register: ls_output
+
+    - name: Display files
+      debug:
+        msg: "{{ ls_output.stdout }}"
+
     - name: Copy application files
       copy:
         src: ./Movers  # Ensure this path is correct and files exist
