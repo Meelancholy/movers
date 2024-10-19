@@ -35,7 +35,7 @@ jobs:
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.2'  # Ensure this matches your Laravel version requirements
+        php-version: '8.2'
         extensions: mbstring, mysqli, pdo_mysql
         coverage: none
 
@@ -45,7 +45,7 @@ jobs:
     - name: Install Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '18'  # Specify the Node.js version you want to use
+        node-version: '18'
 
     - name: Install NPM dependencies
       run: npm install
@@ -84,3 +84,19 @@ jobs:
         DB_USERNAME: hr1_hehe
         DB_PASSWORD: wq7086DtrfP!N^Jj
       run: php artisan test
+
+    - name: Install Ansible
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ansible
+
+    - name: Run Ansible Playbook
+      run: ansible-playbook -i ansible/inventory.ini ansible/playbook.yml
+      env:
+        # Pass any environment variables needed for your Ansible playbook here
+        DB_CONNECTION: mysql
+        DB_HOST: 127.0.0.1
+        DB_PORT: 3306
+        DB_DATABASE: hr1_movers
+        DB_USERNAME: hr1_hehe
+        DB_PASSWORD: wq7086DtrfP!N^Jj

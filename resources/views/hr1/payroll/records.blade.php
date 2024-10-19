@@ -39,7 +39,7 @@
                         <td class="p-4">₱{{ number_format($payroll->net_salary, 2) }}</td>
                         <td class="p-4">{{ $payroll->created_at->format('Y-m-d H:i:s') }}</td>
                         <td class="p-4 text-center">
-                            <a href="#" class="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-600">View</a>
+                            <a href="{{ route('payroll.viewRecord', $payroll->id) }}" class="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-600">View</a>
                         </td>
                     </tr>
                 @endforeach

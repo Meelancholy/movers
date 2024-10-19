@@ -92,8 +92,27 @@ class PayrollController extends Controller
 
     public function records()
     {
-        // Assuming you want to display a list of payroll records
-        $payrolls = Payroll::with('employee')->get(); // Adjust as needed
+        $payrolls = Payroll::with('employee')->get();
         return view('hr1.payroll.records', compact('payrolls'));
+    }
+    public function viewRecord($id)
+    {
+        // Retrieve the payroll record by ID, along with the employee and bonuses
+        $payroll = Payroll::with(['employee', 'bonusHistories'])->findOrFail($id);
+
+        // Pass the payroll details and bonuses to the view
+        return view('hr1.payroll.viewrecords', compact('payroll'));
+    }
+    public function dashboard()
+    {
+        // Fetch necessary data for the dashboard
+        $totalPayrolls = Payroll::count(); // Total number of payroll records
+        $totalGrossSalary = Payroll::sum('gross_salary'); // Total gross salary
+        $totalNetSalary = Payroll::sum('net_salary'); // Total net salary
+
+        // Optionally, you can retrieve recent payrolls or other statistics
+        $recentPayrolls = Payroll::with('employee')->orderBy('created_at', 'desc')->take(5)->get();
+
+        return view('hr1.payroll.dashboard', compact('totalPayrolls', 'totalGrossSalary', 'totalNetSalary', 'recentPayrolls'));
     }
 }

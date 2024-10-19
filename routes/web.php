@@ -66,10 +66,13 @@ Route::middleware('auth')->group(function () {
 
 
     Route::prefix('payroll')->name('payroll.')->group(function () {
+        Route::get('/', [PayrollController::class, 'dashboard'])->name('dashboard');
         Route::get('/generate', [PayrollController::class, 'generatePayroll'])->name('generate');
         Route::get('/records', [PayrollController::class, 'records'])->name('records');
         Route::get('/show/{employeeId}', [PayrollController::class, 'show'])->name('show');
         Route::post('/finalize/{employeeId}', [PayrollController::class, 'finalizePayroll'])->name('finalize');
+        Route::get('//record/{id}', [PayrollController::class, 'viewRecord'])->name('viewRecord');
+
     });
 
 

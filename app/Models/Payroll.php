@@ -37,4 +37,12 @@ class Payroll extends Model
                     ->withPivot('amount')
                     ->withTimestamps();
     }
+    public function bonusHistories()
+    {
+        return $this->hasMany(BonusHistory::class);
+    }
+    public function deductionHistories()
+    {
+        return $this->hasMany(BonusHistory::class);
+    }
 }

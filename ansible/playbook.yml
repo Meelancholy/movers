@@ -1,0 +1,23 @@
+---
+- name: Deploy Laravel Application
+  hosts: localhost
+  tasks:
+    - name: Ensure the Laravel project directory exists
+      file:
+        path: /path/to/your/laravel/project
+        state: directory
+
+    - name: Copy application files
+      copy:
+        src: /path/to/your/laravel
+        dest: /path/to/your/laravel/project
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+    - name: Run Laravel migrations
+      command: php artisan migrate --force
+      args:
+        chdir: /path/to/your/laravel/project
+
+    # Add additional tasks as needed
