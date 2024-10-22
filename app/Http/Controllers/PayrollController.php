@@ -7,6 +7,7 @@ use App\Models\Payroll;
 use App\Livewire\GeneratePayroll;
 use App\Models\DeductionHistory;
 use App\Models\BonusHistory;
+use App\Livewire\Payrollrecords;
 use Illuminate\Http\Request;
 
 class PayrollController extends Controller
@@ -92,8 +93,7 @@ class PayrollController extends Controller
 
     public function records()
     {
-        $payrolls = Payroll::with('employee')->get();
-        return view('hr1.payroll.records', compact('payrolls'));
+        return view('hr1.payroll.records');
     }
     public function viewRecord($id)
     {

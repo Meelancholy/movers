@@ -64,7 +64,7 @@ class CompensationController extends Controller
             'deduction_name' => 'required|string|max:255',
             'amount' => 'required|numeric|min:1',
             'deduction_type' => 'required|string|in:one_time,recurring,recurring_indefinitely',
-            'frequency' => 'nullable|integer|min:1', // Optional frequency for recurring deductiones
+            'frequency' => 'required_if:deduction_type,recurring|nullable|integer|min:1',
         ]);
 
         // Prepare frequency based on deduction type
@@ -122,7 +122,7 @@ class CompensationController extends Controller
             'bonus_name' => 'required|string|max:255',
             'amount' => 'required|numeric|min:1',
             'bonus_type' => 'required|string|in:one_time,recurring,recurring_indefinitely',
-            'frequency' => 'nullable|integer|min:1', // Optional frequency for recurring bonuses
+            'frequency' => 'required_if:bonus_type,recurring|nullable|integer|min:1',
         ]);
 
         // Prepare frequency based on bonus type
@@ -163,6 +163,7 @@ class CompensationController extends Controller
         // Redirect to the compensation index with success message
         return redirect()->route('compensation.index')->with('success', 'Bonus added successfully.');
     }
+
 
     // Display employee for editing their contributions, deductions, and bonuses
     public function editEmployee($id)

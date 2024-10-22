@@ -1,6 +1,5 @@
 <nav class="bg-white p-4 shadow-lg flex items-center">
     <div class="flex w-full items-center">
-
         <!-- Sidebar toggle button (aligned to the left) -->
         <button :class="open ? 'translate-x-72' : 'translate-x-0'" @click="open = !open; rotate = !rotate" class="text-blue-600 hover:text-blue-800 focus:outline-none transition-transform duration-300 ease-in-out">
             <svg :class="{ 'rotate-180': rotate }" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-300 ease-in-out">
@@ -12,16 +11,28 @@
 
         <!-- Push the remaining content to the right -->
         <div class="ml-auto flex items-center space-x-4">
-
             <!-- Icons: Notifications and Messages -->
-            <div class="flex items-center space-x-4">
+            <div class="relative" x-data="{ notificationOpen: false }">
                 <!-- Notifications Icon -->
-                <button class="relative focus:outline-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                <button @click="notificationOpen = !notificationOpen" class="relative focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                    </svg>
                     <!-- Notification Badge -->
                     <span class="absolute top-0 right-0 inline-block w-2 h-2 transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full"></span>
                 </button>
 
+                <!-- Notification Dropdown -->
+                <div x-show="notificationOpen" @click.away="notificationOpen = false" class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg p-4 z-20">
+                    <h3 class="font-bold text-gray-700 mb-3">Notifications</h3>
+                    <ul class="space-y-2">
+                        <li class="text-sm text-gray-600">You have a new message from John.</li>
+                        <li class="text-sm text-gray-600">New payroll has been processed.</li>
+                        <li class="text-sm text-gray-600">Reminder: Meeting tomorrow at 10 AM.</li>
+                    </ul>
+                    <button @click="notificationOpen = false" class="text-blue-600 hover:text-blue-800 mt-4 block text-right text-sm">Close</button>
+                </div>
             </div>
 
             <!-- Right-side profile dropdown -->

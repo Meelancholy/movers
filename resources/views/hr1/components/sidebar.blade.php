@@ -78,6 +78,12 @@
                     class="pl-4 mt-2 space-y-1 overflow-hidden">
 
                     <li>
+                        <a href="{{ route('payroll.dashboard') }}" class="flex items-center py-4 px-2 rounded-lg text-blue-500 hover:bg-blue-200 active:bg-blue-400 hover:text-blue-800">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-candlestick"><path d="M9 5v4"/><rect width="4" height="6" x="7" y="9" rx="1"/><path d="M9 15v2"/><path d="M17 3v2"/><rect width="4" height="8" x="15" y="5" rx="1"/><path d="M17 13v3"/><path d="M3 3v16a2 2 0 0 0 2 2h16"/></svg>
+                            Payroll Dashboard
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('payroll.generate') }}" class="flex items-center py-4 px-2 rounded-lg text-blue-500 hover:bg-blue-200 active:bg-blue-400 hover:text-blue-800">
                             <svg xmlns="http://www.w3.org/2000/svg"  class="mr-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
 

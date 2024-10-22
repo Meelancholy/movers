@@ -11,7 +11,7 @@
         <div class="mb-6">
             <label for="search" class="block text-gray-700 font-semibold mb-2">Employee:</label>
             <div class="relative">
-                <input type="text" id="search" placeholder="Search by Name or ID" class="form-input border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out" onkeyup="filterEmployees()" autocomplete="off" required>
+                <input type="text" id="search" placeholder="Search by Name or ID" class="form-input border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out" onkeyup="filterEmployees()" autocomplete="off">
                 <ul id="employee-list" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-40 overflow-auto shadow-lg hidden opacity-0 transition-opacity duration-300 ease-in-out">
                     @if($employees->isEmpty())
                         <li class="px-4 py-2 text-gray-500">No employees found</li>
@@ -23,20 +23,29 @@
                         @endforeach
                     @endif
                 </ul>
-                <input type="hidden" name="employee_id" id="employee_id" required>
+                <input type="hidden" name="employee_id" id="employee_id">
+                @error('employee_id')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
         </div>
 
         <!-- Deduction Name -->
         <div class="mb-6">
             <label for="deduction_name" class="block text-gray-700 font-semibold mb-2">Deduction Name:</label>
-            <input type="text" name="deduction_name" id="deduction_name" class="form-input border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out" required>
+            <input type="text" name="deduction_name" id="deduction_name" class="form-input border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out">
+            @error('deduction_name')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
         </div>
 
         <!-- Amount -->
         <div class="mb-6">
             <label for="amount" class="block text-gray-700 font-semibold mb-2">Amount:</label>
-            <input type="number" name="amount" id="amount" class="form-input border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out" step="0.01" required>
+            <input type="number" name="amount" id="amount" class="form-input border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out" step="0.01">
+            @error('amount')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
 
             <div class="mt-4 space-x-2">
                 @foreach([300, 500, 1000, 2000, 5000, 10000] as $suggestedAmount)
@@ -53,14 +62,19 @@
                 <option value="recurring">Recurring</option>
                 <option value="recurring_indefinitely">Recurring Indefinitely</option>
             </select>
+            @error('deduction_type')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
         </div>
 
         <!-- Frequency Input (shown when Recurring is selected) -->
         <div class="mb-6" x-show="deductionType === 'recurring'">
             <label for="frequency" class="block text-gray-700 font-semibold mb-2">Frequency:</label>
             <input type="number" name="frequency" id="frequency" class="form-input border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out" min="1">
+            @error('frequency')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
         </div>
-
 
         <!-- Submit and Return -->
         <div class="flex justify-between">
