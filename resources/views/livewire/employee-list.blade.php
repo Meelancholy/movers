@@ -2,8 +2,8 @@
     <div x-data="{ selectedTab: 'employeeList' }" class="w-full">
         <div @keydown.right.prevent="$focus.wrap().next()" @keydown.left.prevent="$focus.wrap().previous()" class="flex gap-2 overflow-x-auto border-b border-neutral-300" role="tablist" aria-label="tab options">
             <h1 class="text-3xl font-bold text-gray-800 mr-auto">Employee Management</h1>
-            <button @click="selectedTab = 'employeeList'" :aria-selected="selectedTab === 'employeeList'" :tabindex="selectedTab === 'employeeList' ? '0' : '-1'" :class="selectedTab === 'employeeList' ? 'font-bold text-black border-b-2 border-black' : 'text-neutral-600 font-medium'" class="h-min px-4 py-2 text-sm" type="button" role="tab" aria-controls="tabpanelEmployeeList" >Employee List</button>
-            <button @click="selectedTab = 'likes'" :aria-selected="selectedTab === 'likes'" :tabindex="selectedTab === 'likes' ? '0' : '-1'" :class="selectedTab === 'likes' ? 'font-bold text-black border-b-2 border-black' : 'text-neutral-600 font-medium'" class="h-min px-4 py-2 text-sm" type="button" role="tab" aria-controls="tabpanelLikes" >Organizational Chart</button>
+            <button @click="selectedTab = 'employeeList'" :aria-selected="selectedTab === 'employeeList'" :tabindex="selectedTab === 'employeeList' ? '0' : '-1'" :class="selectedTab === 'employeeList' ? 'font-bold text-blue-500 border-b-2 border-blue-500' : 'text-neutral-600 font-medium'" class="h-min px-4 py-2 text-sm" type="button" role="tab" aria-controls="tabpanelEmployeeList" >Employee List</button>
+            <button @click="selectedTab = 'likes'" :aria-selected="selectedTab === 'likes'" :tabindex="selectedTab === 'likes' ? '0' : '-1'" :class="selectedTab === 'likes' ? 'font-bold text-blue-500 border-b-2 border-blue-500' : 'text-neutral-600 font-medium'" class="h-min px-4 py-2 text-sm" type="button" role="tab" aria-controls="tabpanelLikes" >Organizational Chart</button>
         </div>
         @if(session('success'))
             <div class="mb-5 relative w-full overflow-hidden rounded-md border border-green-500 bg-white text-neutral-600 text-black" role="alert">
@@ -25,48 +25,42 @@
                 </div>
             </div>
         @endif
-        <div class="px-2 py-4 text-neutral-600">
-            <div x-show="selectedTab === 'employeeList'" id="tabpanelEmployeeList" role="tabpanel" aria-label="employeeList">
-                <div class="flex">
-                    <!-- Filter and Search Form -->
-                    <form method="GET" class="mb-8 mr-auto" wire:submit.prevent="filterEmployees">
-                        <div class="flex items-center justify-between w-full">
-                            <!-- Left-aligned Filters -->
-                            <div class="flex">
-                                <div class="flex items-center border border-gray-300 rounded-l-full py-2 pl-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                                    <input type="text" wire:model="search" placeholder="Search by name or id..." class="form-input focus:outline-none w-auto" />
-                                </div>
-                                <select wire:model="department_id" class="form-select border border-gray-300 px-6 py-2">
-                                    <option value="">All Departments</option>
-                                    @foreach($departments as $department)
-                                        <option value="{{ $department->id }}">{{ $department->name }}</option>
-                                    @endforeach
-                                </select>
-
-                                <select wire:model="position_id" class="form-select border border-gray-300 px-6 py-2 ">
-                                    <option value="">All Positions</option>
-                                    @foreach($positions as $position)
-                                        <option value="{{ $position->id }}">{{ $position->name }}</option>
-                                    @endforeach
-                                </select>
-
-                                <select wire:model="status" class="form-select border border-gray-300 px-6 py-2">
-                                    <option value="">All Statuses</option>
-                                    <option value="active">Active</option>
-                                    <option value="inactive">Inactive</option>
-                                    <option value="on leave">On Leave</option>
-                                    <option value="terminated">Terminated</option>
-                                </select>
-                                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-10 py-2 rounded-r-full transition shadow-lg">
-                                    Search
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    @livewire('employee-create')
+        <div class="flex justify-between p-3">
+            <!-- Search -->
+            <div class="flex items-center justify-center">
+                <div class="relative flex w-full max-w-xs flex-col gap-1 text-neutral-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="absolute left-2.5 top-1/2 size-5 -translate-y-1/2 text-neutral-600/50">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                    </svg>
+                    <input type="search" class="w-full bg-neutral-100 py-2 pl-10 pr-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-75" name="search" placeholder="Search" aria-label="search"/>
                 </div>
-
+                <div x-data="{ isOpened: false, openedWithKeyboard: false }" @keydown.esc.window="isOpened = false, openedWithKeyboard = false" class="relative">
+                    <!-- Toggle Button -->
+                    <button type="button" @click="isOpened = ! isOpened" @keydown.space.prevent="openedWithKeyboard = true" @keydown.enter.prevent="openedWithKeyboard = true" @keydown.down.prevent="openedWithKeyboard = true" class="inline-flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-none bg-neutral-100 px-4 py-2 text-sm font-medium tracking-wide transition hover:opacity-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-800'" :aria-expanded="isOpened || openedWithKeyboard" aria-haspopup="true">
+                        Filter
+                        <svg aria-hidden="true" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-4 w-4 rotate-0">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
+                        </svg>
+                    </button>
+                    <!-- Dropdown Menu -->
+                    <div x-cloak x-show="isOpened || openedWithKeyboard" x-transition x-trap="openedWithKeyboard" @click.outside="isOpened = false, openedWithKeyboard = false" @keydown.down.prevent="$focus.wrap().next()" @keydown.up.prevent="$focus.wrap().previous()" class="absolute top-11 flex w-full min-w-[12rem] flex-col divide-y divide-neutral-300 overflow-hidden rounded-none bg-neutral-100" role="menu">
+                        <div class="flex flex-col py-1.5">
+                            <a href="#" class="bg-neutral-100 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none" role="menuitem">Dashboard</a>
+                            <a href="#" class="bg-neutral-100 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none" role="menuitem">Messages</a>
+                            <a href="#" class="bg-neutral-100 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none" role="menuitem">Favorites</a>
+                        </div>
+                        <div class="flex flex-col py-1.5">
+                            <a href="#" class="bg-neutral-100 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none" role="menuitem">Profile</a>
+                            <a href="#" class="bg-neutral-100 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none" role="menuitem">Settings</a>
+                        </div>
+                        <div class="flex flex-col py-1.5">
+                            <a href="#" class="bg-neutral-100 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none" role="menuitem">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @livewire('employee-create')
+        </div>
                 <!-- Employee Table -->
                 <div x-data="{ modalIsOpen: false, selectedEmployeeId: null }" class="overflow-x-auto rounded-lg shadow-lg mb-8 md:overflow-x-visible">
                     <table class="min-w-full bg-white border-collapse table-auto md:w-full">
@@ -163,14 +157,9 @@
                     </div>
 
                 </div>
-                <!-- Pagination -->
-                <div class="mt-6 flex justify-center">
-                    {{ $employees->links() }}
-                </div>
             </div>
             <div x-show="selectedTab === 'likes'" id="tabpanelLikes" role="tabpanel" aria-label="likes">
 
             </div>
-        </div>
     </div>
 </div>

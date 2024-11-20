@@ -23,7 +23,7 @@ class EmployeeDashboardController extends Controller
 
         // Fetch departments with employee count
         $totalDepartments = Department::count();
-        $departments = Department::with(['positions', 'employees'])->get();
+        $departments = Department::withCount(['positions', 'employees'])->get();
 
         // Fetch positions with employee count
         $totalPositions = Position::count();
