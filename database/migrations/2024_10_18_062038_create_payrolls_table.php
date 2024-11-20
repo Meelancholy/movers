@@ -10,10 +10,10 @@ class CreatePayrollsTable extends Migration
         Schema::create('payrolls', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
-            $table->decimal('salary', 10, 2);
-            $table->decimal('gross_salary', 10, 2);
-            $table->decimal('withholdings', 10, 2);
-            $table->decimal('net_salary', 10, 2);
+            $table->bigInteger('salary');
+            $table->bigInteger('gross_salary');
+            $table->bigInteger('withholdings');
+            $table->bigInteger('net_salary');
             $table->timestamps();
         });
     }

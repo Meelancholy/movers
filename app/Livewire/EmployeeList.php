@@ -16,12 +16,18 @@ class EmployeeList extends Component
     public $department_id = '';
     public $position_id = '';
     public $status = '';
-
     public function filterEmployees()
     {
         // This method can be used to apply filtering logic
         $this->resetPage(); // Resets the pagination to the first page
     }
+    public $chartData = [
+        'series' => [
+            ['name' => 'Sales', 'data' => [30, 40, 35, 50, 49, 60, 70, 91]],
+            ['name' => 'Revenue', 'data' => [23, 22, 18, 34, 45, 56, 67, 78]]
+        ],
+        'categories' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug']
+    ];
 
     public function render()
     {
@@ -50,7 +56,6 @@ class EmployeeList extends Component
         $employees = $employees->paginate(10);
         $departments = Department::all();
         $positions = Position::all();
-
         return view('livewire.employee-list', compact('employees', 'departments', 'positions'));
     }
 }

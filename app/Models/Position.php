@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Position extends Model
 {
-    protected $fillable = ['title', 'department_id', 'base_salary'];
+    protected $fillable = ['name', 'department_id', 'base_salary'];
 
     public function employees()
     {

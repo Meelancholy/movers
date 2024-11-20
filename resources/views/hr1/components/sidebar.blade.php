@@ -1,130 +1,169 @@
-<div class="sidebar">
-    <aside x-data="{ open: $parent.open }" :class="open ? 'translate-x-0' : '-translate-x-full'"
-        class="p-1 w-72 bg-white font-bold text-sm min-h-full border-2 text-blue-500 fixed transform transition-transform duration-300 ease-in-out max-h-screen overflow-y-auto">
-
-        <button @click="open = false" class="absolute top-4 right-4 md:hidden">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+<nav x-cloak class="fixed left-0 z-30 flex h-svh w-72 shrink-0 flex-col border-r border-neutral-300 bg-white p-4 transition-transform duration-300 md:w-72 md:translate-x-0 md:relative" x-bind:class="sidebarIsOpen ? 'translate-x-0' : '-translate-x-72'" aria-label="sidebar navigation">
+    <!-- logo  -->
+    <a href="{{route('dashboard')}}">
+        <img class="p-3" src="{{ asset('images/logo.png') }}" alt="Logo">
+    </a>
+    <hr class="divider p-2">
+    <!-- sidebar links  -->
+    <div class="flex flex-col gap-2 overflow-y-auto pb-6">
+        <a
+            @if(request()->routeIs('dashboard'))
+                class="flex items-center rounded-md gap-2 px-2 py-3 text-sm font-medium border border-blue-500 bg-blue-600 text-white cursor-not-allowed hover:text-blue-900 hover:bg-blue-600/5"
+                href="javascript:void(0);"
+                aria-disabled="true"
+            @else
+                class="flex items-center rounded-md gap-2 px-2 py-3 text-sm font-medium text-neutral-600 underline-offset-2 hover:bg-blue-600/5 hover:text-blue-900 focus-visible:underline focus:outline-none"
+                href="{{ route('dashboard') }}"
+            @endif>
+            <svg fill="currentColor" viewBox="-2.4 -2.4 28.80 28.80" class="size-5 shrink-0" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="9" height="11" rx="2"></rect>
+                <rect x="13" y="2" width="9" height="7" rx="2"></rect>
+                <rect x="2" y="15" width="9" height="7" rx="2"></rect>
+                <rect x="13" y="11" width="9" height="11" rx="2"></rect>
             </svg>
-        </button>
-
-        <a href="{{route('dashboard')}}">
-            <img class="p-6" src="{{ asset('images/logo.png') }}" alt="Logo">
+            <span>Dashboard</span>
         </a>
 
+        @if(request()->routeIs('employee.dashboard') || request()->routeIs('payroll.dashboard'))
+            <div x-data="{ isExpanded: true }" class="flex flex-col">
+        @else
+            <div x-data="{ isExpanded: false }" class="flex flex-col">
+        @endif
+        <button type="button" x-on:click="isExpanded = ! isExpanded" id="user-management-btn" aria-controls="user-management" x-bind:aria-expanded="isExpanded ? 'true' : 'false'" class="flex items-center justify-between rounded-md gap-2 px-2 py-3 text-sm font-medium underline-offset-2 focus:outline-none focus-visible:underline" x-bind:class="isExpanded ? 'text-neutral-900 bg-blue-600/10' :  'text-neutral-600 hover:bg-blue-600/5 hover:text-blue-900'">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5 shrink-0" aria-hidden="true">
+                <path d="M15.5 2A1.5 1.5 0 0 0 14 3.5v13a1.5 1.5 0 0 0 1.5 1.5h1a1.5 1.5 0 0 0 1.5-1.5v-13A1.5 1.5 0 0 0 16.5 2h-1ZM9.5 6A1.5 1.5 0 0 0 8 7.5v9A1.5 1.5 0 0 0 9.5 18h1a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 10.5 6h-1ZM3.5 10A1.5 1.5 0 0 0 2 11.5v5A1.5 1.5 0 0 0 3.5 18h1A1.5 1.5 0 0 0 6 16.5v-5A1.5 1.5 0 0 0 4.5 10h-1Z"/>
+            </svg>
+            <span class="mr-auto text-left">Overviews</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5 transition-transform rotate-0 shrink-0" x-bind:class="isExpanded ? 'rotate-180' : 'rotate-0'" aria-hidden="true">
+                <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+            </svg>
+        </button>
+        <ul
+            x-cloak
+            x-collapse
+            x-show="isExpanded"
+            aria-labelledby="user-management-btn"
+            id="user-management"
+        >
+            <!-- Employee Overview Link -->
+            <li class="px-1 py-0.5 first:mt-2">
+                <a
+                    href="{{ route('employee.dashboard') }}"
+                    class="flex items-center gap-2 px-2 py-3 text-sm font-medium
+                        text-neutral-600 hover:text-blue-900 hover:bg-blue-600/5
+                        focus:outline-none focus-visible:underline underline-offset-2
+                        rounded-md
+                        {{ request()->routeIs('employee.dashboard') ? 'border border-blue-500 bg-blue-600 text-white cursor-not-allowed' : '' }}"
+                    @if(request()->routeIs('employee.dashboard'))
+                        aria-disabled="true"
+                        tabindex="-1"
+                        onclick="event.preventDefault();"
 
-        <ul class="text-l">
-            <li>
-                <a href="{{route('dashboard')}}" class="flex items-center px-2 rounded-lg text-blue-500 hover:bg-blue-200 active:bg-blue-400 hover:text-blue-800 cursor-pointer py-4">
-                    <svg xmlns="http://www.w3.org/2000/svg"  class="mr-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <rect width="7" height="9" x="3" y="3" rx="1"/>
-                        <rect width="7" height="5" x="14" y="3" rx="1"/>
-                        <rect width="7" height="9" x="14" y="12" rx="1"/>
-                        <rect width="7" height="5" x="3" y="16" rx="1"/>
-                    </svg>
-                    Dashboard
-                </a>
-            </li>
-            <li class="text-gray-400 text-sm pt-5">
-                Services
-            </li>
-            <!-- HR Management Menu -->
-            <li x-data="{ open: false }">
-                <a @click="open = !open" class="flex items-center justify-between py-4 px-2 rounded-lg text-blue-500 hover:bg-blue-200 active:bg-blue-400 hover:text-blue-800 cursor-pointer">
-                    <span class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="15" r="3"/><circle cx="9" cy="7" r="4"/><path d="M10 15H6a4 4 0 0 0-4 4v2"/><path d="m21.7 16.4-.9-.3"/><path d="m15.2 13.9-.9-.3"/><path d="m16.6 18.7.3-.9"/><path d="m19.1 12.2.3-.9"/><path d="m19.6 18.7-.4-1"/><path d="m16.8 12.3-.4-1"/><path d="m14.3 16.6 1-.4"/><path d="m20.7 13.8 1-.4"/></svg>
-
-                        Employee Management
-                    </span>
-                    <svg class="w-5 h-5 transition-transform duration-300" :class="{ '-rotate-90': !open }" fill="none" stroke="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </a>
-                <ul x-show="open" x-transition:enter="transition-all ease-in-out duration-300 transform"
-                    x-transition:enter-start="max-h-0 opacity-0"
-                    x-transition:enter-end="max-h-full opacity-100"
-                    x-transition:leave="transition-all ease-in-out duration-300 transform"
-                    x-transition:leave-start="max-h-full opacity-100"
-                    x-transition:leave-end="max-h-0 opacity-0"
-                    class="pl-4 mt-2 space-y-1 overflow-hidden">
-                    <li><a href="{{ route('employee.dashboard') }}" class="flex items-center py-4 px-2 rounded-lg text-blue-500 hover:bg-blue-200 active:bg-blue-400 hover:text-blue-800">
-                        <svg xmlns="http://www.w3.org/2000/svg"  class="mr-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 2v2"/><path d="M7 22v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"/><path d="M8 2v2"/><circle cx="12" cy="11" r="3"/><rect x="3" y="4" width="18" height="18" rx="2"/></svg>
-                        Employee Dashboard</a></li>
-                    <li><a href="{{ route('employee.list') }}" class="flex items-center py-4 px-2 rounded-lg text-blue-500 hover:bg-blue-200 active:bg-blue-400 hover:text-blue-800">
-                        <svg xmlns="http://www.w3.org/2000/svg"  class="mr-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/></svg>
-
-                        Employee List</a></li>
-                </ul>
-            </li>
-            <!-- Payroll Menu -->
-            <li x-data="{ open: false }">
-                <a @click="open = !open" class="flex items-center justify-between py-4 px-2 rounded-lg text-blue-500 hover:bg-blue-200 active:bg-blue-400 hover:text-blue-800 cursor-pointer">
-                    <span class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg"  class="mr-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
-                        <!-- Vertical Divider -->
-
-                        Payroll
-                    </span>
-                    <svg class="w-5 h-5 transition-transform duration-300" :class="{ '-rotate-90': !open }" fill="none" stroke="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </a>
-                <ul x-show="open" x-transition:enter="transition-all ease-in-out duration-300 transform"
-                    x-transition:enter-start="max-h-0 opacity-0"
-                    x-transition:enter-end="max-h-full opacity-100"
-                    x-transition:leave="transition-all ease-in-out duration-300 transform"
-                    x-transition:leave-start="max-h-full opacity-100"
-                    x-transition:leave-end="max-h-0 opacity-0"
-                    class="pl-4 mt-2 space-y-1 overflow-hidden">
-
-                    <li>
-                        <a href="{{ route('payroll.dashboard') }}" class="flex items-center py-4 px-2 rounded-lg text-blue-500 hover:bg-blue-200 active:bg-blue-400 hover:text-blue-800">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-candlestick"><path d="M9 5v4"/><rect width="4" height="6" x="7" y="9" rx="1"/><path d="M9 15v2"/><path d="M17 3v2"/><rect width="4" height="8" x="15" y="5" rx="1"/><path d="M17 13v3"/><path d="M3 3v16a2 2 0 0 0 2 2h16"/></svg>
-                            Payroll Dashboard
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('payroll.generate') }}" class="flex items-center py-4 px-2 rounded-lg text-blue-500 hover:bg-blue-200 active:bg-blue-400 hover:text-blue-800">
-                            <svg xmlns="http://www.w3.org/2000/svg"  class="mr-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
-
-                            Generate Payroll
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="{{route('payroll.records')}}" class="flex items-center py-4 px-2 rounded-lg text-blue-500 hover:bg-blue-200 active:bg-blue-400 hover:text-blue-800">
-                            <svg xmlns="http://www.w3.org/2000/svg"  class="mr-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M14 8H8"/><path d="M16 12H8"/><path d="M13 16H8"/></svg>
-
-                            Payroll Records
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="{{route('compensation.index')}}" class="flex items-center px-2 rounded-lg text-blue-500 hover:bg-blue-200 active:bg-blue-400 hover:text-blue-800 cursor-pointer py-4">
-                    <svg xmlns="http://www.w3.org/2000/svg"  class="mr-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
-
-                    Compensation & Benefits
+                    @endif
+                ><svg fill="currentColor" class="size-5 shrink-0" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                    <path d="M665 457q34 0 62.5-16.5t45.5-45 17-62.5-17-63-45.5-45.5T665 208t-62.5 16.5-45 45.5-16.5 63 16.5 62.5 45 45T665 457zm-332 0q34 0 62.5-16.5t45-45T457 333t-16.5-63-45-45.5T333 208t-63 16.5-45.5 45.5-16.5 63 16.5 62.5 45.5 45 63 16.5zm0 84q-54 0-119 16-73 18-118 48-54 36-54 81v104h582V686q0-45-54-81-45-30-119-48-65-16-118-16zm332 0q-16 0-40 2 82 59 82 143v104h249V686q0-45-54-81-45-30-118-48-65-16-119-16z"></path></g></svg>
+                    Employee Overview
                 </a>
             </li>
 
-            <li class="text-gray-400 text-sm pt-4">
-                User Support
-            </li>
-            <li>
-                <a href="{{route('profile.edit')}}" class="flex items-center px-2 rounded-lg text-blue-500 hover:bg-blue-200 active:bg-blue-400 hover:text-blue-800 cursor-pointer py-4">
-                    <svg xmlns="http://www.w3.org/2000/svg"  class="mr-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
-
-                    Settings
-                </a>
-            </li>
-            <li>
-                <a href="#" class="flex items-center px-2 rounded-lg text-blue-500 hover:bg-blue-200 active:bg-blue-400 hover:text-blue-800 cursor-pointer py-4">
-                    <svg xmlns="http://www.w3.org/2000/svg"  class="mr-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/><circle cx="12" cy="12" r="4"/></svg>
-
-                    Help
+            <!-- Payroll Overview Link -->
+            <li class="px-1 py-0.5 first:mt-2">
+                <a
+                    href="{{ route('payroll.dashboard') }}"
+                    class="flex items-center gap-2 px-2 py-3 text-sm font-medium
+                        text-neutral-600 hover:text-blue-900 hover:bg-blue-600/5
+                        focus:outline-none focus-visible:underline underline-offset-2
+                        rounded-md
+                        {{ request()->routeIs('payroll.dashboard') ? 'border border-blue-500 bg-blue-600 text-white cursor-not-allowed' : '' }}"
+                    @if(request()->routeIs('payroll.dashboard'))
+                        aria-disabled="true"
+                        tabindex="-1"
+                        onclick="event.preventDefault();"
+                    @endif
+                ><svg fill="currentColor" class="size-5 shrink-0" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g data-name="2. Coin" id="_2._Coin"> <path d="M22,9h-.19A2.83,2.83,0,0,0,22,8V6a3,3,0,0,0-3-3H3A3,3,0,0,0,0,6V8a3,3,0,0,0,2.22,2.88A3,3,0,0,0,2,12v2a3,3,0,0,0,.22,1.12A3,3,0,0,0,0,18v2a3,3,0,0,0,2.22,2.88A3,3,0,0,0,2,24v2a3,3,0,0,0,3,3H22A10,10,0,0,0,22,9Zm-9.16,6H5a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H16A10,10,0,0,0,12.84,15ZM2,6A1,1,0,0,1,3,5H19a1,1,0,0,1,1,1V8a1,1,0,0,1-1,1H3A1,1,0,0,1,2,8ZM2,18a1,1,0,0,1,1-1h9.2a10.1,10.1,0,0,0,0,4H3a1,1,0,0,1-1-1Zm3,9a1,1,0,0,1-1-1V24a1,1,0,0,1,1-1h7.84A10,10,0,0,0,16,27Zm17,0a8,8,0,1,1,8-8A8,8,0,0,1,22,27Z"></path> <path d="M22,16h2a1,1,0,0,0,0-2H23a1,1,0,0,0-2,0v.18A3,3,0,0,0,22,20a1,1,0,0,1,0,2H20a1,1,0,0,0,0,2h1a1,1,0,0,0,2,0v-.18A3,3,0,0,0,22,18a1,1,0,0,1,0-2Z"></path> </g> </g></svg>
+                    Payroll Overview
                 </a>
             </li>
         </ul>
-    </aside>
-</div>
+    </div>
+    <hr class="divider p-2">
+    <h6 class="text-xs font-bold text-neutral-700">Management</h6>
+        <a
+            @if(request()->routeIs('employee.list'))
+                class="flex items-center rounded-md gap-2 px-2 py-3 text-sm font-medium border border-blue-500 bg-blue-600 text-white cursor-not-allowed hover:text-blue-900 hover:bg-blue-600/5"
+                href="javascript:void(0);"
+                aria-disabled="true"
+            @else
+                class="flex items-center rounded-md gap-2 px-2 py-3 text-sm font-medium text-neutral-600 underline-offset-2 hover:bg-blue-600/5 hover:text-blue-900 focus-visible:underline focus:outline-none"
+                href="{{ route('employee.list') }}"
+            @endif>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5 shrink-0" aria-hidden="true">
+                <path fill-rule="evenodd" d="M1 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H4a3 3 0 0 1-3-3V6Zm4 1.5a2 2 0 1 1 4 0 2 2 0 0 1-4 0Zm2 3a4 4 0 0 0-3.665 2.395.75.75 0 0 0 .416 1A8.98 8.98 0 0 0 7 14.5a8.98 8.98 0 0 0 3.249-.604.75.75 0 0 0 .416-1.001A4.001 4.001 0 0 0 7 10.5Zm5-3.75a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Zm0 6.5a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Zm.75-4a.75.75 0 0 0 0 1.5h2.5a.75.75 0 0 0 0-1.5h-2.5Z" clip-rule="evenodd"/>
+            </svg>
+            <span>Employees</span>
+        </a>
+        <a
+            @if(request()->routeIs('payroll.generate'))
+                class="flex items-center rounded-md gap-2 px-2 py-3 text-sm font-medium border border-blue-500 bg-blue-600 text-white cursor-not-allowed hover:text-blue-900 hover:bg-blue-600/5"
+                href="javascript:void(0);"
+                aria-disabled="true"
+            @else
+                class="flex items-center rounded-md gap-2 px-2 py-3 text-sm font-medium text-neutral-600 underline-offset-2 hover:bg-blue-600/5 hover:text-blue-900 focus-visible:underline focus:outline-none"
+                href="{{ route('payroll.generate') }}"
+            @endif>
+            <svg fill="currentColor" class="size-5 shrink-0" height="200px" width="200px" version="1.1" id="Money" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 128 128" xml:space="preserve">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="_x34__5_"> <path d="M17.6,41.9v53h102.3v-53H17.6z M37.5,87.6h-12v-12h2.4v9.6h9.6V87.6z M37.5,51.5h-9.6v9.6h-2.4v-12h12V51.5z M68.8,87.6 c-10.6,0-19.3-8.6-19.3-19.3c0-10.6,8.6-19.3,19.3-19.3s19.3,8.6,19.3,19.3C88.1,79,79.4,87.6,68.8,87.6z M113.3,87.6h-12v-2.4h9.6 v-9.6h2.4V87.6z M113.3,61.1h-2.4v-9.6h-9.6v-2.4h12V61.1z"></path> </g> <path id="_x33__9_" d="M76.7,73c0-3.2-1.9-5.4-6-6.9c-3-1.1-4.3-1.8-4.3-3.2c0-1.2,1.1-2.2,3.3-2.2c2.3,0,3.9,0.6,4.8,1.1l1.2-4.2 c-1-0.5-2.3-0.9-4-1.1v-3.4h-5.9v4c-2.9,1.1-4.6,3.4-4.6,6.2c0,3.3,2.5,5.5,6.3,6.8c2.8,1,3.9,1.8,3.9,3.2c0,1.5-1.3,2.5-3.6,2.5 c-2.2,0-4.4-0.7-5.8-1.4l-1.1,4.3c1,0.6,2.9,1.1,4.9,1.3v3.3h5.9v-3.8C75.1,78.4,76.7,75.9,76.7,73z"></path> <polygon id="_x32__17_" points="115.1,37 12.8,37 12.8,89.4 15.2,89.4 15.2,39.5 115.1,39.5 "></polygon> <polygon id="_x31__6_" points="110.3,32.2 8,32.2 8,84.6 10.4,84.6 10.4,34.6 110.3,34.6 "></polygon> </g></svg>
+            <span>Generate Payroll</span>
+        </a>
+        <a
+            @if(request()->routeIs('payroll.records'))
+                class="flex items-center rounded-md gap-2 px-2 py-3 text-sm font-medium border border-blue-500 bg-blue-600 text-white cursor-not-allowed hover:text-blue-900 hover:bg-blue-600/5"
+                href="javascript:void(0);"
+                aria-disabled="true"
+            @else
+                class="flex items-center rounded-md gap-2 px-2 py-3 text-sm font-medium text-neutral-600 underline-offset-2 hover:bg-blue-600/5 hover:text-blue-900 focus-visible:underline focus:outline-none"
+                href="{{ route('payroll.records') }}"
+            @endif>
+            <svg fill="currentColor" class="size-5 shrink-0" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                <g data-name="18. Bill" id="_18._Bill"> <path d="M16,7h2a1,1,0,0,0,0-2H17a1,1,0,0,0-2,0v.18A3,3,0,0,0,16,11a1,1,0,0,1,0,2H14a1,1,0,0,0,0,2h1a1,1,0,0,0,2,0v-.18A3,3,0,0,0,16,9a1,1,0,0,1,0-2Z"></path> <path d="M31,24H28V3a3,3,0,0,0-3-3H3A3,3,0,0,0,0,3V9a1,1,0,0,0,1,1H4V29a3,3,0,0,0,3,3H29a3,3,0,0,0,3-3V25A1,1,0,0,0,31,24ZM2,3A1,1,0,0,1,4,3V8H2ZM8,25v4a1,1,0,0,1-.31.71A.93.93,0,0,1,7,30a1,1,0,0,1-1-1V3a3,3,0,0,0-.18-1H25a1,1,0,0,1,1,1V24H9A1,1,0,0,0,8,25Zm22,4a1,1,0,0,1-.31.71A.93.93,0,0,1,29,30H9.83A3,3,0,0,0,10,29V26H30Z"></path> <path d="M17,19H9a1,1,0,0,0,0,2h8a1,1,0,0,0,0-2Z"></path> <path d="M23,19H21a1,1,0,0,0,0,2h2a1,1,0,0,0,0-2Z"></path> </g> </g></svg>
+            <span>Payroll Records</span>
+        </a>
+        <a
+            @if(request()->routeIs('compensation.index'))
+                class="flex items-center rounded-md gap-2 px-2 py-3 text-sm font-medium border border-blue-500 bg-blue-600 text-white cursor-not-allowed hover:text-blue-900 hover:bg-blue-600/5"
+                href="javascript:void(0);"
+                aria-disabled="true"
+            @else
+                class="flex items-center rounded-md gap-2 px-2 py-3 text-sm font-medium text-neutral-600 underline-offset-2 hover:bg-blue-600/5 hover:text-blue-900 focus-visible:underline focus:outline-none"
+                href="{{ route('compensation.index') }}"
+            @endif>
+            <svg fill="currentColor" class="size-5 shrink-0" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g data-name="10. Growth" id="_10._Growth"> <path d="M17,12.05V11h3a5,5,0,0,0,5-5V4a1,1,0,0,0-1-1H20a4.92,4.92,0,0,0-3,1V1a1,1,0,0,0-2,0V2a4.92,4.92,0,0,0-3-1H8A1,1,0,0,0,7,2V4a5,5,0,0,0,5,5h3v3.05a10,10,0,1,0,2,0Zm3-7h3V6a3,3,0,0,1-3,3H17V8A3,3,0,0,1,20,5ZM9,4V3h3a3,3,0,0,1,3,3V7H12A3,3,0,0,1,9,4Zm7,26a8,8,0,1,1,8-8A8,8,0,0,1,16,30Z"></path> <path d="M16,19h2a1,1,0,0,0,0-2H17a1,1,0,0,0-2,0v.18A3,3,0,0,0,16,23a1,1,0,0,1,0,2H14a1,1,0,0,0,0,2h1a1,1,0,0,0,2,0v-.18A3,3,0,0,0,16,21a1,1,0,0,1,0-2Z"></path> <path d="M5.71,7.29l-2-2a1,1,0,0,0-1.42,0l-2,2A1,1,0,0,0,1.71,8.71L2,8.41V11a1,1,0,0,0,2,0V8.41l.29.3a1,1,0,0,0,1.42,0A1,1,0,0,0,5.71,7.29Z"></path> <path d="M31.71,13.29l-2-2a1,1,0,0,0-1.42,0l-2,2a1,1,0,0,0,1.42,1.42l.29-.3V17a1,1,0,0,0,2,0V14.41l.29.3a1,1,0,0,0,1.42,0A1,1,0,0,0,31.71,13.29Z"></path> </g> </g>
+            </svg>
+            <span>Compensation & Benefits</span>
+        </a>
+        <hr class="divider p-2">
+    </div>
+    <div class="mt-auto">
+        <h6 class="text-xs font-bold text-neutral-700">Support</h6>
+        <a href="#" class="flex items-center rounded-md gap-2 px-2 py-3 text-sm font-medium text-neutral-600 underline-offset-2 hover:bg-blue-600/5 hover:text-blue-900 focus-visible:underline focus:outline-none">
+            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-5 shrink-0"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="currentColor" d="M512 64a448 448 0 1 1 0 896 448 448 0 0 1 0-896zm23.744 191.488c-52.096 0-92.928 14.784-123.2 44.352-30.976 29.568-45.76 70.4-45.76 122.496h80.256c0-29.568 5.632-52.8 17.6-68.992 13.376-19.712 35.2-28.864 66.176-28.864 23.936 0 42.944 6.336 56.32 19.712 12.672 13.376 19.712 31.68 19.712 54.912 0 17.6-6.336 34.496-19.008 49.984l-8.448 9.856c-45.76 40.832-73.216 70.4-82.368 89.408-9.856 19.008-14.08 42.24-14.08 68.992v9.856h80.96v-9.856c0-16.896 3.52-31.68 10.56-45.76 6.336-12.672 15.488-24.64 28.16-35.2 33.792-29.568 54.208-48.576 60.544-55.616 16.896-22.528 26.048-51.392 26.048-86.592 0-42.944-14.08-76.736-42.24-101.376-28.16-25.344-65.472-37.312-111.232-37.312zm-12.672 406.208a54.272 54.272 0 0 0-38.72 14.784 49.408 49.408 0 0 0-15.488 38.016c0 15.488 4.928 28.16 15.488 38.016A54.848 54.848 0 0 0 523.072 768c15.488 0 28.16-4.928 38.72-14.784a51.52 51.52 0 0 0 16.192-38.72 51.968 51.968 0 0 0-15.488-38.016 55.936 55.936 0 0 0-39.424-14.784z"></path></g></svg>
+            <span>About</span>
+        </a>
+        <a href="{{route('profile.edit')}}" class="flex items-center rounded-md gap-2 px-2 py-3 text-sm font-medium text-neutral-600 underline-offset-2 hover:bg-blue-600/5 hover:text-blue-900 focus-visible:underline focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5 shrink-0" aria-hidden="true">
+                <path fill-rule="evenodd" d="M7.84 1.804A1 1 0 0 1 8.82 1h2.36a1 1 0 0 1 .98.804l.331 1.652a6.993 6.993 0 0 1 1.929 1.115l1.598-.54a1 1 0 0 1 1.186.447l1.18 2.044a1 1 0 0 1-.205 1.251l-1.267 1.113a7.047 7.047 0 0 1 0 2.228l1.267 1.113a1 1 0 0 1 .206 1.25l-1.18 2.045a1 1 0 0 1-1.187.447l-1.598-.54a6.993 6.993 0 0 1-1.929 1.115l-.33 1.652a1 1 0 0 1-.98.804H8.82a1 1 0 0 1-.98-.804l-.331-1.652a6.993 6.993 0 0 1-1.929-1.115l-1.598.54a1 1 0 0 1-1.186-.447l-1.18-2.044a1 1 0 0 1 .205-1.251l1.267-1.114a7.05 7.05 0 0 1 0-2.227L1.821 7.773a1 1 0 0 1-.206-1.25l1.18-2.045a1 1 0 0 1 1.187-.447l1.598.54A6.992 6.992 0 0 1 7.51 3.456l.33-1.652ZM10 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clip-rule="evenodd"/>
+            </svg>
+            <span>Settings</span>
+        </a>
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+
+            <x-dropdown-link :href="route('logout')"
+                    onclick="event.preventDefault();
+                                this.closest('form').submit();" class="flex bg-red-500 items-center border border-red-500 rounded-md gap-2 px-2 py-3 text-sm font-medium text-white underline-offset-2 hover:bg-red-600/5 hover:text-red-700 focus-visible:underline focus:outline-none">
+                {{ __('Log Out') }}
+            </x-dropdown-link>
+        </form>
+    </div>
+</nav>

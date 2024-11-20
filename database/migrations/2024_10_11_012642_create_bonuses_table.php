@@ -14,7 +14,7 @@ class CreateBonusesTable extends Migration
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
             $table->string('bonus_name');
-            $table->decimal('amount', 10, 2);
+            $table->bigInteger('amount');
             $table->integer('frequency')->nullable(); // Use integer type for frequency
             $table->timestamps();
         });

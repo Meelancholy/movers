@@ -234,12 +234,6 @@ class CompensationController extends Controller
         return redirect()->route('compensation.index')->with('success', 'Employee updated successfully.');
     }
 
-    /**
-     * Delete a deduction.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function deleteDeduction($id)
     {
         // Find the deduction by its ID or throw a 404 if not found

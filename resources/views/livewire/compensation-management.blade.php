@@ -1,4 +1,4 @@
-<div class="min-h-full mt-8 bg-white p-4 sm:p-6 rounded-lg shadow-md">
+<div class="min-h-full bg-white p-4 sm:p-6 rounded-lg shadow-md">
     <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
         <h1 class="text-2xl sm:text-4xl font-bold text-gray-800 mb-4 sm:mb-0">Compensation Management</h1>
         <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
@@ -8,6 +8,7 @@
             <a href="{{ route('compensation.create_bonus') }}" class="bg-blue-600 text-white font-semibold px-4 py-2 sm:px-5 sm:py-3 rounded-full shadow hover:bg-blue-700 transition transform hover:scale-105 duration-200 ease-in-out text-center">
                 Add Incentives
             </a>
+            @livewire('compensation-and-benefits.add-deduction-modal')
         </div>
     </div>
     <form method="GET" class="mb-8" wire:submit.prevent="searchEmployees">
@@ -25,8 +26,23 @@
         </div>
     </form>
     @if(session('success'))
-        <div class="bg-green-100 text-green-800 p-4 rounded-lg shadow-md mb-6">
-            {{ session('success') }}
+        <div class="mb-5 relative w-full overflow-hidden rounded-md border border-green-500 bg-white text-neutral-600 text-black" role="alert">
+            <div class="flex w-full items-center gap-2 bg-green-500/10 p-4">
+                <div class="bg-green-500/15 text-green-500 rounded-full p-1" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-6" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-2">
+                    <h3 class="text-sm font-semibold text-green-500">Success</h3>
+                    <p class="text-xs font-medium sm:text-sm">{{ session('success') }}</p>
+                </div>
+                <button class="ml-auto" aria-label="dismiss alert">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" stroke="#000000" fill="none" stroke-width="2.5" class="w-4 h-4 shrink-0">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
         </div>
     @endif
 

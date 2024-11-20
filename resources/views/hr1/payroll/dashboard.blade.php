@@ -5,7 +5,6 @@
 @section('content')
 <div class="bg-white rounded-xl shadow-lg p-10 container min-w-full">
     <h1 class="text-3xl font-bold text-2D3748 mb-8">Payroll Dashboard</h1>
-
     <div class="grid grid-cols-3 gap-6 mb-8">
         <!-- Total Payrolls Card -->
         <div class="bg-blue-100 p-5 rounded-lg shadow">

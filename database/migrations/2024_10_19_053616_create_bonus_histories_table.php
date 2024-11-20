@@ -13,7 +13,7 @@ class CreateBonusHistoriesTable extends Migration
             $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
             $table->foreignId('payroll_id')->constrained('payrolls')->onDelete('cascade');
             $table->string('description');
-            $table->decimal('amount', 10, 2);
+            $table->bigInteger('amount');
             $table->timestamps();
         });
     }

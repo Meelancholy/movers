@@ -10,9 +10,8 @@ class CreatePositionsTable extends Migration
     {
         Schema::create('positions', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->decimal('base_salary', 20, 2);
-            // Ensure 'department_id' is defined correctly
+            $table->string('name');
+            $table->bigInteger('base_salary');
             $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('cascade');
             $table->timestamps();
         });

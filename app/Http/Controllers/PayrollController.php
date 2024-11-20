@@ -7,8 +7,7 @@ use App\Models\Payroll;
 use App\Livewire\GeneratePayroll;
 use App\Models\DeductionHistory;
 use App\Models\BonusHistory;
-use App\Livewire\Payrollrecords;
-use Illuminate\Http\Request;
+
 
 class PayrollController extends Controller
 {

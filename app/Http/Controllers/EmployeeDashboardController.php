@@ -22,13 +22,15 @@ class EmployeeDashboardController extends Controller
         $inactiveEmployees = Employee::where('status', 'inactive')->count();
 
         // Fetch departments with employee count
-        $departments = Department::withCount('employees')->get();
+        $totalDepartments = Department::count();
+        $departments = Department::with(['positions', 'employees'])->get();
 
         // Fetch positions with employee count
+        $totalPositions = Position::count();
         $positions = Position::withCount('employees')->get();
 
         // Pass the data to the view
-        return view('hr1.employee_management.employee_dashboard', compact('totalEmployees', 'activeEmployees', 'inactiveEmployees', 'departments', 'positions'));
+        return view('hr1.employee_management.employee_dashboard', compact('totalEmployees', 'activeEmployees', 'inactiveEmployees', 'departments', 'positions','totalPositions','totalDepartments'));
     }
 
 

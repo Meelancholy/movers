@@ -12,7 +12,7 @@ class CreateDeductionsTable extends Migration
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
             $table->string('deduction_name');
-            $table->decimal('amount', 10, 2);
+            $table->bigInteger('amount');
             $table->string('frequency')->nullable();
             $table->timestamps();
         });

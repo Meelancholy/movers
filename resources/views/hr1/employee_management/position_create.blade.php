@@ -7,10 +7,10 @@
     <form action="{{ route('position.store') }}" method="POST" class="space-y-6">
         @csrf
 
-        <!-- Position Title -->
+        <!-- Position Name -->
         <div>
-            <label for="title" class="block text-lg font-semibold mb-2">Position Title</label>
-            <input type="text" name="title" id="title" required class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300">
+            <label for="name" class="block text-lg font-semibold mb-2">Position Name</label>
+            <input type="text" name="name" id="name" required class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300">
         </div>
 
         <!-- Base Salary -->

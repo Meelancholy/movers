@@ -16,7 +16,7 @@ class CreateEmployeesTable extends Migration
             $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('set null');
             $table->foreignId('position_id')->nullable()->constrained('positions')->onDelete('set null');
             $table->string('status'); // active, inactive, on leave, terminated
-            $table->string('contact')->nullable(); // If this is needed
+            $table->bigInteger('contact');
             $table->timestamps();
         });
 

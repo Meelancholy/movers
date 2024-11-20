@@ -4,23 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name', 'Movers') }}</title>
-    @livewireStyles
     @vite('resources/css/app.css')
+    @livewireStyles
 </head>
-<body x-data="{ open: false, rotate: false }" class="bg-blue-100 flex">
-    <!-- Sidebar Component -->
-    <x-hr1-sidebar />
-    <!-- Main Content Area -->
-    <div class="flex-1 flex flex-col">
-        <!-- Navbar Component -->
+<body class="bg-blue-100 flex">
+    <div x-data="{ sidebarIsOpen: false }" class="relative flex w-full flex-col md:flex-row">
+        <a class="sr-only" href="#main-content">skip to the main content</a>
+        <div x-cloak x-show="sidebarIsOpen" class="fixed inset-0 z-20 bg-neutral-950/10 backdrop-blur-sm md:hidden" aria-hidden="true" x-on:click="sidebarIsOpen = false" x-transition.opacity ></div>
+        <x-hr1-sidebar />
         <x-hr1-navbar />
-        <x-breadcrumbs />
-        <!-- Main Content -->
-        <main :class="open ? 'ml-72' : 'ml-0'" class="flex-1 p-6 transition-transform duration-300 ease-in-out">
-            @yield('content')
-        </main>
+            <!-- main content  -->
+            <div id="main-content" class="p-4">
+                <div class="overflow-y-auto">
+                    @yield('content')
+                </div>
+            </div>
+        </div>
     </div>
-    @livewireScripts
     @vite('resources/js/app.js')
+    @livewireScripts
 </body>
 </html>
