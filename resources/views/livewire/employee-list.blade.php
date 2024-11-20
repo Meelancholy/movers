@@ -61,105 +61,102 @@
             </div>
             @livewire('employee-create')
         </div>
-                <!-- Employee Table -->
-                <div x-data="{ modalIsOpen: false, selectedEmployeeId: null }" class="overflow-x-auto rounded-lg shadow-lg mb-8 md:overflow-x-visible">
-                    <table class="min-w-full bg-white border-collapse table-auto md:w-full">
-                        <thead class="bg-blue-100 text-gray-800">
+        <div x-show="selectedTab === 'employeeList'" id="tabpanelemployeeList" role="tabpanel" aria-label="employeeList">
+            <!-- Employee Table -->
+            <div x-data="{ modalIsOpen: false, selectedEmployeeId: null }" class="overflow-x-auto rounded-lg shadow-lg mb-8 md:overflow-x-visible">
+                <table class="min-w-full bg-white border-collapse table-auto md:w-full">
+                    <thead class="bg-blue-100 text-gray-800">
+                        <tr>
+                            <th class="p-4 text-left">Id</th>
+                            <th class="p-4 text-left">Name</th>
+                            <th class="p-4 text-center">Department</th>
+                            <th class="p-4 text-center">Position</th>
+                            <th class="p-4 text-center">Status</th>
+                            <th class="p-4 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if($employees->isEmpty())
                             <tr>
-                                <th class="p-4 text-left">Id</th>
-                                <th class="p-4 text-left">Name</th>
-                                <th class="p-4 text-center">Department</th>
-                                <th class="p-4 text-center">Position</th>
-                                <th class="p-4 text-center">Status</th>
-                                <th class="p-4 text-center">Actions</th>
+                                <td colspan="6" class="p-4 text-center text-gray-800">
+                                    <strong>No employees found</strong>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @if($employees->isEmpty())
-                                <tr>
-                                    <td colspan="6" class="p-4 text-center text-gray-800">
-                                        <strong>No employees found</strong>
-                                    </td>
-                                </tr>
-                            @else
-                                @foreach($employees as $employee)
-                                    <tr class="hover:bg-blue-50 transition duration-300 ease-in-out">
-                                        <td class="p-4 text-gray-800">{{ $employee->id }}</td>
-                                        <td class="p-4 text-gray-800"><strong>{{ $employee->last_name }}, {{ $employee->first_name }}</strong></td>
-                                        <td class="p-4 text-center text-gray-800">{{ $employee->department->name }}</td>
-                                        <td class="p-4 text-center text-gray-800">{{ $employee->position->name }}</td>
-                                        <td class="p-4 text-center">
-                                            {{-- Badge based on status --}}
-                                            @if($employee->status === 'active')
-                                                <span class="w-fit inline-flex overflow-hidden rounded-md border border-green-500 bg-white text-xs font-medium text-green-500">
-                                                    <span class="px-2 py-1 bg-green-500/10">Active</span>
-                                                </span>
-                                            @elseif($employee->status === 'inactive')
-                                                <span class="w-fit inline-flex overflow-hidden rounded-md border border-red-500 bg-white text-xs font-medium text-red-500">
-                                                    <span class="px-2 py-1 bg-red-500/10">Inactive</span>
-                                                </span>
-                                            @elseif($employee->status === 'on leave')
-                                                <span class="w-fit inline-flex overflow-hidden rounded-md border border-amber-500 bg-white text-xs font-medium text-amber-500">
-                                                    <span class="px-2 py-1 bg-amber-500/10">On Leave</span>
-                                                </span>
-                                            @elseif($employee->status === 'terminated')
-                                                <span class="w-fit inline-flex overflow-hidden rounded-md border border-neutral-800 bg-white text-xs font-medium text-neutral-800">
-                                                    <span class="px-2 py-1 bg-neutral-800/10">Terminated</span>
-                                                </span>
-                                            @endif
-                                        </td>
+                        @else
+                        @foreach($employees as $employee)
+                            <tr class="hover:bg-blue-50 transition duration-300 ease-in-out">
+                                <td class="p-4 text-gray-800">{{ $employee->id }}</td>
+                                <td class="p-4 text-gray-800"><strong>{{ $employee->last_name }}, {{ $employee->first_name }}</strong></td>
+                                <td class="p-4 text-center text-gray-800">{{ $employee->department->name }}</td>
+                                <td class="p-4 text-center text-gray-800">{{ $employee->position->name }}</td>
+                                <td class="p-4 text-center">
+                                    {{-- Badge based on status --}}
+                                    @if($employee->status === 'active')
+                                        <span class="w-fit inline-flex overflow-hidden rounded-md border border-green-500 bg-white text-xs font-medium text-green-500">
+                                            <span class="px-2 py-1 bg-green-500/10">Active</span>
+                                        </span>
+                                    @elseif($employee->status === 'inactive')
+                                        <span class="w-fit inline-flex overflow-hidden rounded-md border border-red-500 bg-white text-xs font-medium text-red-500">
+                                            <span class="px-2 py-1 bg-red-500/10">Inactive</span>
+                                        </span>
+                                    @elseif($employee->status === 'on leave')
+                                        <span class="w-fit inline-flex overflow-hidden rounded-md border border-amber-500 bg-white text-xs font-medium text-amber-500">
+                                            <span class="px-2 py-1 bg-amber-500/10">On Leave</span>
+                                        </span>
+                                    @elseif($employee->status === 'terminated')
+                                        <span class="w-fit inline-flex overflow-hidden rounded-md border border-neutral-800 bg-white text-xs font-medium text-neutral-800">
+                                            <span class="px-2 py-1 bg-neutral-800/10">Terminated</span>
+                                        </span>
+                                    @endif
+                                </td>
 
 
-                                        <td class="p-4 flex justify-center space-x-4">
-                                            <a href="{{ route('employee.profile', $employee->id) }}" class="bg-green-400 hover:bg-green-500 text-white px-4 py-2 rounded-full transition transform hover:scale-105 shadow-lg">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-search"><circle cx="10" cy="7" r="4"/><path d="M10.3 15H7a4 4 0 0 0-4 4v2"/><circle cx="17" cy="17" r="3"/><path d="m21 21-1.9-1.9"/></svg>
-                                            </a>
-                                            <a href="{{ route('employee.edit', $employee->id) }}" class="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-full transition transform hover:scale-105 shadow-lg">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21a8 8 0 0 1 10.821-7.487"/><path d="M21.378 16.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/><circle cx="10" cy="8" r="5"/></svg>
-                                            </a>
-                                            <form method="POST" action="{{ route('employee.delete', $employee->id) }}" class="inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="bg-red-400 hover:bg-red-500 text-white px-4 py-2 rounded-full transition transform hover:scale-105 shadow-lg">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21a8 8 0 0 1 11.873-7"/><circle cx="10" cy="8" r="5"/><path d="m17 17 5 5"/><path d="m22 17-5 5"/></svg>
-                                                </button>
-                                            </form>
-                                            <button @click="modalIsOpen = true; selectedEmployeeId = {{ $employee->id }}" class="bg-blue-400 hover:bg-blue-500 text-white px-4 py-2 rounded-full transition transform hover:scale-105 shadow-lg">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="7" r="4"/><path d="M10.3 15H7a4 4 0 0 0-4 4v2"/><circle cx="17" cy="17" r="3"/><path d="m21 21-1.9-1.9"/></svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    </table>
-                    <div x-show="modalIsOpen" x-cloak x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalIsOpen" @keydown.esc.window="modalIsOpen = false" @click.self="modalIsOpen = false" class="fixed inset-0 z-30 flex items-center justify-center bg-black/20 p-4 pb-8 backdrop-blur-md">
-                        <div x-show="modalIsOpen" x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity" x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100" class="max-w-lg w-full p-6 bg-white rounded-lg shadow-lg">
-                            <div class="flex items-center justify-between border-b pb-4 mb-4">
-                                <h3 class="text-xl font-semibold">Employee Details</h3>
-                                <button @click="modalIsOpen = false" aria-label="close modal">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" stroke="currentColor" fill="none" stroke-width="1.4" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                                    </svg>
-                                </button>
-                            </div>
-                            <!-- Modal Content: Display Employee Information -->
-                            <div x-show="selectedEmployeeId" class="space-y-4">
-                                <p><strong>Employee ID:</strong> <span x-text="selectedEmployeeId"></span></p>
-                                <!-- Optionally, fetch and display additional details for the selected employee -->
-                                <p><strong>Name:</strong> <span x-text="'Employee Name: ' + selectedEmployeeId"></span></p>
-                                <!-- You can load the employee's other details dynamically based on selectedEmployeeId -->
-                            </div>
-                            <div class="mt-4 flex justify-end space-x-4">
-                                <button @click="modalIsOpen = false" class="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded-full">Close</button>
-                            </div>
+                                <td class="p-4 flex justify-center space-x-4">
+                                    <a href="{{ route('employee.profile', $employee->id) }}" class="bg-green-400 hover:bg-green-500 text-white px-4 py-2 rounded-full transition transform hover:scale-105 shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-search"><circle cx="10" cy="7" r="4"/><path d="M10.3 15H7a4 4 0 0 0-4 4v2"/><circle cx="17" cy="17" r="3"/><path d="m21 21-1.9-1.9"/></svg>
+                                    </a>
+                                    <a href="{{ route('employee.edit', $employee->id) }}" class="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-full transition transform hover:scale-105 shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21a8 8 0 0 1 10.821-7.487"/><path d="M21.378 16.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/><circle cx="10" cy="8" r="5"/></svg>
+                                    </a>
+                                    <form method="POST" action="{{ route('employee.delete', $employee->id) }}" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="bg-red-400 hover:bg-red-500 text-white px-4 py-2 rounded-full transition transform hover:scale-105 shadow-lg">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21a8 8 0 0 1 11.873-7"/><circle cx="10" cy="8" r="5"/><path d="m17 17 5 5"/><path d="m22 17-5 5"/></svg>
+                                        </button>
+                                    </form>
+                                    <button @click="modalIsOpen = true; selectedEmployeeId = {{ $employee->id }}" class="bg-blue-400 hover:bg-blue-500 text-white px-4 py-2 rounded-full transition transform hover:scale-105 shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="7" r="4"/><path d="M10.3 15H7a4 4 0 0 0-4 4v2"/><circle cx="17" cy="17" r="3"/><path d="m21 21-1.9-1.9"/></svg>
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
+                        @endif
+                    </tbody>
+                </table>
+                <div x-show="modalIsOpen" x-cloak x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalIsOpen" @keydown.esc.window="modalIsOpen = false" @click.self="modalIsOpen = false" class="fixed inset-0 z-30 flex items-center justify-center bg-black/20 p-4 pb-8 backdrop-blur-md">
+                    <div x-show="modalIsOpen" x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity" x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100" class="max-w-lg w-full p-6 bg-white rounded-lg shadow-lg">
+                        <div class="flex items-center justify-between border-b pb-4 mb-4">
+                            <h3 class="text-xl font-semibold">Employee Details</h3>
+                            <button @click="modalIsOpen = false" aria-label="close modal">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" stroke="currentColor" fill="none" stroke-width="1.4" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <!-- Modal Content: Display Employee Information -->
+                        <div x-show="selectedEmployeeId" class="space-y-4">
+                            <p><strong>Employee ID:</strong> <span x-text="selectedEmployeeId"></span></p>
+                            <!-- Optionally, fetch and display additional details for the selected employee -->
+                            <p><strong>Name:</strong> <span x-text="'Employee Name: ' + selectedEmployeeId"></span></p>
+                            <!-- You can load the employee's other details dynamically based on selectedEmployeeId -->
+                        </div>
+                        <div class="mt-4 flex justify-end space-x-4">
+                            <button @click="modalIsOpen = false" class="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded-full">Close</button>
                         </div>
                     </div>
-
                 </div>
             </div>
-            <div x-show="selectedTab === 'likes'" id="tabpanelLikes" role="tabpanel" aria-label="likes">
-                wala lang
-            </div>
+        </div>
     </div>
 </div>
