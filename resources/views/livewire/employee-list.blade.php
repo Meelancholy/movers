@@ -159,7 +159,7 @@
                 </div>
             </div>
             <div x-show="selectedTab === 'likes'" id="tabpanelLikes" role="tabpanel" aria-label="likes">
-
+                wala lang
             </div>
     </div>
 </div>
