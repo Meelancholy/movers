@@ -72,7 +72,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/show/{employeeId}', [PayrollController::class, 'show'])->name('show');
         Route::post('/finalize/{employeeId}', [PayrollController::class, 'finalizePayroll'])->name('finalize');
         Route::get('//record/{id}', [PayrollController::class, 'viewRecord'])->name('viewRecord');
-
     });
 
 });

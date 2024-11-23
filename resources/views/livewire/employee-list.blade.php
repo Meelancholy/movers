@@ -1,10 +1,10 @@
 <div class="container min-w-full bg-white p-6 rounded-lg shadow-md md:p-12">
     <div x-data="{ selectedTab: 'employeeList' }" class="w-full">
-        <div @keydown.right.prevent="$focus.wrap().next()" @keydown.left.prevent="$focus.wrap().previous()" class="flex gap-2 overflow-x-auto border-b border-neutral-300" role="tablist" aria-label="tab options">
-            <h1 class="text-3xl font-bold text-gray-800 mr-auto">Employee Management</h1>
-            <button @click="selectedTab = 'employeeList'" :aria-selected="selectedTab === 'employeeList'" :tabindex="selectedTab === 'employeeList' ? '0' : '-1'" :class="selectedTab === 'employeeList' ? 'font-bold text-blue-500 border-b-2 border-blue-500' : 'text-neutral-600 font-medium'" class="h-min px-4 py-2 text-sm" type="button" role="tab" aria-controls="tabpanelEmployeeList" >Employee List</button>
-            <button @click="selectedTab = 'likes'" :aria-selected="selectedTab === 'likes'" :tabindex="selectedTab === 'likes' ? '0' : '-1'" :class="selectedTab === 'likes' ? 'font-bold text-blue-500 border-b-2 border-blue-500' : 'text-neutral-600 font-medium'" class="h-min px-4 py-2 text-sm" type="button" role="tab" aria-controls="tabpanelLikes" >Organizational Chart</button>
+        <div class="flex justify-between pb-3">
+            <h1 class="text-3xl font-bold  mr-auto">Employee Management</h1>
+            @livewire('employee-create')
         </div>
+
         @if(session('success'))
             <div class="mb-5 relative w-full overflow-hidden rounded-md border border-green-500 bg-white text-neutral-600 text-black" role="alert">
                 <div class="flex w-full items-center gap-2 bg-green-500/10 p-4">
@@ -25,115 +25,199 @@
                 </div>
             </div>
         @endif
-        <div class="flex justify-between p-3">
-            <!-- Search -->
-            <div class="flex items-center justify-center">
+        <div x-data="{
+            search: '',
+            modalIsOpen: false,
+            selectedEmployeeId: null,
+            currentPage: 1,
+            perPage: 10,
+            rowsPerPageOptions: [10, 20, 50, 100],
+            get totalPages() {
+                return Math.ceil(this.filteredEmployees.length / this.perPage);
+            },
+            get filteredEmployees() {
+                const query = this.search.toLowerCase();
+                return [...$refs.employees.children].filter(row => {
+                    const cells = row.querySelectorAll('td');
+                    const id = cells[0]?.textContent.trim().toLowerCase();
+                    const name = cells[1]?.textContent.trim().toLowerCase();
+                    return id.includes(query) || name.includes(query);
+                });
+            },
+            paginatedEmployees() {
+                const start = (this.currentPage - 1) * this.perPage;
+                const end = start + this.perPage;
+                return this.filteredEmployees.slice(start, end);
+            }
+        }" class="overflow-x-auto rounded-lg border md:overflow-x-visible">
+            <!-- Search Input -->
+            <div class="flex justify-between items-center p-4">
                 <div class="relative flex w-full max-w-xs flex-col gap-1 text-neutral-600">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="absolute left-2.5 top-1/2 size-5 -translate-y-1/2 text-neutral-600/50">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                     </svg>
-                    <input type="search" class="w-full bg-neutral-100 py-2 pl-10 pr-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-75" name="search" placeholder="Search" aria-label="search"/>
+                    <input
+                        type="search"
+                        x-model="search"
+                        class="w-full rounded-full bg-neutral-100 py-2 pl-10 pr-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-75"
+                        placeholder="Search by ID or Name"
+                        aria-label="search"
+                    />
                 </div>
-                <div x-data="{ isOpened: false, openedWithKeyboard: false }" @keydown.esc.window="isOpened = false, openedWithKeyboard = false" class="relative">
-                    <!-- Toggle Button -->
-                    <button type="button" @click="isOpened = ! isOpened" @keydown.space.prevent="openedWithKeyboard = true" @keydown.enter.prevent="openedWithKeyboard = true" @keydown.down.prevent="openedWithKeyboard = true" class="inline-flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-none bg-neutral-100 px-4 py-2 text-sm font-medium tracking-wide transition hover:opacity-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-800'" :aria-expanded="isOpened || openedWithKeyboard" aria-haspopup="true">
-                        Filter
-                        <svg aria-hidden="true" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-4 w-4 rotate-0">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
-                        </svg>
-                    </button>
-                    <!-- Dropdown Menu -->
-                    <div x-cloak x-show="isOpened || openedWithKeyboard" x-transition x-trap="openedWithKeyboard" @click.outside="isOpened = false, openedWithKeyboard = false" @keydown.down.prevent="$focus.wrap().next()" @keydown.up.prevent="$focus.wrap().previous()" class="absolute top-11 flex w-full min-w-[12rem] flex-col divide-y divide-neutral-300 overflow-hidden rounded-none bg-neutral-100" role="menu">
-                        <div class="flex flex-col py-1.5">
-                            <a href="#" class="bg-neutral-100 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none" role="menuitem">Dashboard</a>
-                            <a href="#" class="bg-neutral-100 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none" role="menuitem">Messages</a>
-                            <a href="#" class="bg-neutral-100 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none" role="menuitem">Favorites</a>
-                        </div>
-                        <div class="flex flex-col py-1.5">
-                            <a href="#" class="bg-neutral-100 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none" role="menuitem">Profile</a>
-                            <a href="#" class="bg-neutral-100 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none" role="menuitem">Settings</a>
-                        </div>
-                        <div class="flex flex-col py-1.5">
-                            <a href="#" class="bg-neutral-100 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none" role="menuitem">Sign Out</a>
-                        </div>
-                    </div>
+                <!-- Rows Per Page Dropdown -->
+                <div class="flex items-center gap-2">
+                    <label for="rowsPerPage" class="text-sm text-gray-600">Rows per page:</label>
+                    <select id="rowsPerPage"
+                            x-model="perPage"
+                            @change="currentPage = 1"
+                            class="border border-gray-300 rounded-md p-1 text-sm">
+                        <template x-for="option in rowsPerPageOptions" :key="option">
+                            <option :value="option" x-text="option"></option>
+                        </template>
+                    </select>
                 </div>
             </div>
-            @livewire('employee-create')
-        </div>
-        <div x-show="selectedTab === 'employeeList'" id="tabpanelemployeeList" role="tabpanel" aria-label="employeeList">
-            <!-- Employee Table -->
-            <div x-data="{ modalIsOpen: false, selectedEmployeeId: null }" class="overflow-x-auto rounded-lg shadow-lg mb-8 md:overflow-x-visible">
-                <table class="min-w-full bg-white border-collapse table-auto md:w-full">
-                    <thead class="bg-blue-100 text-gray-800">
+
+            <table class="min-w-full bg-white border table-auto md:w-full">
+                <thead class="text-gray-500 border">
+                    <tr>
+                        <th class="p-4 text-sm text-center">ID</th>
+                        <th class="text-sm text-left">NAME</th>
+                        <th class="text-sm text-center">STATUS</th>
+                        <th class="text-sm text-left">EMAIL</th>
+                        <th class="text-sm text-left">CONTACT#</th>
+                        <th class="text-sm text-left">DEPARTMENT</th>
+                        <th class="text-sm text-left">POSITION</th>
+                        <th class="text-sm text-left">HIRE DATE</th>
+                        <th class=""></th>
+                    </tr>
+                </thead>
+                <tbody x-ref="employees">
+                    @if($employees->isEmpty())
                         <tr>
-                            <th class="p-4 text-left">Id</th>
-                            <th class="p-4 text-left">Name</th>
-                            <th class="p-4 text-center">Department</th>
-                            <th class="p-4 text-center">Position</th>
-                            <th class="p-4 text-center">Status</th>
-                            <th class="p-4 text-center">Actions</th>
+                            <td colspan="6" class="p-4 text-center ">
+                                <strong>No employees found</strong>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @if($employees->isEmpty())
-                            <tr>
-                                <td colspan="6" class="p-4 text-center text-gray-800">
-                                    <strong>No employees found</strong>
-                                </td>
-                            </tr>
-                        @else
-                        @foreach($employees as $employee)
-                            <tr class="hover:bg-blue-50 transition duration-300 ease-in-out">
-                                <td class="p-4 text-gray-800">{{ $employee->id }}</td>
-                                <td class="p-4 text-gray-800"><strong>{{ $employee->last_name }}, {{ $employee->first_name }}</strong></td>
-                                <td class="p-4 text-center text-gray-800">{{ $employee->department->name }}</td>
-                                <td class="p-4 text-center text-gray-800">{{ $employee->position->name }}</td>
-                                <td class="p-4 text-center">
-                                    {{-- Badge based on status --}}
-                                    @if($employee->status === 'active')
-                                        <span class="w-fit inline-flex overflow-hidden rounded-md border border-green-500 bg-white text-xs font-medium text-green-500">
-                                            <span class="px-2 py-1 bg-green-500/10">Active</span>
-                                        </span>
-                                    @elseif($employee->status === 'inactive')
-                                        <span class="w-fit inline-flex overflow-hidden rounded-md border border-red-500 bg-white text-xs font-medium text-red-500">
-                                            <span class="px-2 py-1 bg-red-500/10">Inactive</span>
-                                        </span>
-                                    @elseif($employee->status === 'on leave')
-                                        <span class="w-fit inline-flex overflow-hidden rounded-md border border-amber-500 bg-white text-xs font-medium text-amber-500">
-                                            <span class="px-2 py-1 bg-amber-500/10">On Leave</span>
-                                        </span>
-                                    @elseif($employee->status === 'terminated')
-                                        <span class="w-fit inline-flex overflow-hidden rounded-md border border-neutral-800 bg-white text-xs font-medium text-neutral-800">
-                                            <span class="px-2 py-1 bg-neutral-800/10">Terminated</span>
-                                        </span>
-                                    @endif
-                                </td>
+                    @else
+                    @foreach($employees as $employee)
+                    <tr
+                        x-show="paginatedEmployees().includes($el)"
+                        x-transition
+                        class="hover:bg-neutral-100 transition duration-300 ease-in-out"
+                    >
+                        <td class="p-1 text-center">{{ $employee->id }}</td>
+                        <td class="">
+                            <strong>{{ $employee->last_name }}, {{ $employee->first_name }}</strong>
+                        </td>
+                        <td class="text-center">
+                            {{-- Badge based on status --}}
+                            @if($employee->status === 'active')
+                                <span class="w-fit inline-flex overflow-hidden rounded-full border border-green-500 bg-white text-xs font-medium text-green-500">
+                                    <span class="rounded-full px-4 bg-green-500/10">Active</span>
+                                </span>
+                            @elseif($employee->status === 'inactive')
+                                <span class="w-fit inline-flex overflow-hidden rounded-full border border-red-500 bg-white text-xs font-medium text-red-500">
+                                    <span class="rounded-full px-4 bg-red-500/10">Inactive</span>
+                                </span>
+                            @elseif($employee->status === 'on leave')
+                                <span class="w-fit inline-flex overflow-hidden rounded-full border border-amber-500 bg-white text-xs font-medium text-amber-500">
+                                    <span class="rounded-full px-4 bg-amber-500/10">On Leave</span>
+                                </span>
+                            @elseif($employee->status === 'terminated')
+                                <span class="w-fit inline-flex overflow-hidden rounded-full border border-neutral-800 bg-white text-xs font-medium text-neutral-800">
+                                    <span class="rounded-full px-4 bg-neutral-800/10">Terminated</span>
+                                </span>
+                            @endif
+                        </td>
+                        <td class="">{{ $employee->email }}</td>
+                        <td class="">{{ $employee->contact }}</td>
+                        <td class="text-left ">{{ $employee->department->name }}</td>
+                        <td class="text-left ">{{ $employee->position->name }}</td>
+                        <td class="">{{ $employee->created_at->format('Y-m-d') }}</td>
+                        <td class="p-1">
+                            <div x-data="{ isOpen: false, openedWithKeyboard: false }" class="relative" @keydown.esc.window="isOpen = false, openedWithKeyboard = false">
+                                <!-- Toggle Button -->
+                                <button type="button" @click="isOpen = !isOpen" class="inline-flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-full p-2 text-sm font-medium tracking-wide transition hover:bg-blue-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-800" aria-haspopup="true" @keydown.space.prevent="openedWithKeyboard = true" @keydown.enter.prevent="openedWithKeyboard = true" @keydown.down.prevent="openedWithKeyboard = true" :class="isOpen || openedWithKeyboard ? 'text-neutral-900z'" :aria-expanded="isOpen || openedWithKeyboard">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                        <path fill-rule="evenodd" d="M10.5 6a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm0 6a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm0 6a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
 
-
-                                <td class="p-4 flex justify-center space-x-4">
-                                    <a href="{{ route('employee.profile', $employee->id) }}" class="bg-green-400 hover:bg-green-500 text-white px-4 py-2 rounded-full transition transform hover:scale-105 shadow-lg">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-search"><circle cx="10" cy="7" r="4"/><path d="M10.3 15H7a4 4 0 0 0-4 4v2"/><circle cx="17" cy="17" r="3"/><path d="m21 21-1.9-1.9"/></svg>
+                                <!-- Dropdown Menu -->
+                                <div x-cloak x-show="isOpen || openedWithKeyboard" x-transition x-trap="openedWithKeyboard" @click.outside="isOpen = false, openedWithKeyboard = false" @keydown.down.prevent="$focus.wrap().next()" @keydown.up.prevent="$focus.wrap().previous()" class="absolute left-0 mt-2 w-48 bg-white border border-neutral-200 shadow-lg rounded-md z-10" role="menu">
+                                    <a href="{{ route('employee.profile', $employee->id) }}" class="block px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none">
+                                        View
                                     </a>
-                                    <a href="{{ route('employee.edit', $employee->id) }}" class="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-full transition transform hover:scale-105 shadow-lg">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21a8 8 0 0 1 10.821-7.487"/><path d="M21.378 16.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/><circle cx="10" cy="8" r="5"/></svg>
+                                    <a href="{{ route('employee.edit', $employee->id) }}" class="block px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none">
+                                        Edit
                                     </a>
-                                    <form method="POST" action="{{ route('employee.delete', $employee->id) }}" class="inline">
+                                    <form method="POST" action="{{ route('employee.delete', $employee->id) }}" class="block px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="bg-red-400 hover:bg-red-500 text-white px-4 py-2 rounded-full transition transform hover:scale-105 shadow-lg">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21a8 8 0 0 1 11.873-7"/><circle cx="10" cy="8" r="5"/><path d="m17 17 5 5"/><path d="m22 17-5 5"/></svg>
+                                        <button type="submit" class="">
+                                            Delete
                                         </button>
                                     </form>
-                                    <button @click="modalIsOpen = true; selectedEmployeeId = {{ $employee->id }}" class="bg-blue-400 hover:bg-blue-500 text-white px-4 py-2 rounded-full transition transform hover:scale-105 shadow-lg">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="7" r="4"/><path d="M10.3 15H7a4 4 0 0 0-4 4v2"/><circle cx="17" cy="17" r="3"/><path d="m21 21-1.9-1.9"/></svg>
+                                    <button @click="modalIsOpen = true; selectedEmployeeId = {{ $employee->id }}" class="block px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none">
+                                        View
                                     </button>
-                                </td>
-                            </tr>
-                        @endforeach
-                        @endif
-                    </tbody>
-                </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                    @endif
+                </tbody>
+            </table>
+
+            <!-- Pagination Controls -->
+            <nav aria-label="pagination" class="my-4">
+                <ul class="flex flex-shrink-0 justify-center items-center gap-2 text-sm font-medium">
+                    <li>
+                        <a href="#"
+                            @click.prevent="currentPage > 1 ? currentPage-- : null"
+                            class="flex items-center rounded-md p-2 bg-white border"
+                            aria-label="previous page"
+                            :class="{
+                                'text-gray-400 pointer-events-none': currentPage === 1,
+                                'text-blue-500 bg-white hover:bg-blue-300': currentPage !== 1
+                            }">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-6">
+                                <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+                            </svg>
+                            Previous
+                        </a>
+                    </li>
+                    <template x-for="page in totalPages" :key="page">
+                        <li>
+                            <a href="#"
+                            @click.prevent="currentPage = page"
+                            class="flex size-6 items-center justify-center rounded-full p-5 border"
+                            :class="page === currentPage ? 'text-gray-400 pointer-events-none' : 'text-blue-500 bg-white hover:bg-blue-300'"
+                            :aria-current="page === currentPage ? 'page' : false"
+                            :aria-label="'page ' + page">
+                                <span x-text="page"></span>
+                            </a>
+                        </li>
+                    </template>
+                    <li>
+                        <a href="#"
+                            @click.prevent="currentPage < totalPages ? currentPage++ : null"
+                            class="flex items-center rounded-md p-2 bg-white border"
+                            aria-label="next page"
+                            :class="{
+                                'text-gray-400 pointer-events-none': currentPage === totalPages,
+                                'text-blue-500 bg-white hover:bg-blue-300': currentPage !== totalPages
+                            }">
+                            Next
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-6">
+                                <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
                 <div x-show="modalIsOpen" x-cloak x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalIsOpen" @keydown.esc.window="modalIsOpen = false" @click.self="modalIsOpen = false" class="fixed inset-0 z-30 flex items-center justify-center bg-black/20 p-4 pb-8 backdrop-blur-md">
                     <div x-show="modalIsOpen" x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity" x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100" class="max-w-lg w-full p-6 bg-white rounded-lg shadow-lg">
                         <div class="flex items-center justify-between border-b pb-4 mb-4">

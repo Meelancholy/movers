@@ -12,8 +12,7 @@ class EmployeeList extends Component
     public function render()
     {
         $employees = Employee::all();
-        $departments = Department::all();
-        $positions = Position::all();
-        return view('livewire.employee-list', compact('employees', 'departments', 'positions'));
+
+        return view('livewire.employee-list', compact('employees'));
     }
 }

@@ -3,38 +3,18 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use Livewire\WithPagination;
 use App\Models\Employee;
 use App\Models\Bonus;
 use App\Models\Deduction;
 
 class GeneratePayroll extends Component
 {
-    use WithPagination;
-
-    public $search = '';
-
-    public function searchEmployees()
-    {
-        $this->resetPage(); // Reset pagination to the first page on search
-    }
-
-    public function show($employeeId)
-    {
-        return redirect()->route('payroll.show', ['employeeId' => $employeeId]);
-    }
-
     public function render()
     {
-        $employees = Employee::query()
-            ->when($this->search, function ($query) {
-                $query->where('id', 'like', '%' . $this->search . '%')
-                      ->orWhere('first_name', 'like', '%' . $this->search . '%')
-                      ->orWhere('last_name', 'like', '%' . $this->search . '%');
-            })
-            ->with(['position', 'contributions']) // Eager load the position and contributions
-            ->paginate(10);
+        // Fetch all employees with their related data
+        $employees = Employee::with(['position', 'contributions'])->get();
 
+        // Process employee payroll data
         $employeePayrollData = $employees->map(function ($employee) {
             return $this->calculateContributions($employee);
         })->filter();
@@ -87,16 +67,10 @@ class GeneratePayroll extends Component
                 $pagibig_employer_share = $monthly_compensation * 0.02;
             }
         }
-
         $taxable_income = $salary - $sssContribution['employee_share'] - $philhealth_employee_share - $pagibig_employee_share;
-
-        // Tax Calculation
         $tax = $this->calculateTax($taxable_income);
-
-        // Calculate bonus and deductions
         $bonus = Bonus::where('employee_id', $employee->id)->sum('amount');
         $deduction = Deduction::where('employee_id', $employee->id)->sum('amount');
-
         $grossSalary = $salary + $bonus;
         $withholdings = $sssContribution['employee_share'] +
                         $philhealth_employee_share +
@@ -104,7 +78,6 @@ class GeneratePayroll extends Component
                         $deduction +
                         $tax;
         $netSalary = $grossSalary - $withholdings;
-
         return [
             'id' => $employee->id,
             'name' => $employee->first_name . ' ' . $employee->last_name,
@@ -112,10 +85,10 @@ class GeneratePayroll extends Component
             'grossSalary' => $grossSalary,
             'withholdings' => $withholdings,
             'netSalary' => $netSalary,
-            'bonuses' => $bonus, // Include bonuses details
-            'deductions' => $deduction, // Include deductions details
-            'tax' => $tax, // Include tax details
-            'sssContribution' => $sssContribution, // Include SSS contribution details
+            'bonuses' => $bonus,
+            'deductions' => $deduction,
+            'tax' => $tax,
+            'sssContribution' => $sssContribution,
             'philhealth' => [
                 'employee_share' => $philhealth_employee_share,
                 'employer_share' => $philhealth_employer_share,
@@ -126,7 +99,6 @@ class GeneratePayroll extends Component
             ],
         ];
     }
-
     public function calculateTax($taxable_income)
     {
         if ($taxable_income <= 20833) {
