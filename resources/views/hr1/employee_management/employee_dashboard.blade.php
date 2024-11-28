@@ -16,16 +16,9 @@
                     <h3 class="text-sm font-semibold text-green-500">Success</h3>
                     <p class="text-xs font-medium sm:text-sm">{{ session('success') }}</p>
                 </div>
-                <button class="ml-auto" aria-label="dismiss alert">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" stroke="#000000" fill="none" stroke-width="2.5" class="w-4 h-4 shrink-0">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
             </div>
         </div>
     @endif
-
-
     <!-- Employee Stats Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         <div class="bg-blue-400 text-white p-6 rounded-xl shadow-md hover:bg-blue-300 transition duration-300 ease-in-out">
@@ -43,7 +36,7 @@
     </div>
     <!-- Quick Actions -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        @livewire('employee-create')
+        @livewire('employee-management.employee-create')
         <a href="{{ route('employee.list') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-full transition transform hover:scale-105 shadow-lg text-center">
             View All Employees
         </a>

@@ -9,8 +9,8 @@
         @method('PUT')
 
         <div class="mb-4">
-            <label for="title" class="block text-gray-700 font-semibold mb-2">Position Title</label>
-            <input type="text" name="title" id="title" value="{{ old('title', $position->title) }}" required class="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <label for="name" class="block text-gray-700 font-semibold mb-2">Position Name</label>
+            <input type="text" name="name" id="name" value="{{ old('name', $position->name) }}" required class="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
         <div class="mb-4">
@@ -33,6 +33,7 @@
         <div class="flex justify-end space-x-4 mt-6">
             <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full shadow-lg transition transform hover:scale-105">
                 Update Position
+            </button>
             <a href="{{ route('employee.dashboard') }}" class="bg-gray-300 hover:bg-gray-4 text-gray-800 px-8 py-3 rounded-full transition transform hover:scale-105">
                 Back to Employee Dashboard
             </a>

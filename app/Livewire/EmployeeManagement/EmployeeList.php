@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\EmployeeManagement;
 
 use Livewire\Component;
 use App\Models\Employee;
-use App\Models\Department;
-use App\Models\Position;
 
 class EmployeeList extends Component
 {
@@ -13,6 +11,6 @@ class EmployeeList extends Component
     {
         $employees = Employee::all();
 
-        return view('livewire.employee-list', compact('employees'));
+        return view('livewire.employee-management.employee-list', compact('employees'));
     }
 }

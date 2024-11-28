@@ -33,6 +33,9 @@
             currentPage: 1,
             perPage: 10,
             rowsPerPageOptions: [10, 20, 50, 100],
+            showContextMenu: false,
+            contextMenuPosition: { x: 0, y: 0 },
+            rightClickedEmployeeId: null,
             get totalPages() {
                 return Math.ceil(this.filteredEmployees.length / this.perPage);
             },
@@ -49,6 +52,15 @@
                 const start = (this.currentPage - 1) * this.perPage;
                 const end = start + this.perPage;
                 return this.filteredEmployees.slice(start, end);
+            },
+            openContextMenu(event, employeeId) {
+                event.preventDefault();
+                this.rightClickedEmployeeId = employeeId;
+                this.contextMenuPosition = { x: event.clientX, y: event.clientY };
+                this.showContextMenu = true;
+            },
+            closeContextMenu() {
+                this.showContextMenu = false;
             }
         }" class="overflow-x-auto rounded-lg border md:overflow-x-visible">
             <!-- Search Input -->
@@ -103,6 +115,8 @@
                     <tr
                         x-show="paginatedEmployees().includes($el)"
                         x-transition
+                        @contextmenu.prevent="openContextMenu($event, {{ $employee->id }})"
+                        @click="closeContextMenu()"
                         class="hover:bg-neutral-100 transition duration-300 ease-in-out"
                     >
                         <td class="p-3 text-center">{{ $employee->id }}</td>
@@ -124,7 +138,18 @@
                     @endif
                 </tbody>
             </table>
-
+            <div x-show="showContextMenu"
+                    x-transition
+                    @click.outside="closeContextMenu()"
+                    :style="{ top: contextMenuPosition.y + 'px', left: contextMenuPosition.x + 'px' }"
+                    class="fixed bg-white border border-gray-300 rounded shadow-lg z-50">
+                <ul class="py-1">
+                    <li>
+                        <a :href="'/payroll/show/' + rightClickedEmployeeId"
+                            class="block px-4 py-2 text-sm hover:bg-gray-100">Generate Payroll</a>
+                    </li>
+                </ul>
+            </div>
             <!-- Pagination Controls -->
             <nav aria-label="pagination" class="my-4">
                 <ul class="flex flex-shrink-0 justify-center items-center gap-2 text-sm font-medium">

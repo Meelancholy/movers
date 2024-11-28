@@ -23,7 +23,7 @@ class PositionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255|unique:positions',
+            'name' => 'required|string|max:255|unique:positions',
             'base_salary' => 'required|numeric',
             'department_id' => 'required|exists:departments,id', // Validate department ID
         ]);
@@ -42,7 +42,7 @@ class PositionController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'title' => 'required|string|max:255|unique:positions,title,'.$id,
+            'name' => 'required|string|max:255|unique:positions,name,'.$id,
             'base_salary' => 'required|numeric',
             'department_id' => 'required|exists:departments,id', // Validate department ID
         ]);

@@ -33,52 +33,6 @@ class EmployeeDashboardController extends Controller
         return view('hr1.employee_management.employee_dashboard', compact('totalEmployees', 'activeEmployees', 'inactiveEmployees', 'departments', 'positions','totalPositions','totalDepartments'));
     }
 
-
-
-
-    // Display Employee Profile/Management
-    public function profile($id)
-    {
-        // Retrieve the employee with its department and position relationships
-        $employee = Employee::with(['department', 'position'])->findOrFail($id);
-
-        // Retrieve all departments and positions
-        $departments = Department::all();
-        $positions = Position::all();
-
-        // Pass the data to the view
-        return view('hr1.employee_management.employee_profile', compact('employee', 'departments', 'positions'));
-    }
-
-
-    // Add methods for storing, editing, and deleting employees
-    public function create()
-    {
-        $departments = Department::all();
-        $positions = Position::all();
-        return view('hr1.employee_management.employee_create', compact('departments', 'positions'));
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:employees,email',
-            'department_id' => 'required|exists:departments,id',
-            'position_id' => 'required|exists:positions,id',
-            'status' => 'required|string',
-            'contact' => 'nullable|string|max:255', // Ensure this is validated
-        ]);
-
-        // Create the employee with all input data including contact
-        $employee = Employee::create($request->all());
-
-        return redirect()->route('employee.list')->with('success', 'Employee created successfully.');
-    }
-
-
-
     public function edit($id)
     {
         $employee = Employee::findOrFail($id);

@@ -217,7 +217,7 @@
                     <div class="mt-6">
                         <button
                             type="submit"
-                            class="rounded-lg cursor-pointer whitespace-nowrap bg-blue-600 px-4 py-2 text-center text-sm font-medium tracking-wide text-white transition hover:opacity-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 active:opacity-100 active:outline-offset-0 w-full"
+                            class="rounded-lg cursor-pointer whitespace-nowrap bg-blue-600 py-3 text-center text-sm font-medium tracking-wide text-white transition hover:opacity-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 active:opacity-100 active:outline-offset-0 w-full transform hover:scale-105"
                         >
                             Create Employee
                         </button>
@@ -231,7 +231,7 @@
                 type="button"
                 class="cursor-pointer whitespace-nowrap p-3 text-center text-sm font-medium tracking-wide text-gray-700 transition hover:opacity-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 active:opacity-100 active:outline-offset-0"
             >
-                Back to Department List
+                Cancel
             </button>
         </div>
     </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\EmployeeManagement;
 
 use Livewire\Component;
 use App\Models\Department;
@@ -22,7 +22,8 @@ class EmployeeCreate extends Component
     // Validate form data
     public function submitForm()
     {
-        // Validate input
+        $this->first_name = strtoupper($this->first_name);
+        $this->last_name = strtoupper($this->last_name);
         $this->validate([
 
             'first_name' => 'required|string|max:255',
@@ -48,6 +49,6 @@ class EmployeeCreate extends Component
     }
     public function render()
     {
-        return view('livewire.employee-create');
+        return view('livewire.employee-management.employee-create');
     }
 }

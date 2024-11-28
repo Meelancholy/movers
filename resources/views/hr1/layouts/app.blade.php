@@ -7,7 +7,7 @@
     @vite('resources/css/app.css')
     @livewireStyles
 </head>
-<body class="bg-blue-100 flex">
+<body>
     <div x-data="{ sidebarIsOpen: false }" class="relative flex w-full flex-col md:flex-row">
         <a class="sr-only" href="#main-content">skip to the main content</a>
         <div x-cloak x-show="sidebarIsOpen" class="fixed inset-0 z-20 bg-neutral-950/10 backdrop-blur-sm md:hidden" aria-hidden="true" x-on:click="sidebarIsOpen = false" x-transition.opacity ></div>

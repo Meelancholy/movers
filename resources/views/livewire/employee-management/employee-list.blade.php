@@ -2,7 +2,7 @@
     <div x-data="{ selectedTab: 'employeeList' }" class="w-full">
         <div class="flex justify-between pb-3">
             <h1 class="text-3xl font-bold  mr-auto">Employee Management</h1>
-            @livewire('employee-create')
+            @livewire('employee-management.employee-create')
         </div>
 
         @if(session('success'))
@@ -27,11 +27,22 @@
         @endif
         <div x-data="{
             search: '',
-            modalIsOpen: false,
+            viewmodalIsOpen: false,
+            EditmodalIsOpen: false,
             selectedEmployeeId: null,
+            selectedEmployeeName: '',
+            selectedEmployeeStatus: '',
+            selectedEmployeeEmail: '',
+            selectedEmployeeContact: '',
+            selectedEmployeeDepartment: '',
+            selectedEmployeePosition: '',
+            selectedEmployeeHireDate: '',
             currentPage: 1,
             perPage: 10,
             rowsPerPageOptions: [10, 20, 50, 100],
+            showContextMenu: false,
+            contextMenuPosition: { x: 0, y: 0 },
+            rightClickedEmployee: null,
             get totalPages() {
                 return Math.ceil(this.filteredEmployees.length / this.perPage);
             },
@@ -48,7 +59,34 @@
                 const start = (this.currentPage - 1) * this.perPage;
                 const end = start + this.perPage;
                 return this.filteredEmployees.slice(start, end);
-            }
+            },
+            openContextMenu(event, employee) {
+                event.preventDefault();
+                this.rightClickedEmployee = employee;
+                this.contextMenuPosition = { x: event.clientX, y: event.clientY };
+                this.showContextMenu = true;
+            },
+            closeContextMenu() {
+                this.showContextMenu = false;
+                this.rightClickedEmployee = null;
+            },
+            openViewModal(employee) {
+                this.selectedEmployeeId = employee.id;
+                this.selectedEmployeeName = `${employee.first_name} ${employee.last_name}`;
+                this.selectedEmployeeStatus = employee.status;
+                this.selectedEmployeeEmail = employee.email;
+                this.selectedEmployeeContact = employee.contact;
+                this.selectedEmployeeDepartment = employee.department ? employee.department.name : 'N/A';
+                this.selectedEmployeePosition = employee.position ? employee.position.name : 'N/A';
+                const hireDate = new Date(employee.created_at);
+                this.selectedEmployeeHireDate = hireDate.toISOString().split('T')[0];
+                this.viewmodalIsOpen = true;
+            },
+            closeViewModal() {
+                this.viewmodalIsOpen = false;
+                this.selectedEmployeeId = null;
+                this.selectedEmployeeName = '';
+            },
         }" class="overflow-x-auto rounded-lg border md:overflow-x-visible">
             <!-- Search Input -->
             <div class="flex justify-between items-center p-4">
@@ -95,7 +133,7 @@
                 <tbody x-ref="employees">
                     @if($employees->isEmpty())
                         <tr>
-                            <td colspan="6" class="p-4 text-center ">
+                            <td colspan="8" class="p-4 text-center justify-center">
                                 <strong>No employees found</strong>
                             </td>
                         </tr>
@@ -104,7 +142,9 @@
                     <tr
                         x-show="paginatedEmployees().includes($el)"
                         x-transition
-                        class="hover:bg-neutral-100 transition duration-300 ease-in-out"
+                        @contextmenu.prevent="openContextMenu($event, {{ json_encode($employee) }})"
+                        @click="closeContextMenu()"
+                        class="hover:bg-neutral-100  transition duration-300 ease-in-out"
                     >
                         <td class="p-1 text-center">{{ $employee->id }}</td>
                         <td class="">
@@ -146,7 +186,7 @@
 
                                 <!-- Dropdown Menu -->
                                 <div x-cloak x-show="isOpen || openedWithKeyboard" x-transition x-trap="openedWithKeyboard" @click.outside="isOpen = false, openedWithKeyboard = false" @keydown.down.prevent="$focus.wrap().next()" @keydown.up.prevent="$focus.wrap().previous()" class="absolute left-0 mt-2 w-48 bg-white border border-neutral-200 shadow-lg rounded-md z-10" role="menu">
-                                    <a href="{{ route('employee.profile', $employee->id) }}" class="block px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none">
+                                    <a @click="openViewModal({{ json_encode($employee) }})" class="block px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none cursor-pointer">
                                         View
                                     </a>
                                     <a href="{{ route('employee.edit', $employee->id) }}" class="block px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none">
@@ -159,9 +199,6 @@
                                             Delete
                                         </button>
                                     </form>
-                                    <button @click="modalIsOpen = true; selectedEmployeeId = {{ $employee->id }}" class="block px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none">
-                                        View
-                                    </button>
                                 </div>
                             </div>
                         </td>
@@ -170,7 +207,21 @@
                     @endif
                 </tbody>
             </table>
-
+            <!-- Context Menu -->
+            <div x-show="showContextMenu"
+                x-transition
+                @click.outside="closeContextMenu()"
+                @click="closeContextMenu()"
+                :style="{ top: contextMenuPosition.y + 'px', left: contextMenuPosition.x + 'px' }"
+                class="fixed bg-white border border-gray-300 rounded shadow-lg z-50">
+                <ul class="py-1">
+                    <!-- Context Menu "View" item -->
+                    <li @click="openViewModal(rightClickedEmployee)"
+                        class="block px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none cursor-pointer">
+                        View
+                    </li>
+                </ul>
+            </div>
             <!-- Pagination Controls -->
             <nav aria-label="pagination" class="my-4">
                 <ul class="flex flex-shrink-0 justify-center items-center gap-2 text-sm font-medium">
@@ -218,29 +269,7 @@
                     </li>
                 </ul>
             </nav>
-                <div x-show="modalIsOpen" x-cloak x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalIsOpen" @keydown.esc.window="modalIsOpen = false" @click.self="modalIsOpen = false" class="fixed inset-0 z-30 flex items-center justify-center bg-black/20 p-4 pb-8 backdrop-blur-md">
-                    <div x-show="modalIsOpen" x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity" x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100" class="max-w-lg w-full p-6 bg-white rounded-lg shadow-lg">
-                        <div class="flex items-center justify-between border-b pb-4 mb-4">
-                            <h3 class="text-xl font-semibold">Employee Details</h3>
-                            <button @click="modalIsOpen = false" aria-label="close modal">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" stroke="currentColor" fill="none" stroke-width="1.4" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                                </svg>
-                            </button>
-                        </div>
-                        <!-- Modal Content: Display Employee Information -->
-                        <div x-show="selectedEmployeeId" class="space-y-4">
-                            <p><strong>Employee ID:</strong> <span x-text="selectedEmployeeId"></span></p>
-                            <!-- Optionally, fetch and display additional details for the selected employee -->
-                            <p><strong>Name:</strong> <span x-text="'Employee Name: ' + selectedEmployeeId"></span></p>
-                            <!-- You can load the employee's other details dynamically based on selectedEmployeeId -->
-                        </div>
-                        <div class="mt-4 flex justify-end space-x-4">
-                            <button @click="modalIsOpen = false" class="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded-full">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @livewire('employee-management.view-employee')
         </div>
     </div>
 </div>
