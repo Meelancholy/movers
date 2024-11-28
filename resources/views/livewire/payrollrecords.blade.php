@@ -16,11 +16,6 @@
                     <h3 class="text-sm font-semibold text-green-500">Success</h3>
                     <p class="text-xs font-medium sm:text-sm">{{ session('success') }}</p>
                 </div>
-                <button class="ml-auto" aria-label="dismiss alert">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" stroke="#000000" fill="none" stroke-width="2.5" class="w-4 h-4 shrink-0">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
             </div>
         </div>
     @endif

@@ -32,7 +32,7 @@
             <table class="min-w-full bg-white border border-gray-300 rounded-lg overflow-hidden">
                 <thead class="bg-blue-100 text-2D3748">
                     <tr>
-                        <th class="py-2 border-b">Description</th>
+                        <th class="py-2 border-b">Name</th>
                         <th class="py-2 border-b">Amount</th>
                     </tr>
                 </thead>
@@ -56,7 +56,7 @@
             <table class="min-w-full bg-white border border-gray-300 rounded-lg overflow-hidden">
                 <thead class="bg-blue-100 text-2D3748">
                     <tr>
-                        <th class="py-2 border-b">Description</th>
+                        <th class="py-2 border-b">Name</th>
                         <th class="py-2 border-b">Amount</th>
                     </tr>
                 </thead>
