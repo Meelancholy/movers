@@ -63,7 +63,7 @@
                     <td class="p-4 text-center text-green-500"><strong>₱{{ number_format($payroll->gross_salary, 2) }}</strong></td>
                     <td class="p-4 text-center text-red-500"><strong>₱{{ number_format($payroll->withholdings, 2) }}</strong></td>
                     <td class="p-4 text-center text-yellow-500"><strong>₱{{ number_format($payroll->net_salary, 2) }}</strong></td>
-                    <td class="p-4">{{ $payroll->created_at->format('Y-m-d H:i:s') }}</td>
+                    <td class="p-4">{{ $payroll->created_at->format('Y-m-d') }}</td>
                     <td class="p-4 text-center">
                         <a href="{{ route('payroll.viewRecord', $payroll->id) }}" class="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-600">View</a>
                     </td>
