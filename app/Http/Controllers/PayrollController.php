@@ -97,8 +97,7 @@ class PayrollController extends Controller
     public function viewRecord($id)
     {
         // Retrieve the payroll record by ID, along with the employee and bonuses
-        $payroll = Payroll::with(['employee', 'bonusHistories'])->findOrFail($id);
-
+        $payroll = Payroll::with(['employee', 'bonusHistories','employee', 'deductionHistories'])->findOrFail($id);
         // Pass the payroll details and bonuses to the view
         return view('hr1.payroll.viewrecords', compact('payroll'));
     }

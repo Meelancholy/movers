@@ -82,7 +82,7 @@
                             <th class="text-sm text-left">NAME</th>
                             <th class="text-sm text-left">SOCIAL BENEFITS</th>
                             <th class="text-sm text-left">TOTAL INCENTIVES</th>
-                            <th class="text-sm text-left">TOTAL DEDUCTIONS</th>
+                            <th class="text-sm text-left">TOTAL PRE-TAX DEDUCTIONS</th>
                             <th class="text-sm text-left"></th>
                         </tr>
                     </thead>

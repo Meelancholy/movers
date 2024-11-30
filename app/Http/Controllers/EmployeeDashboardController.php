@@ -44,11 +44,12 @@ class EmployeeDashboardController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'department_id' => 'required|exists:departments,id',
             'position_id' => 'required|exists:positions,id',
             'status' => 'required|string',
-            'contact' => 'nullable|string|max:255',
+            'contact' => 'nullable|string|min:11|max:11',
         ]);
 
         $employee = Employee::findOrFail($id);

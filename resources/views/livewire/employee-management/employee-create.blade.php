@@ -84,11 +84,10 @@
             x-init="init()"
             class="px-4 pt-4"
         >
-                <form wire:submit.prevent="submitForm" class="space-y-6">
+            <form wire:submit.prevent="submitForm" class="space-y-6">
 
-                    <!-- Grid Layout for Inputs -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-
+                <!-- Grid Layout for Inputs -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <!-- First Name -->
                         <div class="flex w-full max-w-xs flex-col gap-1 text-neutral-600">
                             <label for="textInputDefault" class="w-fit pl-0.5 text-sm">First Name</label>
@@ -106,94 +105,94 @@
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
-        <!-- Department Dropdown -->
-        <div class="relative">
-            <label for="department" class="w-fit pl-0.5 text-sm">Department</label>
-            <button
-                type="button"
-                class="form-input inline-flex w-full items-center justify-between gap-2 rounded-lg bg-neutral-100 px-4 py-2 text-sm text-neutral-600"
-                x-on:click="isDepartmentOpen = !isDepartmentOpen"
-                x-bind:aria-expanded="isDepartmentOpen"
-                x-bind:aria-label="selectedDepartment ? allDepartments.find(department => department.value === selectedDepartment).label : 'Please Select Department'"
-            >
-                <span x-text="selectedDepartment ? allDepartments.find(department => department.value === selectedDepartment).label : 'Please Select Department'"></span>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-gray-600"
-                    x-bind:class="{'rotate-180': isDepartmentOpen, 'transition-transform': true}"
-                    style="transition: transform 0.2s ease-in-out;">
-                    <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
-                </svg>
-            </button>
+                        <!-- Department Dropdown -->
+                        <div class="relative">
+                            <label for="department" class="w-fit pl-0.5 text-sm">Department</label>
+                            <button
+                                type="button"
+                                class="form-input inline-flex w-full items-center justify-between gap-2 rounded-lg bg-neutral-100 px-4 py-2 text-sm text-neutral-600"
+                                x-on:click="isDepartmentOpen = !isDepartmentOpen"
+                                x-bind:aria-expanded="isDepartmentOpen"
+                                x-bind:aria-label="selectedDepartment ? allDepartments.find(department => department.value === selectedDepartment).label : 'Please Select Department'"
+                            >
+                                <span x-text="selectedDepartment ? allDepartments.find(department => department.value === selectedDepartment).label : 'Please Select Department'"></span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-gray-600"
+                                    x-bind:class="{'rotate-180': isDepartmentOpen, 'transition-transform': true}"
+                                    style="transition: transform 0.2s ease-in-out;">
+                                    <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+                                </svg>
+                            </button>
 
-            <div
-                x-show="isDepartmentOpen"
-                x-on:click.outside="isDepartmentOpen = false"
-                class="absolute mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-auto"
-                x-transition
-            >
-                <input
-                    type="text"
-                    x-ref="searchFieldDepartment"
-                    class="w-full p-2 border-b border-gray-300"
-                    placeholder="Search department"
-                    x-on:input="departmentOptions = getFilteredOptions($el.value, allDepartments)"
-                />
-                <ul>
-                    <template x-for="department in departmentOptions" :key="department.value">
-                        <li @click="setDepartment(department)" class="px-4 py-2 cursor-pointer hover:bg-gray-100">
-                            <span x-text="department.label"></span>
-                        </li>
-                    </template>
-                </ul>
-            </div>
-            @error('department_id')
-                <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
-        </div>
+                            <div
+                                x-show="isDepartmentOpen"
+                                x-on:click.outside="isDepartmentOpen = false"
+                                class="absolute mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-auto"
+                                x-transition
+                            >
+                                <input
+                                    type="text"
+                                    x-ref="searchFieldDepartment"
+                                    class="w-full p-2 border-b border-gray-300"
+                                    placeholder="Search department"
+                                    x-on:input="departmentOptions = getFilteredOptions($el.value, allDepartments)"
+                                />
+                                <ul>
+                                    <template x-for="department in departmentOptions" :key="department.value">
+                                        <li @click="setDepartment(department)" class="px-4 py-2 cursor-pointer hover:bg-gray-100">
+                                            <span x-text="department.label"></span>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                            @error('department_id')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
 
-        <!-- Position Dropdown -->
-        <div class="relative">
-            <label for="position" class="w-fit pl-0.5 text-sm">Position</label>
-            <button
-                type="button"
-                class="form-input inline-flex w-full items-center justify-between gap-2 rounded-lg bg-neutral-100 px-4 py-2 text-sm text-neutral-600"
-                x-on:click="isPositionOpen = !isPositionOpen"
-                x-bind:aria-expanded="isPositionOpen"
-                x-bind:aria-label="selectedPosition ? allPositions.find(position => position.value === selectedPosition).label : 'Please Select Position'"
-                x-bind:disabled="positionOptions.length === 0"
-            >
-                <span x-text="selectedPosition ? allPositions.find(position => position.value === selectedPosition).label : (positionOptions.length === 0 ? 'No positions available' : 'Please Select Position')"></span>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-gray-600"
-                    x-bind:class="{'rotate-180': isPositionOpen, 'transition-transform': true}"
-                    style="transition: transform 0.2s ease-in-out;">
-                    <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
-                </svg>
-            </button>
+                        <!-- Position Dropdown -->
+                        <div class="relative">
+                            <label for="position" class="w-fit pl-0.5 text-sm">Position</label>
+                            <button
+                                type="button"
+                                class="form-input inline-flex w-full items-center justify-between gap-2 rounded-lg bg-neutral-100 px-4 py-2 text-sm text-neutral-600"
+                                x-on:click="isPositionOpen = !isPositionOpen"
+                                x-bind:aria-expanded="isPositionOpen"
+                                x-bind:aria-label="selectedPosition ? allPositions.find(position => position.value === selectedPosition).label : 'Please Select Position'"
+                                x-bind:disabled="positionOptions.length === 0"
+                            >
+                                <span x-text="selectedPosition ? allPositions.find(position => position.value === selectedPosition).label : (positionOptions.length === 0 ? 'No positions available' : 'Please Select Position')"></span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-gray-600"
+                                    x-bind:class="{'rotate-180': isPositionOpen, 'transition-transform': true}"
+                                    style="transition: transform 0.2s ease-in-out;">
+                                    <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+                                </svg>
+                            </button>
 
-            <div
-                x-show="isPositionOpen"
-                x-on:click.outside="isPositionOpen = false"
-                class="absolute mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-auto"
-                x-transition
-            >
-                <input
-                    type="text"
-                    x-ref="searchFieldPosition"
-                    class="w-full p-2 border-b border-gray-300"
-                    placeholder="Search position"
-                    x-on:input="positionOptions = getFilteredOptions($el.value, allPositions)"
-                />
-                <ul>
-                    <template x-for="position in positionOptions" :key="position.value">
-                        <li @click="setPosition(position)" class="px-4 py-2 cursor-pointer hover:bg-gray-100">
-                            <span x-text="position.label"></span>
-                        </li>
-                    </template>
-                </ul>
-            </div>
-            @error('position_id')
-                <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
-        </div>
+                            <div
+                                x-show="isPositionOpen"
+                                x-on:click.outside="isPositionOpen = false"
+                                class="absolute mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-auto"
+                                x-transition
+                            >
+                                <input
+                                    type="text"
+                                    x-ref="searchFieldPosition"
+                                    class="w-full p-2 border-b border-gray-300"
+                                    placeholder="Search position"
+                                    x-on:input="positionOptions = getFilteredOptions($el.value, allPositions)"
+                                />
+                                <ul>
+                                    <template x-for="position in positionOptions" :key="position.value">
+                                        <li @click="setPosition(position)" class="px-4 py-2 cursor-pointer hover:bg-gray-100">
+                                            <span x-text="position.label"></span>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                            @error('position_id')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
 
                         <!-- Email -->
                         <div class="flex w-full max-w-xs flex-col gap-1 text-neutral-600">

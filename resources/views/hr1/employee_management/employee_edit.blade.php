@@ -11,44 +11,64 @@
 
         <!-- Employee Name -->
         <div>
-            <label for="name" class="block text-lg font-semibold mb-2">Name</label>
-            <input type="text" name="name" id="name"
+            <label for="first_name" class="block text-lg font-semibold mb-2">First Name</label>
+            <input type="text" name="first_name" id="first_name"
                    class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300"
-                   value="{{ $employee->first_name }} {{ $employee->last_name }}" required>
+                   value="{{ $employee->first_name }}">
+            @error('first_name')
+                <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
         </div>
-
+        <div>
+            <label for="last_name" class="block text-lg font-semibold mb-2">Last Name</label>
+            <input type="text" name="last_name" id="last_name"
+                   class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300"
+                   value="{{ $employee->last_name }}">
+            @error('last_name')
+                   <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
+        </div>
         <!-- Department Selection -->
         <div>
             <label for="department_id" class="block text-lg font-semibold mb-2">Department</label>
             <select name="department_id" id="department_id"
-                    class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300" required>
+                    class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300">
                 @foreach($departments as $department)
                     <option value="{{ $department->id }}" {{ $employee->department_id == $department->id ? 'selected' : '' }}>{{ $department->name }}</option>
                 @endforeach
             </select>
+            @error('department_id')
+                   <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
         </div>
 
         <!-- Position Selection -->
         <div>
             <label for="position_id" class="block text-lg font-semibold mb-2">Position</label>
             <select name="position_id" id="position_id"
-                    class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300" required>
+                    class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300">
                 @foreach($positions as $position)
                     <option value="{{ $position->id }}" {{ $employee->position_id == $position->id ? 'selected' : '' }}>{{ $position->name }}</option>
                 @endforeach
             </select>
+            @error('position_id')
+                   <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
         </div>
 
         <!-- Status Selection -->
         <div>
             <label for="status" class="block text-lg font-semibold mb-2">Status</label>
             <select name="status" id="status"
-                    class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300" required>
+                    class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300">
                 <option value="active" {{ $employee->status == 'active' ? 'selected' : '' }}>Active</option>
                 <option value="inactive" {{ $employee->status == 'inactive' ? 'selected' : '' }}>Inactive</option>
                 <option value="on leave" {{ $employee->status == 'on leave' ? 'selected' : '' }}>On Leave</option>
                 <option value="terminated" {{ $employee->status == 'terminated' ? 'selected' : '' }}>Terminated</option>
             </select>
+            @error('status')
+                   <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
         </div>
 
         <!-- Contact Input -->
@@ -57,6 +77,9 @@
             <input type="text" name="contact" id="contact"
                    class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300"
                    value="{{ $employee->contact }}" placeholder="Optional">
+            @error('contact')
+                   <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
         </div>
 
         <div class="flex justify-end space-x-4 mt-6">

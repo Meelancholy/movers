@@ -14,8 +14,7 @@
         <h2 class="text-lg font-medium text-gray-700 mb-2">Net Salary: ₱{{ number_format($payroll->net_salary, 2) }}</h2>
         <h2 class="text-lg font-medium text-gray-700 mb-2">Generated On: {{ $payroll->created_at->format('Y-m-d H:i:s') }}</h2>
     </div>
-
-    <!-- Bonus Histories Section -->
+    <!--
     <div class="mt-8">
         <h3 class="text-xl font-bold text-gray-800">Bonus Histories</h3>
         @if($payroll->bonusHistories->isNotEmpty())
@@ -33,7 +32,6 @@
         @endif
     </div>
 
-    <!-- Deduction Histories Section -->
     <div class="mt-8">
         <h3 class="text-xl font-bold text-gray-800">Deduction Histories</h3>
         @if($payroll->deductionHistories->isNotEmpty())
@@ -50,7 +48,7 @@
             <p class="text-gray-700">No deductions applied for this payroll.</p>
         @endif
     </div>
-
+    -->
     <!-- Back to Records Button at the Bottom -->
     <div class="mt-8">
         <a href="{{ route('payroll.records') }}" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
