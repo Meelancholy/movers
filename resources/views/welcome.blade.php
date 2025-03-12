@@ -8,7 +8,6 @@
     @livewireStyles
 </head>
 <body>
-
     @livewireScripts
     @vite('resources/js/app.js')
 </body>
