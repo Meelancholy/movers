@@ -1,4 +1,4 @@
-<div class="h-svh w-full overflow-y-auto bg-blue-100">
+<div class="h-svh w-full overflow-y-auto bg-blue-950">
     <!-- top navbar  -->
     <nav x-data="{ mobileMenuIsOpen: false }" @click.away="mobileMenuIsOpen = false" class="sticky top-0 z-10 flex items-center justify-between border-b border-neutral-300 bg-white px-4 py-2" aria-label="top navibation bar">
     <!-- sidebar toggle button for small screens  -->
