@@ -6,27 +6,28 @@ use Illuminate\Http\Request;
 use App\Models\Employee;
 class DashboardController extends Controller
 {
-    public function index()
-    {
-    $employee = Employee::all();
-    // Initialize arrays to store counts
-    $maleCounts = [];
-    $femaleCounts = [];
-    $ageGroups = ['18-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60+'];
+    // EmployeeController.php
+public function index()
+{
+    // Fetch all employees
+    $employees = Employee::all();
 
-    foreach ($ageGroups as $group) {
-        $maleCounts[$group] = 0;
-        $femaleCounts[$group] = 0;
-    }
+    // Initialize arrays for the column chart (age and gender distribution)
+    $ageGroups = ['20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60+'];
+    $maleCounts = array_fill_keys($ageGroups, 0);
+    $femaleCounts = array_fill_keys($ageGroups, 0);
 
-    // Group employees by age and gender
-    foreach ($employee as $employees) {
-        $age = $employees->age;
-        $gender = $employees->gender;
+    // Initialize arrays for the donut chart (status distribution)
+    $statusCounts = [];
 
-        // Determine the age group
-        if ($age >= 18 && $age <= 24) {
-            $group = '18-24';
+    // Process employee data
+    foreach ($employees as $employee) {
+        // Column chart data: Group by age and gender
+        $age = $employee->age;
+        $gender = $employee->gender;
+
+        if ($age >= 20 && $age <= 24) {
+            $group = '20-24';
         } elseif ($age >= 25 && $age <= 29) {
             $group = '25-29';
         } elseif ($age >= 30 && $age <= 34) {
@@ -45,19 +46,30 @@ class DashboardController extends Controller
             $group = '60+';
         }
 
-        // Increment the count based on gender
         if ($gender === 'Male') {
             $maleCounts[$group]++;
         } elseif ($gender === 'Female') {
             $femaleCounts[$group]++;
         }
+
+        // Donut chart data: Group by status
+        $status = $employee->status;
+        if (!isset($statusCounts[$status])) {
+            $statusCounts[$status] = 0;
+        }
+        $statusCounts[$status]++;
     }
 
     // Pass data to the view
     return view('hr1.dashboard.dashboard', [
+        // Column chart data
         'ageGroups' => $ageGroups,
-        'maleCounts' => array_values($maleCounts), // Convert associative array to indexed array
-        'femaleCounts' => array_values($femaleCounts), // Convert associative array to indexed array
+        'maleCounts' => array_values($maleCounts),
+        'femaleCounts' => array_values($femaleCounts),
+
+        // Donut chart data
+        'statuses' => array_keys($statusCounts),
+        'statusCounts' => array_values($statusCounts),
     ]);
 }
 }
