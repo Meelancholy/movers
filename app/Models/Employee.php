@@ -6,18 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 class Employee extends Model
 {
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'contact', 'hire_date', 'department_id', 'position_id', 'status'
+        'first_name', 'last_name', 'email', 'contact', 'hire_date', 'department_id', 'position_id', 'status', 'department', 'position', 'age', 'gender'
     ];
-
-    public function department()
-    {
-        return $this->belongsTo(Department::class);
-    }
-
-    public function position()
-    {
-        return $this->belongsTo(Position::class);
-    }
 
     public function contributions()
     {

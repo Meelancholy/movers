@@ -13,8 +13,10 @@ class CreateEmployeesTable extends Migration
             $table->string('first_name'); // Change to first_name
             $table->string('last_name');  // Add last_name
             $table->string('email')->unique();
-            $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('set null');
-            $table->foreignId('position_id')->nullable()->constrained('positions')->onDelete('set null');
+            $table->string('department');
+            $table->string('position');
+            $table->integer('age');
+            $table->string('gender');
             $table->string('status'); // active, inactive, on leave, terminated
             $table->string('contact');
             $table->timestamps();
