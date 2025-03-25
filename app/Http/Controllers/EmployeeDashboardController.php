@@ -14,7 +14,7 @@ class EmployeeDashboardController extends Controller
     public function edit($id)
     {
         $employee = Employee::findOrFail($id);
-        return view('hr1.employee_management.employee_edit', compact('employee', 'departments', 'positions'));
+        return view('hr1.employee_management.employee_edit', compact('employee'));
     }
 
     public function update(Request $request, $id)
@@ -23,7 +23,7 @@ class EmployeeDashboardController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'status' => 'required|string',
-            'contact' => 'nullable|string|min:11|max:11',
+            'contact' => 'required|string|min:11|max:11',
         ]);
 
         $employee = Employee::findOrFail($id);

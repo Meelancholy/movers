@@ -11,9 +11,9 @@ public function index()
 {
     // Fetch all employees
     $employees = Employee::all();
-
+    $employeeCount = Employee::count();
     // Initialize arrays for the column chart (age and gender distribution)
-    $ageGroups = ['20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60+'];
+    $ageGroups = ['18-21', '22-25', '26-30', '31-35', '36-40', '41-45', '46-50', '51-55', '56-59', '60+'];
     $maleCounts = array_fill_keys($ageGroups, 0);
     $femaleCounts = array_fill_keys($ageGroups, 0);
 
@@ -23,32 +23,38 @@ public function index()
     // Process employee data
     foreach ($employees as $employee) {
         // Column chart data: Group by age and gender
-        $age = $employee->age;
+        $bday = new \DateTime($employee->bdate); // Use global namespace
+        $today = new \DateTime(); // Use global namespace
+        // Calculate age
+        $age = $today->diff($bday)->y; // Extract years from DateInterval
+
         $gender = $employee->gender;
 
-        if ($age >= 20 && $age <= 24) {
-            $group = '20-24';
-        } elseif ($age >= 25 && $age <= 29) {
-            $group = '25-29';
-        } elseif ($age >= 30 && $age <= 34) {
-            $group = '30-34';
-        } elseif ($age >= 35 && $age <= 39) {
-            $group = '35-39';
-        } elseif ($age >= 40 && $age <= 44) {
-            $group = '40-44';
-        } elseif ($age >= 45 && $age <= 49) {
-            $group = '45-49';
-        } elseif ($age >= 50 && $age <= 54) {
-            $group = '50-54';
-        } elseif ($age >= 55 && $age <= 59) {
-            $group = '55-59';
+        if ($age >= 18 && $age <= 21) {
+            $group = '18-21';
+        } elseif ($age >= 22 && $age <= 25) {
+            $group = '22-25';
+        } elseif ($age >= 26 && $age <= 30) {
+            $group = '26-30';
+        } elseif ($age >= 31 && $age <= 35) {
+            $group = '31-35';
+        } elseif ($age >= 36 && $age <= 40) {
+            $group = '36-40';
+        } elseif ($age >= 41 && $age <= 45) {
+            $group = '41-45';
+        } elseif ($age >= 46 && $age <= 50) {
+            $group = '46-50';
+        } elseif ($age >= 51 && $age <= 55) {
+            $group = '51-55';
+        } elseif ($age >= 56 && $age <= 59) {
+            $group = '56-59';
         } else {
             $group = '60+';
         }
 
-        if ($gender === 'Male') {
+        if ($gender === 'male') {
             $maleCounts[$group]++;
-        } elseif ($gender === 'Female') {
+        } elseif ($gender === 'female') {
             $femaleCounts[$group]++;
         }
 
@@ -62,12 +68,10 @@ public function index()
 
     // Pass data to the view
     return view('hr1.dashboard.dashboard', [
-        // Column chart data
         'ageGroups' => $ageGroups,
         'maleCounts' => array_values($maleCounts),
         'femaleCounts' => array_values($femaleCounts),
-
-        // Donut chart data
+        'employeeCount' => $employeeCount,
         'statuses' => array_keys($statusCounts),
         'statusCounts' => array_values($statusCounts),
     ]);

@@ -3,15 +3,16 @@
         <h1 class="text-3xl font-bold text-gray-800 mr-auto">Employee Management</h1>
     </div>
     <div class="container min-w-full bg-white p-6 rounded-lg shadow-md md:p-4 mt-2">
-        <div class="container mx-auto border rounded-lg p-6">
+        <div class="container mx-auto border rounded-lg py-6">
             <!-- Search Bar -->
             <div class="flex justify-between">
-                <div class="mb-4">
-                    <input type="text" id="searchInput" placeholder="Search by ID or Name" class="w-full pl-2 pr-9 py-2 border rounded-lg">
+                <div class="">
+                    <input type="text" id="searchInput" placeholder="Search by ID or Name"
+                        class="bg-gray-100 w-full ml-4 pl-2 pr-9 py-2 border rounded-full">
                 </div>
 
                 <!-- Rows Per Page Selector -->
-                <div class="mb-4 flex items-center space-x-4">
+                <div class="flex items-center space-x-4 p-2">
                     <label for="rowsPerPage" class="text-sm">Rows per page:</label>
                     <select id="rowsPerPage" class="p-2 border rounded-lg">
                         <option value="5">5</option>
@@ -25,40 +26,52 @@
             <!-- Employee Table -->
             <table class="w-full bg-white">
                 <thead class="">
-                    <tr class="bg-gray-300">
-                        <th class="p-3 text-left cursor-pointer text-gray-700 hover:bg-gray-400" onclick="sortTable(0)">ID ▲▼</th>
-                        <th class="p-3 text-left cursor-pointer text-gray-700 hover:bg-gray-400" onclick="sortTable(1)">Name ▲▼</th>
-                        <th class="p-3 text-left cursor-pointer text-gray-700 hover:bg-gray-400" onclick="sortTable(2)">Status ▲▼</th>
-                        <th class="p-3 text-left cursor-pointer text-gray-700 hover:bg-gray-400" onclick="sortTable(3)">Email ▲▼</th>
-                        <th class="p-3 text-left cursor-pointer text-gray-700 hover:bg-gray-400" onclick="sortTable(4)">Contact ▲▼</th>
-                        <th class="p-3 text-left cursor-pointer text-gray-700 hover:bg-gray-400" onclick="sortTable(5)">Department ▲▼</th>
-                        <th class="p-3 text-left cursor-pointer text-gray-700 hover:bg-gray-400" onclick="sortTable(6)">Position ▲▼</th>
-                        <th class="p-3 text-left cursor-pointer text-gray-700 hover:bg-gray-400" onclick="sortTable(7)">Created At ▲▼</th>
+                    <tr class="bg-white border">
+                        <th class="p-3 text-left cursor-pointer text-gray-700 hover:bg-gray-400" onclick="sortTable(0)">
+                            ID ▲▼</th>
+                        <th class="p-3 text-left cursor-pointer text-gray-700 hover:bg-gray-400" onclick="sortTable(1)">
+                            Name ▲▼</th>
+                        <th class="p-3 text-left cursor-pointer text-gray-700 hover:bg-gray-400" onclick="sortTable(2)">
+                            Status ▲▼</th>
+                        <th class="p-3 text-left cursor-pointer text-gray-700 hover:bg-gray-400" onclick="sortTable(3)">
+                            Email ▲▼</th>
+                        <th class="p-3 text-left cursor-pointer text-gray-700 hover:bg-gray-400" onclick="sortTable(4)">
+                            Contact ▲▼</th>
+                        <th class="p-3 text-left cursor-pointer text-gray-700 hover:bg-gray-400" onclick="sortTable(5)">
+                            Department ▲▼</th>
+                        <th class="p-3 text-left cursor-pointer text-gray-700 hover:bg-gray-400" onclick="sortTable(6)">
+                            Position ▲▼</th>
+                        <th class="p-3 text-left cursor-pointer text-gray-700 hover:bg-gray-400" onclick="sortTable(7)">
+                            Hire Date ▲▼</th>
                         <th class="p-3 text-left cursor-pointer text-gray-700 hover:bg-gray-400"></th>
                     </tr>
                 </thead>
                 <tbody id="employeeTableBody">
-                    @foreach($employees as $employee)
+                    @foreach ($employees as $employee)
                         <tr class="border-b">
                             <td class="p-3">{{ $employee->id }}</td>
                             <td class="p-3">
                                 <strong>{{ $employee->last_name }}, {{ $employee->first_name }}</strong>
                             </td>
                             <td class="p-3">
-                                @if($employee->status === 'active')
-                                    <span class="w-fit inline-flex overflow-hidden rounded-full border border-green-500 bg-white text-xs font-medium text-green-500">
+                                @if ($employee->status === 'active')
+                                    <span
+                                        class="w-fit inline-flex overflow-hidden rounded-full border border-green-500 bg-white text-xs font-medium text-green-500">
                                         <span class="rounded-full px-4 bg-green-500/10">Active</span>
                                     </span>
                                 @elseif($employee->status === 'inactive')
-                                    <span class="w-fit inline-flex overflow-hidden rounded-full border border-red-500 bg-white text-xs font-medium text-red-500">
+                                    <span
+                                        class="w-fit inline-flex overflow-hidden rounded-full border border-red-500 bg-white text-xs font-medium text-red-500">
                                         <span class="rounded-full px-4 bg-red-500/10">Inactive</span>
                                     </span>
                                 @elseif($employee->status === 'on leave')
-                                    <span class="w-fit inline-flex overflow-hidden rounded-full border border-amber-500 bg-white text-xs font-medium text-amber-500">
+                                    <span
+                                        class="w-fit inline-flex overflow-hidden rounded-full border border-amber-500 bg-white text-xs font-medium text-amber-500">
                                         <span class="rounded-full px-4 bg-amber-500/10">On Leave</span>
                                     </span>
                                 @elseif($employee->status === 'terminated')
-                                    <span class="w-fit inline-flex overflow-hidden rounded-full border border-neutral-800 bg-white text-xs font-medium text-neutral-800">
+                                    <span
+                                        class="w-fit inline-flex overflow-hidden rounded-full border border-neutral-800 bg-white text-xs font-medium text-neutral-800">
                                         <span class="rounded-full px-4 bg-neutral-800/10">Terminated</span>
                                     </span>
                                 @endif
@@ -68,21 +81,49 @@
                             <td class="p-3">{{ $employee->department }}</td>
                             <td class="p-3">{{ $employee->position }}</td>
                             <td class="p-3">{{ $employee->created_at->format('Y-m-d') }}</td>
-                            <td class="p-3">                                    <!-- Dropdown Menu -->
-                                <div x-cloak x-show="isOpen || openedWithKeyboard" x-transition x-trap="openedWithKeyboard" @click.outside="isOpen = false, openedWithKeyboard = false" @keydown.down.prevent="$focus.wrap().next()" @keydown.up.prevent="$focus.wrap().previous()" class="absolute left-0 mt-2 w-48 bg-white border border-neutral-200 shadow-lg rounded-md z-10" role="menu">
-                                    <a @click="openViewModal({{ json_encode($employee) }})" class="block px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none cursor-pointer">
-                                        View
-                                    </a>
-                                    <a href="{{ route('employee.edit', $employee->id) }}" class="block px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none">
-                                        Edit
-                                    </a>
-                                    <form method="POST" action="{{ route('employee.delete', $employee->id) }}" class="block px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="">
-                                            Delete
-                                        </button>
-                                    </form>
+                            <td class=""> <!-- Dropdown Menu -->
+                                <div x-data="{ isOpen: false, openedWithKeyboard: false }"
+                                    x-on:keydown.esc.prevent="isOpen = false, openedWithKeyboard = false"
+                                    class="relative w-fit">
+                                    <!-- Toggle Button -->
+                                    <button type="button" aria-label="context menu" x-on:click="isOpen = ! isOpen"
+                                        x-on:contextmenu.prevent="isOpen = true"
+                                        x-on:keydown.space.prevent="openedWithKeyboard = true"
+                                        x-on:keydown.enter.prevent="openedWithKeyboard = true"
+                                        x-on:keydown.down.prevent="openedWithKeyboard = true"
+                                        class="inline-flex items-center bg-transparent transition hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-outline-strong active:opacity-100 dark:focus-visible:outline-outline-dark-strong"
+                                        x-bind:class="isOpen || openedWithKeyboard ?
+                                            'text-on-surface-strong dark:text-on-surface-dark-strong' :
+                                            'text-on-surface dark:text-on-surface-dark'"
+                                        x-bind:aria-expanded="isOpen || openedWithKeyboard" aria-haspopup="true">
+                                        <!-- Placeholder for the menu icon -->
+                                        <span class="w-8 h-8">☰</span>
+                                    </button>
+                                    <!-- Dropdown Menu -->
+                                    <div x-cloak x-show="isOpen || openedWithKeyboard" x-transition
+                                        x-trap="openedWithKeyboard"
+                                        x-on:click.outside="isOpen = false, openedWithKeyboard = false"
+                                        x-on:keydown.down.prevent="$focus.wrap().next()"
+                                        x-on:keydown.up.prevent="$focus.wrap().previous()"
+                                        class="absolute top-8 right-0 flex w-fit min-w-48 flex-col divide-y divide-outline overflow-hidden rounded-radius border-outline bg-white dark:divide-outline-dark dark:border-outline-dark"
+                                        role="menu">
+                                        <a href=""
+                                            class="block px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none">
+                                            View
+                                        </a>
+                                        <a href="{{ route('employee.edit', $employee->id) }}"
+                                            class="block px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none">
+                                            Edit
+                                        </a>
+                                        <form method="POST" action="{{ route('employee.delete', $employee->id) }}"
+                                            class="block px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -91,11 +132,13 @@
             </table>
 
             <!-- Pagination -->
-            <div class="mt-4 flex justify-between items-center">
+            <div class="mt-4 flex justify-between items-center p-2">
                 <div id="paginationInfo" class="text-sm"></div>
                 <div class="flex space-x-2">
-                    <button id="prevPage" class="p-2 text-white bg-blue-500 rounded-lg hover:bg-blue-700">Previous</button>
-                    <button id="nextPage" class="p-2 text-white bg-blue-500 rounded-lg hover:bg-blue-700">Next</button>
+                    <button id="prevPage"
+                        class="p-2 text-white bg-blue-500 rounded-lg hover:bg-blue-700">Previous</button>
+                    <button id="nextPage"
+                        class="p-2 text-white bg-blue-500 rounded-lg hover:bg-blue-700">Next</button>
                 </div>
             </div>
         </div>
@@ -113,26 +156,26 @@
         updateTable();
 
         // JavaScript for Search
-        document.getElementById('searchInput').addEventListener('input', function () {
+        document.getElementById('searchInput').addEventListener('input', function() {
             filterTable();
         });
 
         // JavaScript for Rows Per Page
-        document.getElementById('rowsPerPage').addEventListener('change', function () {
+        document.getElementById('rowsPerPage').addEventListener('change', function() {
             rowsPerPage = parseInt(this.value);
             currentPage = 1; // Reset to first page
             updateTable();
         });
 
         // JavaScript for Pagination
-        document.getElementById('prevPage').addEventListener('click', function () {
+        document.getElementById('prevPage').addEventListener('click', function() {
             if (currentPage > 1) {
                 currentPage--;
                 updateTable();
             }
         });
 
-        document.getElementById('nextPage').addEventListener('click', function () {
+        document.getElementById('nextPage').addEventListener('click', function() {
             const totalPages = Math.ceil(allRows.length / rowsPerPage);
             if (currentPage < totalPages) {
                 currentPage++;
@@ -142,7 +185,8 @@
 
         // JavaScript for Sorting
         function sortTable(columnIndex) {
-            const isNumericColumn = !isNaN(parseFloat(allRows[0].querySelector(`td:nth-child(${columnIndex + 1})`).textContent));
+            const isNumericColumn = !isNaN(parseFloat(allRows[0].querySelector(`td:nth-child(${columnIndex + 1})`)
+                .textContent));
 
             if (currentColumn === columnIndex) {
                 ascending = !ascending; // Toggle sort order
@@ -156,7 +200,8 @@
                 const bValue = b.querySelector(`td:nth-child(${columnIndex + 1})`).textContent;
 
                 if (isNumericColumn) {
-                    return ascending ? parseFloat(aValue) - parseFloat(bValue) : parseFloat(bValue) - parseFloat(aValue);
+                    return ascending ? parseFloat(aValue) - parseFloat(bValue) : parseFloat(bValue) - parseFloat(
+                        aValue);
                 } else {
                     return ascending ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
                 }
@@ -183,7 +228,8 @@
         function updatePaginationInfo() {
             const totalRows = allRows.length;
             const totalPages = Math.ceil(totalRows / rowsPerPage);
-            document.getElementById('paginationInfo').textContent = `Page ${currentPage} of ${totalPages} (${totalRows} rows)`;
+            document.getElementById('paginationInfo').textContent =
+                `Page ${currentPage} of ${totalPages} (${totalRows} rows)`;
         }
 
         // Update header arrows

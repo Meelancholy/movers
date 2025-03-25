@@ -28,34 +28,6 @@
                    <span class="text-red-500 text-sm">{{ $message }}</span>
             @enderror
         </div>
-        <!-- Department Selection -->
-        <div>
-            <label for="department_id" class="block text-lg font-semibold mb-2">Department</label>
-            <select name="department_id" id="department_id"
-                    class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300">
-                @foreach($departments as $department)
-                    <option value="{{ $department->id }}" {{ $employee->department_id == $department->id ? 'selected' : '' }}>{{ $department->name }}</option>
-                @endforeach
-            </select>
-            @error('department_id')
-                   <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
-        </div>
-
-        <!-- Position Selection -->
-        <div>
-            <label for="position_id" class="block text-lg font-semibold mb-2">Position</label>
-            <select name="position_id" id="position_id"
-                    class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300">
-                @foreach($positions as $position)
-                    <option value="{{ $position->id }}" {{ $employee->position_id == $position->id ? 'selected' : '' }}>{{ $position->name }}</option>
-                @endforeach
-            </select>
-            @error('position_id')
-                   <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
-        </div>
-
         <!-- Status Selection -->
         <div>
             <label for="status" class="block text-lg font-semibold mb-2">Status</label>
