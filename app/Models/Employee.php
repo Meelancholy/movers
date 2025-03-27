@@ -16,19 +16,11 @@ class Employee extends Model
     {
         return "{$this->first_name} {$this->last_name}";
     }
-    public function contributions()
+    // In Employee.php model
+    public function adjustments()
     {
-        return $this->hasMany(Contribution::class);
+        return $this->belongsToMany(Adjustment::class, 'employee_adjustment')
+                   ->withPivot('frequency')
+                   ->withTimestamps();
     }
-
-    public function deductions()
-    {
-        return $this->hasMany(Deduction::class);
-    }
-
-    public function bonuses()
-    {
-        return $this->hasMany(Bonus::class);
-    }
-
 }

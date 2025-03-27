@@ -54,7 +54,7 @@ class AddAdjustment extends Component
             'percentage' => $this->percentage,
             'fixedamount' => $this->fixedamount,
         ]);
-        return view('livewire.compensation-and-benefits.add-adjustment');
+        return redirect()->route('compensation.index');
     }
     public function render()
     {

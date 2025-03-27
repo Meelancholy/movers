@@ -24,25 +24,4 @@ class Payroll extends Model
     {
         return $this->belongsTo(Employee::class);
     }
-    public function bonuses()
-    {
-        return $this->belongsToMany(Bonus::class, 'payroll_bonus')
-                    ->withPivot('amount')
-                    ->withTimestamps();
-    }
-
-    public function deductions()
-    {
-        return $this->belongsToMany(Deduction::class, 'payroll_deduction')
-                    ->withPivot('amount')
-                    ->withTimestamps();
-    }
-    public function bonusHistories()
-    {
-        return $this->hasMany(BonusHistory::class);
-    }
-    public function deductionHistories()
-    {
-        return $this->hasMany(BonusHistory::class);
-    }
 }
