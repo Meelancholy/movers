@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Livewire\CompensationAndBenefits;
-use App\Models\Adjustments;
+use App\Models\Adjustment;
 use Livewire\Component;
 
 class Salaryadjustment extends Component
@@ -32,7 +32,7 @@ class Salaryadjustment extends Component
     }
     public function render() {
         // Fetch all adjustments
-        $adjustments = Adjustments::all();
+        $adjustments = Adjustment::all();
 
         // Group adjustments by the 'adjustment' field
         $groupedAdjustments = $adjustments->groupBy('adjustment');
@@ -41,7 +41,7 @@ class Salaryadjustment extends Component
     }
     public function deleteAdjustment($id)
     {
-        $adjustment = Adjustments::findOrFail($id);
+        $adjustment = Adjustment::findOrFail($id);
         $adjustment->delete();
         return redirect()->back()->with('success', 'Adjustment deleted successfully.');
     }

@@ -23,9 +23,9 @@ public function index()
     // Process employee data
     foreach ($employees as $employee) {
         // Column chart data: Group by age and gender
+
         $bday = new \DateTime($employee->bdate); // Use global namespace
         $today = new \DateTime(); // Use global namespace
-        // Calculate age
         $age = $today->diff($bday)->y; // Extract years from DateInterval
 
         $gender = $employee->gender;
@@ -52,9 +52,9 @@ public function index()
             $group = '60+';
         }
 
-        if ($gender === 'male') {
+        if ($gender === 'Male') {
             $maleCounts[$group]++;
-        } elseif ($gender === 'female') {
+        } elseif ($gender === 'Female') {
             $femaleCounts[$group]++;
         }
 

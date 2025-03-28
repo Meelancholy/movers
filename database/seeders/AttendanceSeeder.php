@@ -16,21 +16,10 @@ class AttendanceSeeder extends Seeder
 
         // Create attendance records for the past 30 days for each employee
         foreach ($employees as $employee) {
-            for ($i = 0; $i < 30; $i++) {
-                $date = Carbon::now()->subDays($i);
-
-                // Skip weekends (optional)
-                if ($date->isWeekend()) {
-                    continue;
-                }
-
-                Attendance::create([
-                    'employee_id' => $employee->id,
-                    'hours_worked' => rand(4, 12), // Random hours worked between 4 and 12
-                    'created_at' => $date,
-                    'updated_at' => $date,
-                ]);
-            }
+            Attendance::create([
+                'employee_id' => $employee->id,
+                'hours_worked' => rand(4, 12), // Random hours worked between 4 and 12
+            ]);
         }
     }
 }

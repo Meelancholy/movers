@@ -23,4 +23,14 @@ class Employee extends Model
                    ->withPivot('frequency')
                    ->withTimestamps();
     }
+        // In Employee model
+    public function salary()
+    {
+        return $this->hasOne(EmployeeSalary::class);
+    }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
 }
