@@ -5,6 +5,7 @@ use App\Http\Controllers\EmployeeDashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CompensationController;
 use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\PayrollForecastController;
 use App\Livewire\CompensationAndBenefits\Salaryadjustment;
 use Illuminate\Support\Facades\Route;
 
@@ -50,7 +51,6 @@ Route::middleware('auth')->group(function () {
     });
     Route::get('/payroll-forecast', [PayrollForecastController::class, 'index'])->name('payroll-forecast.index');
     Route::post('/payroll-forecast/forecast', [PayrollForecastController::class, 'forecast'])->name('payroll-forecast.forecast');
-
 });
 
 require __DIR__.'/auth.php';

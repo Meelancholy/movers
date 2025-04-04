@@ -3,7 +3,7 @@
 @section('content')
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <div class="mx-auto bg-white p-6 rounded-lg shadow-md">
-    <h1 class="text-3xl font-bold text-gray-700">HR Dashboard</h1>
+    <h1 class="text-3xl font-bold text-gray-700">Dashboard</h1>
 </div>
 
 <!-- Key Metrics Section -->

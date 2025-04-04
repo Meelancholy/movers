@@ -54,16 +54,6 @@
     <ul class="ml-auto flex hidden items-center gap-4 sm:flex">
         <!-- User Pic -->
         <li x-data="{ userDropDownIsOpen: false, openWithKeyboard: false }" @keydown.esc.window="userDropDownIsOpen = false, openWithKeyboard = false" class="relative flex items-center">
-            <div x-data="{ NotifisOpen: false, openedWithKeyboard: false }" class="mx-3 relative" @keydown.esc.window="NotifisOpen = false, openedWithKeyboard = false">
-                <!-- Toggle Button -->
-                <button class="flex items-center" type="button" @click="NotifisOpen = ! NotifisOpen" aria-haspopup="true" @keydown.space.prevent="openedWithKeyboard = true" @keydown.enter.prevent="openedWithKeyboard = true" @keydown.down.prevent="openedWithKeyboard = true" :class="NotifisOpen || openedWithKeyboard ? 'text-neutral-900 dark:text-white' : 'text-neutral-600 dark:text-neutral-300'" :aria-expanded="NotifisOpen || openedWithKeyboard">
-                    <svg fill="SlateGray" class="size-10 shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M10,21h4a2,2,0,0,1-4,0ZM3.076,18.383a1,1,0,0,1,.217-1.09L5,15.586V10a7.006,7.006,0,0,1,6-6.92V2a1,1,0,0,1,2,0V3.08A7.006,7.006,0,0,1,19,10v5.586l1.707,1.707A1,1,0,0,1,20,19H4A1,1,0,0,1,3.076,18.383ZM6.414,17H17.586l-.293-.293A1,1,0,0,1,17,16V10A5,5,0,0,0,7,10v6a1,1,0,0,1-.293.707Z"></path></g></svg>                        <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">1</div>
-                </button>
-                <!-- Dropdown Menu -->
-                <div x-cloak x-show="NotifisOpen || openedWithKeyboard" x-transition x-trap="openedWithKeyboard" @click.outside="NotifisOpen = false, openedWithKeyboard = false" @keydown.down.prevent="$focus.wrap().next()" @keydown.up.prevent="$focus.wrap().previous()" class="absolute top-11 right-0 flex w-full min-w-[12rem] flex-col overflow-hidden rounded-md border border-neutral-300 bg-white p-4" role="menu">
-                    <p>It's a Prank!</p>
-                </div>
-            </div>
             <button @click="userDropDownIsOpen = ! userDropDownIsOpen" :aria-expanded="userDropDownIsOpen" @keydown.space.prevent="openWithKeyboard = true" @keydown.enter.prevent="openWithKeyboard = true" @keydown.down.prevent="openWithKeyboard = true" class="flex items-center rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 mr-8" aria-controls="userMenu">
                 <img src="{{ asset('images/profilepicdemo.jpg') }}" alt="User Profile" class="size-10 rounded-lg object-cover border" />
                 <span class="text-sm font-medium text-neutral-900 ml-2">{{ Auth::user()->name }}</span>
