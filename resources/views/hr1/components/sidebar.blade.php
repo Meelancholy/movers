@@ -98,14 +98,7 @@
                 class="flex items-center rounded-md gap-2 px-2 py-3 text-sm font-medium text-neutral-600 underline-offset-2 hover:bg-blue-600/5 hover:text-blue-900 focus-visible:underline focus:outline-none"
                 href="{{ route('payroll-forecast.index') }}"
             @endif>
-            <svg fill="currentColor" class="size-5 shrink-0" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_iconCarrier">
-                    <g data-name="10. Growth" id="_10._Growth">
-                        <path d="M17,12.05V11h3a5,5,0,0,0,5-5V4a1,1,0,0,0-1-1H20a4.92,4.92,0,0,0-3,1V1a1,1,0,0,0-2,0V2a4.92,4.92,0,0,0-3-1H8A1,1,0,0,0,7,2V4a5,5,0,0,0,5,5h3v3.05a10,10,0,1,0,2,0Zm3-7h3V6a3,3,0,0,1-3,3H17V8A3,3,0,0,1,20,5ZM9,4V3h3a3,3,0,0,1,3,3V7H12A3,3,0,0,1,9,4Zm7,26a8,8,0,1,1,8-8A8,8,0,0,1,16,30Z"></path>
-                        <path d="M16,19h2a1,1,0,0,0,0-2H17a1,1,0,0,0-2,0v.18A3,3,0,0,0,16,23a1,1,0,0,1,0,2H14a1,1,0,0,0,0,2h1a1,1,0,0,0,2,0v-.18A3,3,0,0,0,16,21a1,1,0,0,1,0-2Z"></path>
-                    </g>
-                </g>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-up-down-icon lucide-trending-up-down"><path d="M14.828 14.828 21 21"/><path d="M21 16v5h-5"/><path d="m21 3-9 9-4-4-6 6"/><path d="M21 8V3h-5"/></svg>
             <span>Payroll Forecasting</span>
         </a>
     </div>

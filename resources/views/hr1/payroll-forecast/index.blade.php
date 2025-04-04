@@ -102,7 +102,19 @@
                                     @endphp
                                     <span class="{{ $color }}">{{ $icon }} {{ number_format(abs($change), 2) }}%</span>
                                 @else
-                                    <span class="text-gray-400">N/A</span>
+                                    @php
+                                        $lastHistorical = last($grossPayData->toArray());
+                                        if ($lastHistorical > 0) {
+                                            $change = (($forecast['values'][$index] - $lastHistorical) / $lastHistorical) * 100;
+                                            $color = $change >= 0 ? 'text-green-600' : 'text-red-600';
+                                            $icon = $change >= 0 ? '▲' : '▼';
+                                        }
+                                    @endphp
+                                    @if($lastHistorical > 0)
+                                        <span class="{{ $color }}">{{ $icon }} {{ number_format(abs($change), 2) }}%</span>
+                                    @else
+                                        <span class="text-gray-400">N/A</span>
+                                    @endif
                                 @endif
                             </td>
                         </tr>
