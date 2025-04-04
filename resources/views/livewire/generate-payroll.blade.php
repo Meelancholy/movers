@@ -1,197 +1,238 @@
+<div class="">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-2 bg-white p-6 rounded-lg">
+        <h1 class="text-2xl font-bold text-gray-800">Payroll Management</h1>
+    </div>
 
-<div class="container min-w-full bg-white p-6 rounded-lg shadow-md md:p-12">
-    <div x-data="{ selectedTab: 'employeeList' }" class="w-full">
-        <div class="flex justify-between pb-3">
-            <h1 class="text-3xl font-bold  mr-auto">Payroll Generation</h1>
+    <!-- Main Content -->
+    <div class="flex flex-col lg:flex-row gap-6">
+        <!-- Cycles Sidebar -->
+        <div class="lg:w-1/4 bg-white rounded-lg shadow p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold">Payroll Cycles</h2>
+                <button wire:click="$toggle('showCreateCycleForm')"
+                        class="p-1 text-blue-600 hover:bg-blue-50 rounded-full"
+                        title="Add new cycle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Create Cycle Form -->
+            @if ($showCreateCycleForm)
+            <div class="mb-4 p-3 border rounded-lg bg-gray-50">
+                <h3 class="font-medium mb-2">New Payroll Cycle</h3>
+                <form wire:submit.prevent="createCycle">
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                            <input wire:model="newCycle.start_date" type="date"
+                                   class="w-full p-2 border rounded text-sm">
+                            @error('newCycle.start_date') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                            <input wire:model="newCycle.end_date" type="date"
+                                   class="w-full p-2 border rounded text-sm">
+                            @error('newCycle.end_date') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+                        <div class="flex justify-end space-x-2 pt-2">
+                            <button type="button" wire:click="$toggle('showCreateCycleForm')"
+                                    class="px-3 py-1 text-sm border rounded hover:bg-gray-100">
+                                Cancel
+                            </button>
+                            <button type="submit"
+                                    class="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700">
+                                Create
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            @endif
+
+            <!-- Cycles List -->
+            <div class="space-y-2 max-h-[500px] overflow-y-auto">
+                @foreach ($cycles as $cycle)
+                <div wire:click="selectCycle({{ $cycle->id }})"
+                     class="p-3 border rounded-lg cursor-pointer transition-colors
+                            {{ $selectedCycleId === $cycle->id ? 'bg-blue-50 border-blue-200' : 'hover:bg-gray-50' }}">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-medium text-sm">
+                                {{ $cycle->start_date->format('M d') }} - {{ $cycle->end_date->format('M d, Y') }}
+                            </h3>
+                            <p class="text-xs text-gray-500 mt-1">
+                                Status: <span class="capitalize">{{ $cycle->status }}</span>
+                            </p>
+                        </div>
+                        <button wire:click.stop="confirmDeleteCycle({{ $cycle->id }})"
+                                class="text-gray-400 hover:text-red-500 p-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                @endforeach
+            </div>
         </div>
 
-        @if(session('success'))
-            <div class="mb-5 relative w-full overflow-hidden rounded-md border border-green-500 bg-white text-neutral-600 text-black" role="alert">
-                <div class="flex w-full items-center gap-2 bg-green-500/10 p-4">
-                    <div class="bg-green-500/15 text-green-500 rounded-full p-1" aria-hidden="true">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-6" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <div class="ml-2">
-                        <h3 class="text-sm font-semibold text-green-500">Success</h3>
-                        <p class="text-xs font-medium sm:text-sm">{{ session('success') }}</p>
-                    </div>
+        <!-- Payroll Content -->
+        <div class="lg:w-3/4 bg-white rounded-lg shadow p-4">
+            @if (session('message'))
+                <div class="mb-4 p-3 bg-green-100 text-green-700 rounded text-sm">
+                    {{ session('message') }}
                 </div>
-            </div>
-        @endif
-        <div x-data="{
-            employees: {{ json_encode($employeePayrollData) }},
-            search: '',
-            modalIsOpen: false,
-            selectedEmployeeId: null,
-            currentPage: 1,
-            perPage: 10,
-            rowsPerPageOptions: [10, 20, 50, 100],
-            showContextMenu: false,
-            contextMenuPosition: { x: 0, y: 0 },
-            rightClickedEmployeeId: null,
-            get totalPages() {
-                return Math.ceil(this.filteredEmployees.length / this.perPage);
-            },
-            get filteredEmployees() {
-                const query = this.search.toLowerCase();
-                return [...$refs.employees.children].filter(row => {
-                    const cells = row.querySelectorAll('td');
-                    const id = cells[0]?.textContent.trim().toLowerCase();
-                    const name = cells[1]?.textContent.trim().toLowerCase();
-                    return id.includes(query) || name.includes(query);
-                });
-            },
-            paginatedEmployees() {
-                const start = (this.currentPage - 1) * this.perPage;
-                const end = start + this.perPage;
-                return this.filteredEmployees.slice(start, end);
-            },
-            openContextMenu(event, employeeId) {
-                event.preventDefault();
-                this.rightClickedEmployeeId = employeeId;
-                this.contextMenuPosition = { x: event.clientX, y: event.clientY };
-                this.showContextMenu = true;
-            },
-            closeContextMenu() {
-                this.showContextMenu = false;
-            }
-        }" class="overflow-x-auto rounded-lg border md:overflow-x-visible">
-            <!-- Search Input -->
-            <div class="flex justify-between items-center p-4">
-                <div class="relative flex w-full max-w-xs flex-col gap-1 text-neutral-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="absolute left-2.5 top-1/2 size-5 -translate-y-1/2 text-neutral-600/50">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                    </svg>
-                    <input
-                        type="search"
-                        x-model="search"
-                        class="w-full rounded-full bg-neutral-100 py-2 pl-10 pr-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-75"
-                        placeholder="Search by ID or Name"
-                        aria-label="search"
-                    />
+            @endif
+            @if (session('error'))
+                <div class="mb-4 p-3 bg-red-100 text-red-700 rounded text-sm">
+                    {{ session('error') }}
                 </div>
-                <!-- Rows Per Page Dropdown -->
-                <div class="flex items-center gap-2">
-                    <label for="rowsPerPage" class="text-sm text-gray-600">Rows per page:</label>
-                    <select id="rowsPerPage"
-                            x-model="perPage"
-                            @change="currentPage = 1"
-                            class="border border-gray-300 rounded-md p-1 text-sm">
-                        <template x-for="option in rowsPerPageOptions" :key="option">
-                            <option :value="option" x-text="option"></option>
-                        </template>
-                    </select>
-                </div>
-            </div>
+            @endif
 
-            <table class="min-w-full bg-white border table-auto md:w-full">
-                <thead class="text-gray-500 border">
-                    <tr>
-                        <th class="p-4 text-sm text-center">ID</th>
-                        <th class="text-sm text-left">NAME</th>
-                        <th class="text-sm text-left">BASE SALARY</th>
-                        <th class="text-sm text-left">GROSS SALARY</th>
-                        <th class="text-sm text-left">WITHOLDINGS</th>
-                        <th class="text-sm text-left">NET SALARY</th>
-                        <th class="text-sm text-left"></th>
-                    </tr>
-                </thead>
-                <tbody x-ref="employees">
-                    @if($employees->isEmpty())
-                        <tr>
-                            <td colspan="6" class="p-4 text-center ">
-                                <strong>No employees found</strong>
-                            </td>
-                        </tr>
-                    @else
-                    @foreach($employees as $employee)
-                    <tr
-                        x-show="paginatedEmployees().includes($el)"
-                        x-transition
-                        @contextmenu.prevent="openContextMenu($event, {{ $employee->id }})"
-                        @click="closeContextMenu()"
-                        class="hover:bg-neutral-100 transition duration-300 ease-in-out"
-                    >
-                        <td class="p-3 text-center">{{ $employee->id }}</td>
-                        <td class="">
-                            <strong>{{ $employee->last_name }}, {{ $employee->first_name }}</strong>
-                        </td>
-                        <td class="">₱{{ $employeePayrollData->firstWhere('id', $employee->id)['baseSalary'] }}</td>
-                        <td class="">₱{{ $employeePayrollData->firstWhere('id', $employee->id)['grossSalary'] }}</td>
-                        <td class="">₱{{ $employeePayrollData->firstWhere('id', $employee->id)['withholdings'] }}</td>
-                        <td class="p-3">₱{{ $employeePayrollData->firstWhere('id', $employee->id)['netSalary'] }}</td>
-                        <td>
-                            <a href="{{ route('payroll.show', ['employeeId' => $employee->id]) }}"
-                                class="bg-green-400 text-white rounded-full p-2">
-                                Generate Payroll
-                            </a>
-                        </td>
-                    </tr>
-                    @endforeach
-                    @endif
-                </tbody>
-            </table>
-            <div x-show="showContextMenu"
-                    x-transition
-                    @click.outside="closeContextMenu()"
-                    :style="{ top: contextMenuPosition.y + 'px', left: contextMenuPosition.x + 'px' }"
-                    class="fixed bg-white border border-gray-300 rounded shadow-lg z-50">
-                <ul class="py-1">
-                    <li>
-                        <a :href="'/payroll/show/' + rightClickedEmployeeId"
-                            class="block px-4 py-2 text-sm hover:bg-gray-100">Generate Payroll</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- Pagination Controls -->
-            <nav aria-label="pagination" class="my-4">
-                <ul class="flex flex-shrink-0 justify-center items-center gap-2 text-sm font-medium">
-                    <li>
-                        <a href="#"
-                            @click.prevent="currentPage > 1 ? currentPage-- : null"
-                            class="flex items-center rounded-md p-2 bg-white border"
-                            aria-label="previous page"
-                            :class="{
-                                'text-gray-400 pointer-events-none': currentPage === 1,
-                                'text-blue-500 bg-white hover:bg-blue-300': currentPage !== 1
-                            }">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-6">
-                                <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
-                            </svg>
-                            Previous
-                        </a>
-                    </li>
-                    <template x-for="page in totalPages" :key="page">
-                        <li>
-                            <a href="#"
-                            @click.prevent="currentPage = page"
-                            class="flex size-6 items-center justify-center rounded-full p-5 border"
-                            :class="page === currentPage ? 'text-gray-400 pointer-events-none' : 'text-blue-500 bg-white hover:bg-blue-300'"
-                            :aria-current="page === currentPage ? 'page' : false"
-                            :aria-label="'page ' + page">
-                                <span x-text="page"></span>
-                            </a>
-                        </li>
-                    </template>
-                    <li>
-                        <a href="#"
-                            @click.prevent="currentPage < totalPages ? currentPage++ : null"
-                            class="flex items-center rounded-md p-2 bg-white border"
-                            aria-label="next page"
-                            :class="{
-                                'text-gray-400 pointer-events-none': currentPage === totalPages,
-                                'text-blue-500 bg-white hover:bg-blue-300': currentPage !== totalPages
-                            }">
-                            Next
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-6">
-                                <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+            @if ($selectedCycle)
+                <div class="mb-4 flex justify-between items-center">
+                    <h2 class="text-lg font-semibold">
+                        {{ $selectedCycle->start_date->format('M d, Y') }} - {{ $selectedCycle->end_date->format('M d, Y') }}
+                    </h2>
+                    <div class="text-sm text-gray-500">
+                        {{ $selectedCycle->payrolls->count() }} of {{ $employees->count() }} processed
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 text-sm">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-3 py-2 text-left">Employee</th>
+                                <th class="px-3 py-2 text-left">Position</th>
+                                <th class="px-3 py-2 text-center">Status</th>
+                                <th class="px-3 py-2 text-right">Amount</th>
+                                <th class="px-3 py-2 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            @foreach ($employees as $employee)
+                            @php
+                                $payroll = $selectedCycle->payrolls->firstWhere('employee_id', $employee->id);
+                            @endphp
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-3 py-2 whitespace-nowrap">
+                                    {{ $employee->first_name }} {{ $employee->last_name }}
+                                </td>
+                                <td class="px-3 py-2 whitespace-nowrap">
+                                    {{ $employee->position }}
+                                </td>
+                                <td class="px-3 py-2 text-center">
+                                    @if($payroll)
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                                            Processed
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
+                                            Pending
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="px-3 py-2 text-right whitespace-nowrap">
+                                    @if($payroll)
+                                        PHP {{ number_format($payroll->net_pay, 2) }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td class="px-3 py-2 text-right">
+                                    @if($payroll)
+                                        <a wire:click="downloadPdf({{ $payroll->id }})"
+                                            class="text-blue-600 hover:text-blue-800 text-sm flex items-center justify-end cursor-pointer">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                            </svg>
+                                            PDF
+                                        </a>
+                                    @else
+                                        <button wire:click="prepareGeneratePayroll({{ $employee->id }})"
+                                            class="text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-right">
+                                            Generate
+                                        </button>
+                                    @endif
+                                </td>
+
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <div class="text-center py-8 text-gray-500">
+                    <p>Please select a payroll cycle from the sidebar</p>
+                </div>
+            @endif
         </div>
     </div>
+
+    <!-- Delete Cycle Modal -->
+    @if ($showDeleteModal)
+    <div class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg max-w-md w-full p-6">
+            <h3 class="font-bold text-lg mb-3">Confirm Deletion</h3>
+            <p class="mb-5">Are you sure you want to delete this payroll cycle? This action cannot be undone.</p>
+            <div class="flex justify-end space-x-3">
+                <button wire:click="$set('showDeleteModal', false)"
+                        class="px-4 py-2 border rounded hover:bg-gray-50">
+                    Cancel
+                </button>
+                <button wire:click="deleteCycle"
+                        class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    <!-- Generate Payroll Modal -->
+    @if ($showGenerateConfirmation)
+    <div class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg max-w-md w-full p-6">
+            <h3 class="font-bold text-lg mb-3">Confirm Payroll Generation</h3>
+            <div class="mb-4">
+                <p class="font-medium">{{ $employeeToGenerate->first_name }} {{ $employeeToGenerate->last_name }}</p>
+                <p class="text-sm text-gray-600">{{ $employeeToGenerate->position }}</p>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded mb-4">
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                    <div>Hours Worked:</div>
+                    <div class="text-right">{{ $calculatedPayroll['hours_worked'] }}</div>
+
+                    <div>Base Pay:</div>
+                    <div class="text-right">PHP {{ number_format($calculatedPayroll['base_pay'], 2) }}</div>
+
+                    <div>Gross Pay:</div>
+                    <div class="text-right">PHP {{ number_format($calculatedPayroll['gross_pay'], 2) }}</div>
+
+                    <div>Deductions:</div>
+                    <div class="text-right">PHP {{ number_format($calculatedPayroll['adjustments_total'], 2) }}</div>
+
+                    <div class="font-bold">Net Pay:</div>
+                    <div class="text-right font-bold">PHP {{ number_format($calculatedPayroll['net_pay'], 2) }}</div>
+                </div>
+            </div>
+
+            <div class="flex justify-end space-x-3">
+                <button wire:click="$set('showGenerateConfirmation', false)"
+                        class="px-4 py-2 border rounded hover:bg-gray-50">
+                    Cancel
+                </button>
+                <button wire:click="confirmGeneratePayroll"
+                        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+    @endif
 </div>

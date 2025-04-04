@@ -43,7 +43,7 @@
                             Position ▲▼</th>
                         <th class="p-3 text-left cursor-pointer text-gray-700 hover:bg-gray-400" onclick="sortTable(7)">
                             Hire Date ▲▼</th>
-                        <th class="p-3 text-left cursor-pointer text-gray-700 hover:bg-gray-400"></th>
+                        <th class="text-left cursor-pointer text-gray-700 hover:bg-gray-400"></th>
                     </tr>
                 </thead>
                 <tbody id="employeeTableBody">
@@ -80,12 +80,13 @@
                             <td class="p-3">{{ $employee->contact }}</td>
                             <td class="p-3">{{ $employee->department }}</td>
                             <td class="p-3">{{ $employee->position }}</td>
-                            <td class="p-3">{{ $employee->created_at->format('Y-m-d') }}</td>
-                            <td class=""> <!-- Dropdown Menu -->
+                            <td class="p-3" data-timestamp="{{ $employee->created_at->getTimestamp() }}">
+                                {{ $employee->created_at->format('Y-m-d') }}
+                            </td>
+                            <td class="">
                                 <div x-data="{ isOpen: false, openedWithKeyboard: false }"
                                     x-on:keydown.esc.prevent="isOpen = false, openedWithKeyboard = false"
                                     class="relative w-fit">
-                                    <!-- Toggle Button -->
                                     <button type="button" aria-label="context menu" x-on:click="isOpen = ! isOpen"
                                         x-on:contextmenu.prevent="isOpen = true"
                                         x-on:keydown.space.prevent="openedWithKeyboard = true"
@@ -96,10 +97,8 @@
                                             'text-on-surface-strong dark:text-on-surface-dark-strong' :
                                             'text-on-surface dark:text-on-surface-dark'"
                                         x-bind:aria-expanded="isOpen || openedWithKeyboard" aria-haspopup="true">
-                                        <!-- Placeholder for the menu icon -->
                                         <span class="w-8 h-8">☰</span>
                                     </button>
-                                    <!-- Dropdown Menu -->
                                     <div x-cloak x-show="isOpen || openedWithKeyboard" x-transition
                                         x-trap="openedWithKeyboard"
                                         x-on:click.outside="isOpen = false, openedWithKeyboard = false"
@@ -107,10 +106,6 @@
                                         x-on:keydown.up.prevent="$focus.wrap().previous()"
                                         class="absolute top-8 right-0 flex w-fit min-w-48 flex-col divide-y divide-outline overflow-hidden rounded-radius border-outline bg-white dark:divide-outline-dark dark:border-outline-dark"
                                         role="menu">
-                                        <a href=""
-                                            class="block px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none">
-                                            View
-                                        </a>
                                         <a href="{{ route('employee.edit', $employee->id) }}"
                                             class="block px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-800/5 hover:text-neutral-900 focus-visible:bg-neutral-800/10 focus-visible:text-neutral-900 focus-visible:outline-none">
                                             Edit
@@ -135,15 +130,12 @@
             <div class="mt-4 flex justify-between items-center p-2">
                 <div id="paginationInfo" class="text-sm"></div>
                 <div class="flex space-x-2">
-                    <button id="prevPage"
-                        class="p-2 text-white bg-blue-500 rounded-lg hover:bg-blue-700">Previous</button>
-                    <button id="nextPage"
-                        class="p-2 text-white bg-blue-500 rounded-lg hover:bg-blue-700">Next</button>
+                    <button id="prevPage" class="p-2 text-white bg-blue-500 rounded-lg hover:bg-blue-700">Previous</button>
+                    <button id="nextPage" class="p-2 text-white bg-blue-500 rounded-lg hover:bg-blue-700">Next</button>
                 </div>
             </div>
         </div>
     </div>
-
 
     <script>
         let currentColumn = null;
@@ -163,7 +155,7 @@
         // JavaScript for Rows Per Page
         document.getElementById('rowsPerPage').addEventListener('change', function() {
             rowsPerPage = parseInt(this.value);
-            currentPage = 1; // Reset to first page
+            currentPage = 1;
             updateTable();
         });
 
@@ -183,26 +175,41 @@
             }
         });
 
-        // JavaScript for Sorting
+        // JavaScript for Sorting with Timestamp support
         function sortTable(columnIndex) {
-            const isNumericColumn = !isNaN(parseFloat(allRows[0].querySelector(`td:nth-child(${columnIndex + 1})`)
-                .textContent));
+            if (allRows.length === 0) return;
+
+            const columnContent = allRows[0].querySelector(`td:nth-child(${columnIndex + 1})`).textContent;
+            const isNumericColumn = !isNaN(parseFloat(columnContent));
+            const isDateColumn = columnIndex === 7; // Hire Date is the 8th column (index 7)
 
             if (currentColumn === columnIndex) {
-                ascending = !ascending; // Toggle sort order
+                ascending = !ascending;
             } else {
                 currentColumn = columnIndex;
-                ascending = true; // Default to ascending for new column
+                ascending = true;
             }
 
             allRows.sort((a, b) => {
-                const aValue = a.querySelector(`td:nth-child(${columnIndex + 1})`).textContent;
-                const bValue = b.querySelector(`td:nth-child(${columnIndex + 1})`).textContent;
+                const aCell = a.querySelector(`td:nth-child(${columnIndex + 1})`);
+                const bCell = b.querySelector(`td:nth-child(${columnIndex + 1})`);
 
-                if (isNumericColumn) {
-                    return ascending ? parseFloat(aValue) - parseFloat(bValue) : parseFloat(bValue) - parseFloat(
-                        aValue);
-                } else {
+                // For timestamp columns, use the data-timestamp attribute
+                if (isDateColumn) {
+                    const aTimestamp = parseInt(aCell.getAttribute('data-timestamp'));
+                    const bTimestamp = parseInt(bCell.getAttribute('data-timestamp'));
+                    return ascending ? aTimestamp - bTimestamp : bTimestamp - aTimestamp;
+                }
+                // For numeric columns
+                else if (isNumericColumn) {
+                    const aValue = parseFloat(aCell.textContent);
+                    const bValue = parseFloat(bCell.textContent);
+                    return ascending ? aValue - bValue : bValue - aValue;
+                }
+                // For text columns
+                else {
+                    const aValue = aCell.textContent.toLowerCase();
+                    const bValue = bCell.textContent.toLowerCase();
                     return ascending ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
                 }
             });
@@ -219,26 +226,37 @@
 
             const tableBody = document.getElementById('employeeTableBody');
             tableBody.innerHTML = '';
-            visibleRows.forEach(row => tableBody.appendChild(row));
+            visibleRows.forEach(row => tableBody.appendChild(row.cloneNode(true)));
 
             updatePaginationInfo();
+            updatePaginationButtons();
         }
 
         // Update pagination information
         function updatePaginationInfo() {
             const totalRows = allRows.length;
             const totalPages = Math.ceil(totalRows / rowsPerPage);
+            const startRow = totalRows > 0 ? (currentPage - 1) * rowsPerPage + 1 : 0;
+            const endRow = Math.min(currentPage * rowsPerPage, totalRows);
+
             document.getElementById('paginationInfo').textContent =
-                `Page ${currentPage} of ${totalPages} (${totalRows} rows)`;
+                `Showing ${startRow}-${endRow} of ${totalRows} employees`;
+        }
+
+        // Update pagination button states
+        function updatePaginationButtons() {
+            const totalPages = Math.ceil(allRows.length / rowsPerPage);
+            document.getElementById('prevPage').disabled = currentPage <= 1;
+            document.getElementById('nextPage').disabled = currentPage >= totalPages;
         }
 
         // Update header arrows
         function updateHeaderArrows(columnIndex, ascending) {
             const headers = document.querySelectorAll('th');
             headers.forEach((header, index) => {
-                header.innerHTML = header.innerHTML.replace('▲', '').replace('▼', ''); // Remove existing arrows
+                header.innerHTML = header.innerHTML.replace('▲', '').replace('▼', '');
                 if (index === columnIndex) {
-                    header.innerHTML += ascending ? ' ▲' : ' ▼'; // Add arrow for current column
+                    header.innerHTML += ascending ? ' ▲' : ' ▼';
                 }
             });
         }
@@ -246,15 +264,15 @@
         // Filter table based on search query
         function filterTable() {
             const searchQuery = document.getElementById('searchInput').value.toLowerCase();
-            allRows = Array.from(document.querySelectorAll('#employeeTableBody tr'));
+            const originalRows = Array.from(document.querySelectorAll('#employeeTableBody tr'));
 
-            allRows = allRows.filter(row => {
+            allRows = originalRows.filter(row => {
                 const id = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
                 const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
                 return id.includes(searchQuery) || name.includes(searchQuery);
             });
 
-            currentPage = 1; // Reset to first page after filtering
+            currentPage = 1;
             updateTable();
         }
     </script>

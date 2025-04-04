@@ -22,7 +22,6 @@ class CreateEmployeesTable extends Migration
             $table->string('contact');
             $table->timestamps();
         });
-
     }
 
     public function down()

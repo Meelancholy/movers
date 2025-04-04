@@ -1,84 +1,77 @@
-<div class="container min-w-full bg-white p-6 rounded-lg shadow-md md:p-12">
-    <!-- Title Section -->
-    <div class="flex justify-between items-center mb-8">
-        <h1 class="text-3xl font-bold text-gray-800">Payroll Records</h1>
+<div class="">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 bg-white rounded-lg p-6">
+        <h1 class="text-2xl font-bold text-gray-800">Payroll History</h1>
     </div>
-
-    @if(session('success'))
-        <div class="mb-5 relative w-full overflow-hidden rounded-md border border-green-500 bg-white text-neutral-600 text-black" role="alert">
-            <div class="flex w-full items-center gap-2 bg-green-500/10 p-4">
-                <div class="bg-green-500/15 text-green-500 rounded-full p-1" aria-hidden="true">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-6" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd" />
-                    </svg>
-                </div>
-                <div class="ml-2">
-                    <h3 class="text-sm font-semibold text-green-500">Success</h3>
-                    <p class="text-xs font-medium sm:text-sm">{{ session('success') }}</p>
-                </div>
-            </div>
-        </div>
-    @endif
-
-    <!-- Filter and Search Form -->
-    <form method="GET" class="mb-8" wire:submit.prevent="searchEmployees">
-        <div class="flex items-center justify-between w-full">
-            <!-- Left-aligned Filters -->
-            <div class="flex">
-                <div class="flex items-center border border-gray-300 rounded-l-full py-2 pl-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8" />
-                        <path d="m21 21-4.3-4.3" />
-                    </svg>
-                    <input type="text" wire:model="search" placeholder="Search Employees..." class="form-input focus:outline-none w-64" />
-                </div>
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-10 py-2 rounded-r-full transition shadow-lg">
-                    Search
-                </button>
-            </div>
-        </div>
-    </form>
-
     <!-- Payroll Table -->
-    <div class="overflow-x-auto rounded-lg shadow-lg mb-8 md:overflow-x-visible">
-        <table class="min-w-full bg-white border-collapse table-auto md:w-full">
-            <thead class="bg-blue-100 text-gray-800">
-                <tr>
-                    <th class="p-4 text-left">Employee ID</th>
-                    <th class="p-4 text-left">Employee Name</th>
-                    <th class="p-4 text-center">Salary</th>
-                    <th class="p-4 text-center">Gross Salary</th>
-                    <th class="p-4 text-center">Withholdings</th>
-                    <th class="p-4 text-center">Net Salary</th>
-                    <th class="p-4 text-left">Date and Time</th>
-                    <th class="p-4 text-center">View</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($payrolls as $payroll)
-                <tr class="hover:bg-blue-50 transition duration-300 ease-in-out">
-                    <td class="p-4 text-gray-800">{{ $payroll->employee->id }}</td>
-                    <td class="p-4 text-gray-800"><strong>{{ $payroll->employee->first_name . ' ' . $payroll->employee->last_name }}</strong></td>
-                    <td class="p-4 text-center text-blue-500"><strong>₱{{ number_format($payroll->salary, 2) }}</strong></td>
-                    <td class="p-4 text-center text-green-500"><strong>₱{{ number_format($payroll->gross_salary, 2) }}</strong></td>
-                    <td class="p-4 text-center text-red-500"><strong>₱{{ number_format($payroll->withholdings, 2) }}</strong></td>
-                    <td class="p-4 text-center text-yellow-500"><strong>₱{{ number_format($payroll->net_salary, 2) }}</strong></td>
-                    <td class="p-4">{{ $payroll->created_at->format('Y-m-d') }}</td>
-                    <td class="p-4 text-center">
-                        <a href="{{ route('payroll.viewRecord', $payroll->id) }}" class="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-600">View</a>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="8" class="p-4 text-center text-gray-500">No payroll records found.</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Employee</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Hours</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Gross Pay</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Deductions</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Net Pay</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @forelse($payrolls as $payroll)
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div>
+                                        <div class="font-medium text-gray-900">
+                                            {{ $payroll->employee->first_name }} {{ $payroll->employee->last_name }}
+                                        </div>
+                                        <div class="text-sm text-gray-500">
+                                            {{ $payroll->employee->position }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
+                                {{ $payroll->hours_worked }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium text-green-600">
+                                PHP {{ number_format($payroll->gross_pay, 2) }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium text-red-600">
+                                PHP {{ number_format($payroll->adjustments_total, 2) }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-blue-600">
+                                PHP {{ number_format($payroll->net_pay, 2) }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end space-x-2">
+                                    <button
+                                        wire:click="downloadPdf({{ $payroll->id }})"
+                                        class="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                    >
+                                        <svg class="-ml-0.5 mr-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                        PDF
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-500">
+                                No payroll records found
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <!-- Pagination Links -->
-    <div class="mt-6 flex justify-center">
+    <!-- Pagination -->
+    <div class="mt-4">
         {{ $payrolls->links() }}
     </div>
 </div>

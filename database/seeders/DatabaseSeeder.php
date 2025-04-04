@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
             EmployeeManagementSeeder::class,
             AttendanceSeeder::class,
             EmployeeSalarySeeder::class,
+            CyclesSeeder::class,
         ]);
     }
 }

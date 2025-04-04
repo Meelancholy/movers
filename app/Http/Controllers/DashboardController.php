@@ -4,76 +4,145 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Employee;
+use App\Models\Attendance;
+use App\Models\Payroll;
+use App\Models\Cycle;
+use App\Models\Adjustment;
+use App\Models\PayrollAdjustment;
+use Carbon\Carbon;
+
 class DashboardController extends Controller
 {
-    // EmployeeController.php
-public function index()
-{
-    // Fetch all employees
-    $employees = Employee::all();
-    $employeeCount = Employee::count();
-    // Initialize arrays for the column chart (age and gender distribution)
-    $ageGroups = ['18-21', '22-25', '26-30', '31-35', '36-40', '41-45', '46-50', '51-55', '56-59', '60+'];
-    $maleCounts = array_fill_keys($ageGroups, 0);
-    $femaleCounts = array_fill_keys($ageGroups, 0);
+    public function index()
+    {
+        // Employee Data
+        $employees = Employee::all();
+        $employeeCount = Employee::count();
 
-    // Initialize arrays for the donut chart (status distribution)
-    $statusCounts = [];
+        // Age and Gender Distribution
+        $ageGroups = ['18-21', '22-25', '26-30', '31-35', '36-40', '41-45', '46-50', '51-55', '56-59', '60+'];
+        $maleCounts = array_fill_keys($ageGroups, 0);
+        $femaleCounts = array_fill_keys($ageGroups, 0);
 
-    // Process employee data
-    foreach ($employees as $employee) {
-        // Column chart data: Group by age and gender
+        // Status Distribution
+        $statusCounts = [];
 
-        $bday = new \DateTime($employee->bdate); // Use global namespace
-        $today = new \DateTime(); // Use global namespace
-        $age = $today->diff($bday)->y; // Extract years from DateInterval
+        // Department Distribution
+        $departmentCounts = [];
 
-        $gender = $employee->gender;
+        // Job Type Distribution
+        $jobTypeCounts = [];
 
-        if ($age >= 18 && $age <= 21) {
-            $group = '18-21';
-        } elseif ($age >= 22 && $age <= 25) {
-            $group = '22-25';
-        } elseif ($age >= 26 && $age <= 30) {
-            $group = '26-30';
-        } elseif ($age >= 31 && $age <= 35) {
-            $group = '31-35';
-        } elseif ($age >= 36 && $age <= 40) {
-            $group = '36-40';
-        } elseif ($age >= 41 && $age <= 45) {
-            $group = '41-45';
-        } elseif ($age >= 46 && $age <= 50) {
-            $group = '46-50';
-        } elseif ($age >= 51 && $age <= 55) {
-            $group = '51-55';
-        } elseif ($age >= 56 && $age <= 59) {
-            $group = '56-59';
-        } else {
-            $group = '60+';
+        // Process employee data
+        foreach ($employees as $employee) {
+            // Age and Gender Distribution
+            $bday = new \DateTime($employee->bdate);
+            $today = new \DateTime();
+            $age = $today->diff($bday)->y;
+
+            $gender = $employee->gender;
+            $group = $this->getAgeGroup($age);
+
+            if ($gender === 'Male') {
+                $maleCounts[$group]++;
+            } elseif ($gender === 'Female') {
+                $femaleCounts[$group]++;
+            }
+
+            // Status Distribution
+            $status = $employee->status;
+            $statusCounts[$status] = ($statusCounts[$status] ?? 0) + 1;
+
+            // Department Distribution
+            $department = $employee->department;
+            $departmentCounts[$department] = ($departmentCounts[$department] ?? 0) + 1;
+
+            // Job Type Distribution
+            $jobType = $employee->job_type;
+            $jobTypeCounts[$jobType] = ($jobTypeCounts[$jobType] ?? 0) + 1;
         }
 
-        if ($gender === 'Male') {
-            $maleCounts[$group]++;
-        } elseif ($gender === 'Female') {
-            $femaleCounts[$group]++;
-        }
+        // Payroll Data
+        $currentCycle = Cycle::latest()->first();
+        $currentCycleStatus = $currentCycle ? ucfirst($currentCycle->status) : 'No active cycle';
+        $currentPayrollTotal = Payroll::where('cycle_id', $currentCycle?->id)->sum('gross_pay') ?? 0;
 
-        // Donut chart data: Group by status
-        $status = $employee->status;
-        if (!isset($statusCounts[$status])) {
-            $statusCounts[$status] = 0;
-        }
-        $statusCounts[$status]++;
+        // Attendance Data
+        $averageHoursWorked = number_format(Attendance::avg('hours_worked') ?? 0, 2);
+        $recentAttendance = Attendance::with('employee')
+            ->latest()
+            ->limit(5)
+            ->get();
+
+        // Adjustments Data
+        $recentAdjustments = PayrollAdjustment::with(['employee', 'adjustment'])
+            ->latest()
+            ->limit(5)
+            ->get();
+
+        // Payroll Breakdown (Top 10 employees)
+        $payrollBreakdown = Payroll::with('employee')
+            ->where('cycle_id', $currentCycle?->id)
+            ->orderBy('gross_pay', 'desc')
+            ->limit(10)
+            ->get();
+
+        return view('hr1.dashboard.dashboard', [
+            // Age and Gender Distribution
+            'ageGroups' => $ageGroups,
+            'maleCounts' => array_values($maleCounts),
+            'femaleCounts' => array_values($femaleCounts),
+
+            // Employee Count and Status
+            'employeeCount' => $employeeCount,
+            'statuses' => array_keys($statusCounts),
+            'statusCounts' => array_values($statusCounts),
+
+            // Department Distribution
+            'departmentNames' => array_keys($departmentCounts),
+            'departmentCounts' => array_values($departmentCounts),
+
+            // Job Type Distribution
+            'jobTypeNames' => array_keys($jobTypeCounts),
+            'jobTypeCounts' => array_values($jobTypeCounts),
+
+            // Payroll Data
+            'currentCycleStatus' => $currentCycleStatus,
+            'currentPayrollTotal' => $currentPayrollTotal,
+            'payrollBreakdown' => $payrollBreakdown,
+
+            // Attendance Data
+            'averageHoursWorked' => $averageHoursWorked,
+            'recentAttendance' => $recentAttendance,
+
+            // Adjustments Data
+            'recentAdjustments' => $recentAdjustments,
+
+            // Additional calculated data
+            'newHiresCount' => Employee::where('created_at', '>=', now()->subDays(30))->count(),
+            'turnoverRate' => $this->calculateTurnoverRate(),
+        ]);
     }
 
-    // Pass data to the view
-    return view('hr1.dashboard.dashboard', [
-        'ageGroups' => $ageGroups,
-        'maleCounts' => array_values($maleCounts),
-        'femaleCounts' => array_values($femaleCounts),
-        'employeeCount' => $employeeCount,
-        'statuses' => array_keys($statusCounts),
-        'statusCounts' => array_values($statusCounts),
-    ]);
-}
+    private function getAgeGroup($age)
+    {
+        if ($age >= 18 && $age <= 21) return '18-21';
+        if ($age >= 22 && $age <= 25) return '22-25';
+        if ($age >= 26 && $age <= 30) return '26-30';
+        if ($age >= 31 && $age <= 35) return '31-35';
+        if ($age >= 36 && $age <= 40) return '36-40';
+        if ($age >= 41 && $age <= 45) return '41-45';
+        if ($age >= 46 && $age <= 50) return '46-50';
+        if ($age >= 51 && $age <= 55) return '51-55';
+        if ($age >= 56 && $age <= 59) return '56-59';
+        return '60+';
+    }
+
+    private function calculateTurnoverRate()
+    {
+        $totalEmployees = Employee::count();
+        $terminatedCount = Employee::where('status', 'Terminated')->count();
+
+        return $totalEmployees > 0 ? round(($terminatedCount / $totalEmployees) * 100, 1) : 0;
+    }
 }

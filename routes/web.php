@@ -48,6 +48,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/finalize/{employeeId}', [PayrollController::class, 'finalizePayroll'])->name('finalize');
         Route::get('//record/{id}', [PayrollController::class, 'viewRecord'])->name('viewRecord');
     });
+    Route::get('/payroll-forecast', [PayrollForecastController::class, 'index'])->name('payroll-forecast.index');
+    Route::post('/payroll-forecast/forecast', [PayrollForecastController::class, 'forecast'])->name('payroll-forecast.forecast');
 
 });
 

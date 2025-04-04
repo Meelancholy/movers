@@ -9,19 +9,31 @@ class Payroll extends Model
 {
     use HasFactory;
 
-    // Define the table name
     protected $table = 'payrolls';
 
-    // Define the fillable attributes
     protected $fillable = [
         'employee_id',
-        'salary',
-        'gross_salary',
-        'withholdings',
-        'net_salary',
+        'cycle_id',
+        'base_pay',
+        'gross_pay',
+        'net_pay',
+        'adjustments_total',
+        'hours_worked',
+        'pdf_path',
     ];
+
+    // Relationships
     public function employee()
     {
         return $this->belongsTo(Employee::class);
+    }
+
+    public function cycle()
+    {
+        return $this->belongsTo(Cycle::class);
+    }
+        public function payrollAdjustments()
+    {
+        return $this->hasMany(PayrollAdjustment::class);
     }
 }

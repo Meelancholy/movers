@@ -29,62 +29,7 @@
         @else
             <div x-data="{ isExpanded: false }" class="flex flex-col">
         @endif
-        <button type="button" x-on:click="isExpanded = ! isExpanded" id="user-management-btn" aria-controls="user-management" x-bind:aria-expanded="isExpanded ? 'true' : 'false'" class="flex items-center justify-between rounded-md gap-2 px-2 py-3 text-sm font-medium underline-offset-2 focus:outline-none focus-visible:underline" x-bind:class="isExpanded ? 'text-neutral-900 bg-blue-600/10' :  'text-neutral-600 hover:bg-blue-600/5 hover:text-blue-900'">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5 shrink-0" aria-hidden="true">
-                <path d="M15.5 2A1.5 1.5 0 0 0 14 3.5v13a1.5 1.5 0 0 0 1.5 1.5h1a1.5 1.5 0 0 0 1.5-1.5v-13A1.5 1.5 0 0 0 16.5 2h-1ZM9.5 6A1.5 1.5 0 0 0 8 7.5v9A1.5 1.5 0 0 0 9.5 18h1a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 10.5 6h-1ZM3.5 10A1.5 1.5 0 0 0 2 11.5v5A1.5 1.5 0 0 0 3.5 18h1A1.5 1.5 0 0 0 6 16.5v-5A1.5 1.5 0 0 0 4.5 10h-1Z"/>
-            </svg>
-            <span class="mr-auto text-left">Overviews</span>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5 transition-transform rotate-0 shrink-0" x-bind:class="isExpanded ? 'rotate-180' : 'rotate-0'" aria-hidden="true">
-                <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
-            </svg>
-        </button>
-        <ul
-            x-cloak
-            x-collapse
-            x-show="isExpanded"
-            aria-labelledby="user-management-btn"
-            id="user-management"
-        >
-            <!-- Employee Overview Link -->
-            <li class="px-1 py-0.5 first:mt-2">
-                <a
-                    href="{{ route('employee.dashboard') }}"
-                    class="flex items-center gap-2 px-2 py-3 text-sm font-medium
-                        text-neutral-600 hover:text-blue-900 hover:bg-blue-600/5
-                        focus:outline-none focus-visible:underline underline-offset-2
-                        rounded-md
-                        {{ request()->routeIs('employee.dashboard') ? 'border border-blue-500 bg-blue-600 text-white cursor-not-allowed' : '' }}"
-                    @if(request()->routeIs('employee.dashboard'))
-                        aria-disabled="true"
-                        tabindex="-1"
-                        onclick="event.preventDefault();"
 
-                    @endif
-                ><svg fill="currentColor" class="size-5 shrink-0" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
-                    <path d="M665 457q34 0 62.5-16.5t45.5-45 17-62.5-17-63-45.5-45.5T665 208t-62.5 16.5-45 45.5-16.5 63 16.5 62.5 45 45T665 457zm-332 0q34 0 62.5-16.5t45-45T457 333t-16.5-63-45-45.5T333 208t-63 16.5-45.5 45.5-16.5 63 16.5 62.5 45.5 45 63 16.5zm0 84q-54 0-119 16-73 18-118 48-54 36-54 81v104h582V686q0-45-54-81-45-30-119-48-65-16-118-16zm332 0q-16 0-40 2 82 59 82 143v104h249V686q0-45-54-81-45-30-118-48-65-16-119-16z"></path></g></svg>
-                    Employee Overview
-                </a>
-            </li>
-
-            <!-- Payroll Overview Link -->
-            <li class="px-1 py-0.5 first:mt-2">
-                <a
-                    href="{{ route('payroll.dashboard') }}"
-                    class="flex items-center gap-2 px-2 py-3 text-sm font-medium
-                        text-neutral-600 hover:text-blue-900 hover:bg-blue-600/5
-                        focus:outline-none focus-visible:underline underline-offset-2
-                        rounded-md
-                        {{ request()->routeIs('payroll.dashboard') ? 'border border-blue-500 bg-blue-600 text-white cursor-not-allowed' : '' }}"
-                    @if(request()->routeIs('payroll.dashboard'))
-                        aria-disabled="true"
-                        tabindex="-1"
-                        onclick="event.preventDefault();"
-                    @endif
-                ><svg fill="currentColor" class="size-5 shrink-0" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g data-name="2. Coin" id="_2._Coin"> <path d="M22,9h-.19A2.83,2.83,0,0,0,22,8V6a3,3,0,0,0-3-3H3A3,3,0,0,0,0,6V8a3,3,0,0,0,2.22,2.88A3,3,0,0,0,2,12v2a3,3,0,0,0,.22,1.12A3,3,0,0,0,0,18v2a3,3,0,0,0,2.22,2.88A3,3,0,0,0,2,24v2a3,3,0,0,0,3,3H22A10,10,0,0,0,22,9Zm-9.16,6H5a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H16A10,10,0,0,0,12.84,15ZM2,6A1,1,0,0,1,3,5H19a1,1,0,0,1,1,1V8a1,1,0,0,1-1,1H3A1,1,0,0,1,2,8ZM2,18a1,1,0,0,1,1-1h9.2a10.1,10.1,0,0,0,0,4H3a1,1,0,0,1-1-1Zm3,9a1,1,0,0,1-1-1V24a1,1,0,0,1,1-1h7.84A10,10,0,0,0,16,27Zm17,0a8,8,0,1,1,8-8A8,8,0,0,1,22,27Z"></path> <path d="M22,16h2a1,1,0,0,0,0-2H23a1,1,0,0,0-2,0v.18A3,3,0,0,0,22,20a1,1,0,0,1,0,2H20a1,1,0,0,0,0,2h1a1,1,0,0,0,2,0v-.18A3,3,0,0,0,22,18a1,1,0,0,1,0-2Z"></path> </g> </g></svg>
-                    Payroll Overview
-                </a>
-            </li>
-        </ul>
     </div>
     <hr class="divider p-2">
     <h6 class="text-xs font-bold text-neutral-700">Management</h6>

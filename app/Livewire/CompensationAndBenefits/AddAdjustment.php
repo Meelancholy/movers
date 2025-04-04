@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Livewire\CompensationAndBenefits;
-use App\Models\Adjustments;
+use App\Models\Adjustment;
 use Livewire\Component;
 
 class AddAdjustment extends Component
@@ -46,7 +46,7 @@ class AddAdjustment extends Component
     {
         $this->validate();
 
-        Adjustments::create([
+        Adjustment::create([
             'adjustment' => $this->adjustment,
             'rangestart' => $this->rangestart,
             'rangeend' => $this->rangeend,
@@ -58,7 +58,7 @@ class AddAdjustment extends Component
     }
     public function render()
     {
-        $adjustments = Adjustments::all();
+        $adjustment = Adjustment::all();
         return view('livewire.compensation-and-benefits.add-adjustment');
     }
 }

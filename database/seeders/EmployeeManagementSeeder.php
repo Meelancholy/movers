@@ -73,7 +73,7 @@ class EmployeeManagementSeeder extends Seeder
                 'adjustment' => 'Transportation Allowance',
                 'rangestart' => null,
                 'rangeend' => null,
-                'operation' => 'add',
+                'operation' => 'incentive',
                 'percentage' => null,
                 'fixedamount' => '1500.00'
             ],
@@ -81,7 +81,7 @@ class EmployeeManagementSeeder extends Seeder
                 'adjustment' => 'Meal Allowance',
                 'rangestart' => null,
                 'rangeend' => null,
-                'operation' => 'add',
+                'operation' => 'incentive',
                 'percentage' => null,
                 'fixedamount' => '2000.00'
             ],
@@ -89,7 +89,7 @@ class EmployeeManagementSeeder extends Seeder
                 'adjustment' => 'Tax Deduction',
                 'rangestart' => '10000',
                 'rangeend' => '50000',
-                'operation' => 'subtract',
+                'operation' => 'deduction',
                 'percentage' => '5.00',
                 'fixedamount' => null
             ],
@@ -97,7 +97,7 @@ class EmployeeManagementSeeder extends Seeder
                 'adjustment' => 'SSS Contribution',
                 'rangestart' => null,
                 'rangeend' => null,
-                'operation' => 'subtract',
+                'operation' => 'deduction',
                 'percentage' => '4.50',
                 'fixedamount' => null
             ],
@@ -105,7 +105,7 @@ class EmployeeManagementSeeder extends Seeder
                 'adjustment' => 'Performance Bonus',
                 'rangestart' => null,
                 'rangeend' => null,
-                'operation' => 'add',
+                'operation' => 'incentive',
                 'percentage' => '10.00',
                 'fixedamount' => null
             ]

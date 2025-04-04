@@ -3,117 +3,336 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Livewire\WithPagination;
+use App\Models\Cycle;
 use App\Models\Employee;
-use App\Models\Bonus;
-use App\Models\Deduction;
+use App\Models\Payroll;
+use App\Models\EmployeeSalary;
+use App\Models\Adjustment;
+use App\Models\PayrollAdjustment;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 
 class GeneratePayroll extends Component
 {
+    use WithPagination;
+
+    public $selectedCycleId = null;
+    public $cycles;
+    public $selectedCycle;
+    public $employees;
+    public $showGenerateConfirmation = false;
+    public $employeeToGenerate = null;
+    public $calculatedPayroll = [];
+
+    // Cycle creation properties
+    public $showCreateCycleForm = false;
+    public $newCycle = [
+        'start_date' => '',
+        'end_date' => '',
+    ];
+
+    // Cycle deletion properties
+    public $cycleToDelete = null;
+    public $showDeleteModal = false;
+
+    public function mount()
+    {
+        $this->loadCycles();
+        $this->employees = Employee::all();
+    }
+
+    protected function loadCycles()
+    {
+        $this->cycles = Cycle::orderByDesc('start_date')->get();
+        $this->selectedCycleId = optional($this->cycles->first())->id;
+    }
+
+    public function selectCycle($cycleId)
+    {
+        $this->selectedCycleId = $cycleId;
+    }
+
+    public function createCycle()
+    {
+        $this->validate([
+            'newCycle.start_date' => 'required|date',
+            'newCycle.end_date' => 'required|date|after:newCycle.start_date',
+        ]);
+
+        $overlappingCycle = Cycle::where(function($query) {
+            $query->whereBetween('start_date', [$this->newCycle['start_date'], $this->newCycle['end_date']])
+                  ->orWhereBetween('end_date', [$this->newCycle['start_date'], $this->newCycle['end_date']])
+                  ->orWhere(function($query) {
+                      $query->where('start_date', '<=', $this->newCycle['start_date'])
+                            ->where('end_date', '>=', $this->newCycle['end_date']);
+                  });
+        })->exists();
+
+        if ($overlappingCycle) {
+            $this->addError('newCycle.start_date', 'This cycle overlaps with an existing cycle.');
+            $this->addError('newCycle.end_date', 'This cycle overlaps with an existing cycle.');
+            return;
+        }
+
+        $cycle = Cycle::create([
+            'start_date' => $this->newCycle['start_date'],
+            'end_date' => $this->newCycle['end_date'],
+            'status' => 'pending',
+        ]);
+
+        $this->loadCycles();
+        $this->showCreateCycleForm = false;
+        $this->reset('newCycle');
+        session()->flash('message', 'Cycle created successfully.');
+    }
+
+    public function confirmDeleteCycle($cycleId)
+    {
+        $this->cycleToDelete = $cycleId;
+        $this->showDeleteModal = true;
+    }
+
+    public function deleteCycle()
+    {
+        $cycle = Cycle::find($this->cycleToDelete);
+
+        if ($cycle) {
+            if ($cycle->payrolls()->exists()) {
+                session()->flash('error', 'Cannot delete cycle with existing payrolls.');
+                $this->showDeleteModal = false;
+                return;
+            }
+
+            $cycle->delete();
+            session()->flash('message', 'Cycle deleted successfully.');
+            $this->loadCycles();
+        }
+
+        $this->showDeleteModal = false;
+    }
+
+    public function prepareGeneratePayroll($employeeId)
+    {
+        $cycle = Cycle::find($this->selectedCycleId);
+        $employee = Employee::find($employeeId);
+
+        if (!$cycle || !$employee) return;
+
+        if (Payroll::where('employee_id', $employee->id)
+                  ->where('cycle_id', $cycle->id)
+                  ->exists()) {
+            session()->flash('error', 'Payroll already exists for this employee in the selected cycle.');
+            return;
+        }
+
+        $salary = $employee->salary()->latest()->first();
+        if (!$salary) {
+            session()->flash('error', 'No salary information found for this employee.');
+            return;
+        }
+
+        $hoursWorked = (string) $employee->attendances()->sum('hours_worked');
+        $baseGrossPay = (float)($hoursWorked * $salary->hourly_rate);
+
+        $employeeAdjustments = $employee->adjustments()->withPivot('frequency')->get();
+        $incentivesTotal = $this->calculateIncentives($baseGrossPay, $employeeAdjustments);
+        $grossPay = $baseGrossPay + $incentivesTotal;
+        $withholdingsTotal = $this->calculateWithholdings($grossPay, $employeeAdjustments);
+        $netPay = $grossPay - $withholdingsTotal;
+
+        $this->calculatedPayroll = [
+            'base_pay' => $baseGrossPay,
+            'gross_pay' => $grossPay,
+            'adjustments_total' => $withholdingsTotal,
+            'net_pay' => $netPay,
+            'hours_worked' => $hoursWorked
+        ];
+
+        $this->employeeToGenerate = $employee;
+        $this->showGenerateConfirmation = true;
+    }
+
+    public function confirmGeneratePayroll()
+    {
+        if (!$this->employeeToGenerate) return;
+
+        $cycle = Cycle::find($this->selectedCycleId);
+        $employee = $this->employeeToGenerate;
+        $salary = $employee->salary()->latest()->first();
+
+        if (!$salary) {
+            session()->flash('error', 'No salary information found for this employee.');
+            return;
+        }
+
+        $filename = 'payrolls/payroll_'.$employee->id.'_'.$cycle->id.'_'.now()->format('YmdHis').'.pdf';
+
+        try {
+            $payroll = Payroll::create([
+                'cycle_id' => (string) $cycle->id,
+                'employee_id' => (string) $employee->id,
+                'base_pay' => (string) $this->calculatedPayroll['base_pay'],
+                'gross_pay' => (string) $this->calculatedPayroll['gross_pay'],
+                'net_pay' => (string) $this->calculatedPayroll['net_pay'],
+                'adjustments_total' => (string) $this->calculatedPayroll['adjustments_total'],
+                'hours_worked' => $this->calculatedPayroll['hours_worked'],
+                'pdf_path' => $filename
+            ]);
+
+            $this->updateAdjustmentFrequencies(
+                $employee,
+                $employee->adjustments()->withPivot('frequency')->get(),
+                $payroll
+            );
+
+            // Updated data loading with proper relationships
+            $payrollData = $payroll->load([
+                'employee',
+                'cycle',
+                'payrollAdjustments' => function($query) {
+                    $query->with(['adjustment', 'employee']);
+                }
+            ]);
+
+            $pdf = Pdf::loadView('payroll.pdf', ['payroll' => $payrollData]);
+
+            if (!Storage::exists('payrolls')) {
+                Storage::makeDirectory('payrolls');
+            }
+
+            Storage::put($filename, $pdf->output());
+
+            $this->showGenerateConfirmation = false;
+            $this->employeeToGenerate = null;
+            $this->calculatedPayroll = [];
+
+            session()->flash('message', 'Payroll generated for ' . $employee->first_name);
+            $this->selectedCycle = $cycle->load('payrolls.employee');
+
+        } catch (\Exception $e) {
+            session()->flash('error', 'Failed to generate payroll: '.$e->getMessage());
+        }
+    }
+
+    public function downloadPdf($payrollId)
+    {
+        try {
+            // Load payroll with all necessary relationships
+            $payroll = Payroll::with([
+                'employee',
+                'cycle',
+                'payrollAdjustments' => function($query) {
+                    $query->with(['adjustment', 'employee']);
+                }
+            ])->findOrFail($payrollId);
+
+            // Check if PDF needs to be regenerated
+            if (empty($payroll->pdf_path)) {
+                $filename = 'payrolls/payroll_'.$payroll->employee_id.'_'.$payroll->cycle_id.'_'.now()->format('YmdHis').'.pdf';
+                $pdf = Pdf::loadView('payroll.pdf', ['payroll' => $payroll]);
+                Storage::put($filename, $pdf->output());
+                $payroll->update(['pdf_path' => $filename]);
+            }
+
+            // Verify the file exists or regenerate it
+            if (!Storage::exists($payroll->pdf_path)) {
+                $filename = 'payrolls/payroll_'.$payroll->employee_id.'_'.$payroll->cycle_id.'_'.now()->format('YmdHis').'.pdf';
+                $pdf = Pdf::loadView('payroll.pdf', ['payroll' => $payroll]);
+                Storage::put($filename, $pdf->output());
+                $payroll->update(['pdf_path' => $filename]);
+            }
+
+            return Storage::download($payroll->pdf_path);
+
+        } catch (\Exception $e) {
+            session()->flash('error', 'Failed to download PDF: '.$e->getMessage());
+            return back();
+        }
+    }
+
+    protected function updateAdjustmentFrequencies($employee, $adjustments, $payroll)
+    {
+        foreach ($adjustments as $adjustment) {
+            $currentFrequency = $adjustment->pivot->frequency;
+
+            // Skip infinite frequency adjustments
+            if ($currentFrequency == -1) continue;
+
+            $newFrequency = $currentFrequency - 1;
+            $amount = $this->calculateAdjustmentAmount($adjustment, $payroll->gross_pay);
+
+            // Record the adjustment history
+            PayrollAdjustment::create([
+                'payroll_id' => $payroll->id,
+                'adjustment_id' => $adjustment->id,
+                'employee_id' => $employee->id,
+                'amount' => $amount,
+                'type' => $adjustment->operation,
+                'frequency_before' => $currentFrequency,
+                'frequency_after' => $newFrequency,
+                'adjustment_data' => json_encode([ // Store adjustment details
+                    'name' => $adjustment->name,
+                    'description' => $adjustment->description,
+                    'operation' => $adjustment->operation,
+                    'percentage' => $adjustment->percentage,
+                    'fixedamount' => $adjustment->fixedamount,
+                ])
+            ]);
+
+            // Update or remove the adjustment
+            if ($newFrequency <= 0) {
+                $employee->adjustments()->detach($adjustment->id);
+            } else {
+                $employee->adjustments()->updateExistingPivot($adjustment->id, [
+                    'frequency' => $newFrequency
+                ]);
+            }
+        }
+    }
+    protected function calculateAdjustmentAmount($adjustment, $grossPay)
+    {
+        return $adjustment->percentage
+            ? $grossPay * ($adjustment->percentage / 100)
+            : $adjustment->fixedamount;
+    }
+
+    protected function calculateIncentives($grossPay, $employeeAdjustments)
+    {
+        $totalIncentives = 0;
+        foreach ($employeeAdjustments as $adjustment) {
+            if ($adjustment->operation === 'incentive') {
+                $amount = $adjustment->percentage
+                    ? (float)$grossPay * ((float)$adjustment->percentage / 100)
+                    : (float)$adjustment->fixedamount;
+                $totalIncentives += $amount;
+            }
+        }
+        return $totalIncentives;
+    }
+
+    protected function calculateWithholdings($grossPay, $employeeAdjustments)
+    {
+        $totalWithholdings = 0;
+        foreach ($employeeAdjustments as $adjustment) {
+            if (in_array($adjustment->operation, ['deduction', 'contribution'])) {
+                $amount = $adjustment->percentage
+                    ? (float)$grossPay * ((float)$adjustment->percentage / 100)
+                    : (float)$adjustment->fixedamount;
+                $totalWithholdings += $amount;
+            }
+        }
+        return $totalWithholdings;
+    }
+
     public function render()
     {
-        // Fetch all employees with their related data
-        $employees = Employee::with(['position', 'contributions'])->get();
-
-        // Process employee payroll data
-        $employeePayrollData = $employees->map(function ($employee) {
-            return $this->calculateContributions($employee);
-        })->filter();
+        $this->selectedCycle = Cycle::with(['payrolls' => function($query) {
+            $query->with('employee');
+        }])->find($this->selectedCycleId);
 
         return view('livewire.generate-payroll', [
-            'employees' => $employees,
-            'employeePayrollData' => $employeePayrollData,
+            'employees' => $this->employees
         ]);
     }
-
-    public function calculateContributions($employee)
-    {
-        $salary = $employee->position ? $employee->position->base_salary : 0;
-        $philhealth_employee_share = $philhealth_employer_share = 0;
-        $sssContribution = ['employee_share' => 0, 'employer_share' => 0];
-        $pagibig_employee_share = $pagibig_employer_share = 0;
-
-        // PhilHealth Calculation
-        $philhealthContribution = $employee->contributions->firstWhere('philhealth', 1);
-        if ($philhealthContribution) {
-            if ($salary >= 10000) {
-                $philhealth_total = min($salary * 0.05, 5000);
-                $philhealth_employee_share = $philhealth_total / 2;
-                $philhealth_employer_share = $philhealth_total / 2;
-            }
-        }
-
-        // SSS Calculation
-        $sssContributionData = $employee->contributions->firstWhere('sss', 1);
-        if ($sssContributionData) {
-            if ($salary >= 4000) {
-                $sss_employee_share = $salary <= 30000 ? $salary * 0.045 : 30000 * 0.045;
-                $sss_employer_share = $salary <= 30000 ? $salary * 0.095 : 30000 * 0.095;
-                $sssContribution = [
-                    'employee_share' => $sss_employee_share,
-                    'employer_share' => $sss_employer_share,
-                ];
-            }
-        }
-
-        // Pag-IBIG Calculation
-        $pagibigContribution = $employee->contributions->firstWhere('pagibig', 1);
-        if ($pagibigContribution) {
-            $monthly_compensation = min($salary, 5000);
-            if ($monthly_compensation <= 1500) {
-                $pagibig_employee_share = $monthly_compensation * 0.01;
-                $pagibig_employer_share = $monthly_compensation * 0.02;
-            } else {
-                $pagibig_employee_share = $monthly_compensation * 0.02;
-                $pagibig_employer_share = $monthly_compensation * 0.02;
-            }
-        }
-        $taxable_income = $salary - $sssContribution['employee_share'] - $philhealth_employee_share - $pagibig_employee_share;
-        $tax = $this->calculateTax($taxable_income);
-        $bonus = Bonus::where('employee_id', $employee->id)->sum('amount');
-        $deduction = Deduction::where('employee_id', $employee->id)->sum('amount');
-        $grossSalary = $salary + $bonus;
-        $withholdings = $sssContribution['employee_share'] +
-                        $philhealth_employee_share +
-                        $pagibig_employee_share +
-                        $deduction +
-                        $tax;
-        $netSalary = $grossSalary - $withholdings;
-        return [
-            'id' => $employee->id,
-            'name' => $employee->first_name . ' ' . $employee->last_name,
-            'baseSalary' => $salary,
-            'grossSalary' => $grossSalary,
-            'withholdings' => $withholdings,
-            'netSalary' => $netSalary,
-            'bonuses' => $bonus,
-            'deductions' => $deduction,
-            'tax' => $tax,
-            'sssContribution' => $sssContribution,
-            'philhealth' => [
-                'employee_share' => $philhealth_employee_share,
-                'employer_share' => $philhealth_employer_share,
-            ],
-            'pagibig' => [
-                'employee_share' => $pagibig_employee_share,
-                'employer_share' => $pagibig_employer_share,
-            ],
-        ];
-    }
-    public function calculateTax($taxable_income)
-    {
-        if ($taxable_income <= 20833) {
-            return 0;
-        } elseif ($taxable_income <= 33332) {
-            return ($taxable_income - 20833) * 0.15;
-        } elseif ($taxable_income <= 66666) {
-            return 2500 + ($taxable_income - 33333) * 0.20;
-        } elseif ($taxable_income <= 166666) {
-            return 10833.33 + ($taxable_income - 66667) * 0.25;
-        } elseif ($taxable_income <= 666666) {
-            return 40833.33 + ($taxable_income - 166667) * 0.30;
-        } else {
-            return 200833.33 + ($taxable_income - 666667) * 0.35;
-        }
-    }
-
 }

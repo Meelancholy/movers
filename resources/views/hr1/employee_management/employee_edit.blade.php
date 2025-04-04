@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1 class="text-3xl font-bold bg-white rounded-lg shadow-md mx-auto mt-6 p-8 mb-6">{{ $employee->first_name }} {{ $employee->last_name }}</h1>
+    <h1 class="text-3xl font-bold bg-white rounded-lg shadow-md mx-auto mt-6 p-8 mb-6">Edit Employee : {{ $employee->first_name }} {{ $employee->last_name }}</h1>
 
     <!-- Edit Employee Form -->
     <form method="POST" action="{{ route('employee.update', $employee->id) }}" class="space-y-6 bg-white rounded-lg shadow-md mx-auto p-8 " id="employee-form">

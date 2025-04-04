@@ -33,4 +33,8 @@ class Adjustment extends Model
             return $this->adjustment;
         }
     }
+        public function payrollAdjustments()
+    {
+        return $this->hasMany(PayrollAdjustment::class);
+    }
 }
