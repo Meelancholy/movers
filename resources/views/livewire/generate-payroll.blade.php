@@ -63,9 +63,6 @@
                             <h3 class="font-medium text-sm">
                                 {{ $cycle->start_date->format('M d') }} - {{ $cycle->end_date->format('M d, Y') }}
                             </h3>
-                            <p class="text-xs text-gray-500 mt-1">
-                                Status: <span class="capitalize">{{ $cycle->status }}</span>
-                            </p>
                         </div>
                         <button wire:click.stop="confirmDeleteCycle({{ $cycle->id }})"
                                 class="text-gray-400 hover:text-red-500 p-1">

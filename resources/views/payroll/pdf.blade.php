@@ -130,6 +130,7 @@
                     <th>Type</th>
                     <th style="text-align: right;">Amount</th>
                     <th>Details</th>
+                    <th>Employer Share</th>
                 </tr>
             </thead>
             <tbody>
@@ -149,12 +150,19 @@
                         </td>
                         <td>
                             @if(!empty($details['percentage']))
-                                {{ $details['percentage'] }}% of gross
+                                {{ $details['percentage'] }}%
                             @elseif(!empty($details['fixedamount']))
-                                Fixed amount: PHP {{ number_format($details['fixedamount'], 2) }}
+                                Fixed amount
                             @endif
                             @if(!empty($details['rangestart']) && !empty($details['rangeend']))
                                 <br>Range: {{ $details['rangestart'] }} - {{ $details['rangeend'] }}
+                            @endif
+                        </td>
+                        <td>
+                            @if($adjustment->type === 'contribution')
+                                <span>{{ number_format($adjustment->amount, 2) }}</span>
+                            @else
+                                <span></span>
                             @endif
                         </td>
                     </tr>

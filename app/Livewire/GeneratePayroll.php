@@ -255,14 +255,11 @@ class GeneratePayroll extends Component
     {
         foreach ($adjustments as $adjustment) {
             $currentFrequency = $adjustment->pivot->frequency;
+            $isInfinite = ($currentFrequency == -1);
 
-            // Skip infinite frequency adjustments
-            if ($currentFrequency == -1) continue;
-
-            $newFrequency = $currentFrequency - 1;
             $amount = $this->calculateAdjustmentAmount($adjustment, $payroll->gross_pay);
 
-            // Record the adjustment history
+            // Record the adjustment history (always create record, even for infinite frequency)
             PayrollAdjustment::create([
                 'payroll_id' => $payroll->id,
                 'adjustment_id' => $adjustment->id,
@@ -270,8 +267,8 @@ class GeneratePayroll extends Component
                 'amount' => $amount,
                 'type' => $adjustment->operation,
                 'frequency_before' => $currentFrequency,
-                'frequency_after' => $newFrequency,
-                'adjustment_data' => json_encode([ // Store adjustment details
+                'frequency_after' => $isInfinite ? -1 : ($currentFrequency - 1),
+                'adjustment_data' => json_encode([
                     'name' => $adjustment->name,
                     'description' => $adjustment->description,
                     'operation' => $adjustment->operation,
@@ -281,12 +278,20 @@ class GeneratePayroll extends Component
             ]);
 
             // Update or remove the adjustment
-            if ($newFrequency <= 0) {
-                $employee->adjustments()->detach($adjustment->id);
-            } else {
+            if ($isInfinite) {
+                // For infinite frequency, just ensure it stays at -1
                 $employee->adjustments()->updateExistingPivot($adjustment->id, [
-                    'frequency' => $newFrequency
+                    'frequency' => -1
                 ]);
+            } else {
+                $newFrequency = $currentFrequency - 1;
+                if ($newFrequency <= 0) {
+                    $employee->adjustments()->detach($adjustment->id);
+                } else {
+                    $employee->adjustments()->updateExistingPivot($adjustment->id, [
+                        'frequency' => $newFrequency
+                    ]);
+                }
             }
         }
     }
