@@ -32,7 +32,7 @@
 
     </div>
     <hr class="divider p-2">
-    <h6 class="text-xs font-bold text-neutral-700">Management</h6>
+    <h6 class="text-xs font-bold text-neutral-700">Services</h6>
         <a
             @if(request()->routeIs('employee.list'))
                 class="flex items-center rounded-md gap-2 px-2 py-3 text-sm font-medium border border-blue-500 bg-blue-600 text-white cursor-not-allowed hover:text-blue-900 hover:bg-blue-600/5"

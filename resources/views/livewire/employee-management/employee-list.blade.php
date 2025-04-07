@@ -4,11 +4,27 @@
     </div>
     <div class="container min-w-full bg-white p-6 rounded-lg shadow-md md:p-4 mt-2">
         <div class="container mx-auto border rounded-lg py-6">
-            <!-- Search Bar -->
-            <div class="flex justify-between">
-                <div class="">
+            <!-- Search and Filter Bar -->
+            <div class="flex flex-col md:flex-row justify-between gap-4 px-4 py-2">
+                <div class="flex flex-col md:flex-row gap-4 w-full md:w-auto">
                     <input type="text" id="searchInput" placeholder="Search by ID or Name"
-                        class="bg-gray-100 w-full ml-4 pl-2 pr-9 py-2 border rounded-full">
+                        class="bg-gray-100 w-full md:w-64 pl-2 pr-9 py-1 border rounded-full">
+
+                    <!-- Department Filter -->
+                    <select id="departmentFilter" class="bg-gray-100 p-1 border rounded-full">
+                        <option value="">All Departments</option>
+                        @foreach($employees as $employee)
+                            <option value="{{ $employee->department }}">
+                        @endforeach
+                    </select>
+
+                    <!-- Position Filter -->
+                    <select id="positionFilter" class="bg-gray-100 p-1 border rounded-full">
+                        <option value="">All Positions</option>
+                        @foreach($employees as $employee)
+                            <option value="{{ $employee->position }}">
+                        @endforeach
+                    </select>
                 </div>
 
                 <!-- Rows Per Page Selector -->
@@ -143,12 +159,21 @@
         let currentPage = 1;
         let rowsPerPage = parseInt(document.getElementById('rowsPerPage').value);
         let allRows = Array.from(document.querySelectorAll('#employeeTableBody tr'));
+        let originalRows = Array.from(document.querySelectorAll('#employeeTableBody tr'));
 
         // Initialize table
         updateTable();
 
-        // JavaScript for Search
+        // JavaScript for Search and Filters
         document.getElementById('searchInput').addEventListener('input', function() {
+            filterTable();
+        });
+
+        document.getElementById('departmentFilter').addEventListener('change', function() {
+            filterTable();
+        });
+
+        document.getElementById('positionFilter').addEventListener('change', function() {
             filterTable();
         });
 
@@ -261,15 +286,28 @@
             });
         }
 
-        // Filter table based on search query
+        // Filter table based on search query and filters
         function filterTable() {
             const searchQuery = document.getElementById('searchInput').value.toLowerCase();
-            const originalRows = Array.from(document.querySelectorAll('#employeeTableBody tr'));
+            const departmentFilter = document.getElementById('departmentFilter').value;
+            const positionFilter = document.getElementById('positionFilter').value;
 
             allRows = originalRows.filter(row => {
                 const id = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
                 const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-                return id.includes(searchQuery) || name.includes(searchQuery);
+                const department = row.querySelector('td:nth-child(6)').textContent;
+                const position = row.querySelector('td:nth-child(7)').textContent;
+
+                // Check search query
+                const matchesSearch = id.includes(searchQuery) || name.includes(searchQuery);
+
+                // Check department filter
+                const matchesDepartment = departmentFilter === '' || department === departmentFilter;
+
+                // Check position filter
+                const matchesPosition = positionFilter === '' || position === positionFilter;
+
+                return matchesSearch && matchesDepartment && matchesPosition;
             });
 
             currentPage = 1;

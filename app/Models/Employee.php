@@ -10,7 +10,7 @@ class Employee extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'contact', 'hire_date', 'department_id', 'position_id', 'status', 'department', 'position', 'gender', 'bdate', 'job_type'
+        'first_name', 'last_name', 'email', 'contact', 'hire_date', 'status', 'department', 'position', 'gender', 'bdate', 'job_type'
     ];
     public function getFullNameAttribute()
     {
