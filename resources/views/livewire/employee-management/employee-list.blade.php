@@ -14,7 +14,7 @@
                     <select id="departmentFilter" class="bg-gray-100 p-1 border rounded-full">
                         <option value="">All Departments</option>
                         @foreach($employees as $employee)
-                            <option value="{{ $employee->department }}">
+                            <option value="{{ $employee->department }}">{{ $employee->department }}</option>
                         @endforeach
                     </select>
 
@@ -22,7 +22,7 @@
                     <select id="positionFilter" class="bg-gray-100 p-1 border rounded-full">
                         <option value="">All Positions</option>
                         @foreach($employees as $employee)
-                            <option value="{{ $employee->position }}">
+                            <option value="{{ $employee->position }}">{{ $employee->position }}</option>
                         @endforeach
                     </select>
                 </div>
