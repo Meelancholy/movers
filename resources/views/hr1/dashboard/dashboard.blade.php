@@ -33,22 +33,20 @@
 </div>
 
 <!-- Charts Section -->
-<div class="flex justify-between">
-    <div class="bg-white p-6 rounded-lg shadow-lg">
+<div class="rounded-lg shadow-lg flex justify-between">
+    <div class="bg-white p-6 rounded-lg shadow-lg justify-between">
         <h2 class="text-gray-600 font-bold">Employees Age by Gender Distribution</h2>
         <div id="columnChart"></div>
     </div>
-    <div class="bg-white p-6 rounded-lg shadow-lg">
+    <div class="bg-white p-6 rounded-lg shadow-lg justify-between items-center ">
         <h2 class="text-gray-600 font-bold">Department Distribution</h2>
         <div id="departmentChart"></div>
     </div>
-    <div class="bg-white p-6 rounded-lg shadow-lg">
+    <div class="bg-white p-6 rounded-lg shadow-lg justify-between items-center">
         <h2 class="text-gray-600 font-bold">Employees Status Distribution</h2>
         <div id="donutChart"></div>
     </div>
-
-    <!-- Job Type Distribution -->
-    <div class="bg-white p-6 rounded-lg shadow-lg">
+    <div class="bg-white p-6 rounded-lg shadow-lg justify-between items-center">
         <h1 class="text-gray-600 font-bold">Job Type Distribution</h1>
         <div id="jobTypeChart"></div>
     </div>

@@ -7,10 +7,12 @@ use App\Http\Controllers\CompensationController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PayrollForecastController;
 use App\Livewire\CompensationAndBenefits\Salaryadjustment;
+use App\Http\Controllers\landingpageController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', function () {
+Route::get('/', [landingpageController::class, 'welcome'])->name('welcome');
+Route::get('/login', function () {
     return view('auth.login');
 });
 
