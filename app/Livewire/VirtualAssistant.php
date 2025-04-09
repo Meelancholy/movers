@@ -308,7 +308,7 @@ class VirtualAssistant extends Component
         // 1. Employee count
         if (Str::contains($query, ['how many', 'count', 'total'])) {
             $count = Employee::count();
-            return "There are currently $count employees in our organization.";
+            return "There are currently $count employees in the database.";
         }
 
         // 2. Employee search

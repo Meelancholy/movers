@@ -25,6 +25,14 @@
                             <option value="{{ $employee->position }}">{{ $employee->position }}</option>
                         @endforeach
                     </select>
+
+                    <!-- Hire Date Range Filter -->
+                    <div class="flex items-center gap-2">
+                        <label for="hireDateFrom" class="text-sm whitespace-nowrap">Hire Date:</label>
+                        <input type="date" id="hireDateFrom" class="bg-gray-100 p-1 border rounded-full">
+                        <span>to</span>
+                        <input type="date" id="hireDateTo" class="bg-gray-100 p-1 border rounded-full">
+                    </div>
                 </div>
 
                 <!-- Rows Per Page Selector -->
@@ -176,6 +184,14 @@
             filterTable();
         });
 
+        document.getElementById('hireDateFrom').addEventListener('change', function() {
+            filterTable();
+        });
+
+        document.getElementById('hireDateTo').addEventListener('change', function() {
+            filterTable();
+        });
+
         // JavaScript for Rows Per Page
         document.getElementById('rowsPerPage').addEventListener('change', function() {
             rowsPerPage = parseInt(this.value);
@@ -290,12 +306,18 @@
             const searchQuery = document.getElementById('searchInput').value.toLowerCase();
             const departmentFilter = document.getElementById('departmentFilter').value;
             const positionFilter = document.getElementById('positionFilter').value;
+            const hireDateFrom = document.getElementById('hireDateFrom').value;
+            const hireDateTo = document.getElementById('hireDateTo').value;
 
             allRows = originalRows.filter(row => {
                 const id = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
                 const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
                 const department = row.querySelector('td:nth-child(6)').textContent;
                 const position = row.querySelector('td:nth-child(7)').textContent;
+                const hireDateCell = row.querySelector('td:nth-child(8)');
+                const hireDateTimestamp = parseInt(hireDateCell.getAttribute('data-timestamp'));
+                const hireDate = new Date(hireDateTimestamp * 1000);
+                const hireDateStr = hireDate.toISOString().split('T')[0]; // Format as YYYY-MM-DD
 
                 // Check search query
                 const matchesSearch = id.includes(searchQuery) || name.includes(searchQuery);
@@ -306,7 +328,16 @@
                 // Check position filter
                 const matchesPosition = positionFilter === '' || position === positionFilter;
 
-                return matchesSearch && matchesDepartment && matchesPosition;
+                // Check hire date range
+                let matchesHireDate = true;
+                if (hireDateFrom) {
+                    matchesHireDate = matchesHireDate && hireDateStr >= hireDateFrom;
+                }
+                if (hireDateTo) {
+                    matchesHireDate = matchesHireDate && hireDateStr <= hireDateTo;
+                }
+
+                return matchesSearch && matchesDepartment && matchesPosition && matchesHireDate;
             });
 
             currentPage = 1;
