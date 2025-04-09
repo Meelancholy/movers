@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container min-w-full bg-white p-6 rounded-lg shadow-md">
-    <h1 class="text-3xl font-bold text-gray-700">Payroll Forecasting</h1>
+    <h1 class="text-3xl font-bold text-gray-700">Payroll Budget Forecasting</h1>
 
     <div class="mt-6 bg-white p-6 rounded-lg shadow">
         <div class="flex justify-between items-center mb-4">
