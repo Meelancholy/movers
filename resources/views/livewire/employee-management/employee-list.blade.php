@@ -141,7 +141,6 @@
                     @endforeach
                 </tbody>
             </table>
-            @livewire('virtual-assistant')
             <!-- Pagination -->
             <div class="mt-4 flex justify-between items-center p-2">
                 <div id="paginationInfo" class="text-sm"></div>

@@ -17,6 +17,7 @@
             <div id="main-content" class="p-4">
                 <div class="overflow-y-auto">
                     @yield('content')
+                    @livewire('virtual-assistant')
                 </div>
             </div>
         </div>
