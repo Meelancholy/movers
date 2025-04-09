@@ -22,5 +22,6 @@ Route::prefix('v1')->group(function () {
         // Employee filters
         Route::get('/employees/search/{query}', [EmployeeController::class, 'search']);
         Route::get('/employees/department/{department}', [EmployeeController::class, 'byDepartment']);
+        Route::get('/employees/position/{position}', [EmployeeController::class, 'byPosition']);
     });
 });

@@ -85,4 +85,10 @@ class EmployeeController extends Controller
             Employee::where('department', $department)->get()
         );
     }
+    public function byPosition($position)
+    {
+        return response()->json(
+            Employee::where('position', $position)->get()
+        );
+    }
 }

@@ -9,6 +9,8 @@ use App\Http\Controllers\PayrollForecastController;
 use App\Livewire\CompensationAndBenefits\Salaryadjustment;
 use App\Http\Controllers\landingpageController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VirtualAssistant;
+
 
 
 Route::get('/', [landingpageController::class, 'welcome'])->name('welcome');
@@ -52,6 +54,7 @@ Route::middleware('auth')->group(function () {
     });
     Route::get('/payroll-forecast', [PayrollForecastController::class, 'index'])->name('payroll-forecast.index');
     Route::post('/payroll-forecast/forecast', [PayrollForecastController::class, 'forecast'])->name('payroll-forecast.forecast');
+    Route::post('/assistant', [VirtualAssistant::class, 'virtualassistant'])->name('virtualassistant');
 });
 
 require __DIR__.'/auth.php';
