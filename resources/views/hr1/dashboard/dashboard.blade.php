@@ -33,22 +33,22 @@
 </div>
 
 <!-- Charts Section -->
-<div class="rounded-lg shadow-lg flex justify-between">
-    <div class="bg-white p-6 rounded-lg shadow-lg justify-between">
-        <h2 class="text-gray-600 font-bold">Employees Age by Gender Distribution</h2>
-        <div id="columnChart"></div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="flex bg-white p-4 rounded-lg shadow">
+        <h2 class="text-gray-600 font-bold text-sm mb-2">Employees Age by Gender</h2>
+        <div id="columnChart" class="h-40"></div>
     </div>
-    <div class="bg-white p-6 rounded-lg shadow-lg justify-between items-center ">
-        <h2 class="text-gray-600 font-bold">Department Distribution</h2>
-        <div id="departmentChart"></div>
+    <div class="flex bg-white p-4 rounded-lg shadow">
+        <h2 class="text-gray-600 font-bold text-sm mb-2">Department Distribution</h2>
+        <div id="departmentChart" class="h-40"></div>
     </div>
-    <div class="bg-white p-6 rounded-lg shadow-lg justify-between items-center">
-        <h2 class="text-gray-600 font-bold">Employees Status Distribution</h2>
-        <div id="donutChart"></div>
+    <div class="flex bg-white p-4 rounded-lg shadow">
+        <h2 class="text-gray-600 font-bold text-sm mb-2">Employees Status</h2>
+        <div id="donutChart" class="h-40"></div>
     </div>
-    <div class="bg-white p-6 rounded-lg shadow-lg justify-between items-center">
-        <h1 class="text-gray-600 font-bold">Job Type Distribution</h1>
-        <div id="jobTypeChart"></div>
+    <div class="flex bg-white p-4 rounded-lg shadow">
+        <h2 class="text-gray-600 font-bold text-sm mb-2">Job Type Distribution</h2>
+        <div id="jobTypeChart" class="h-40"></div>
     </div>
 </div>
 

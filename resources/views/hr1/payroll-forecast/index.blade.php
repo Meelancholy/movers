@@ -31,10 +31,11 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-            <div class="lg:col-span-2">
-                <div class="bg-white p-4 rounded-lg shadow">
-                    <h3 class="text-lg font-medium text-gray-900 mb-4">Payroll Forecast</h3>
-                    <div id="forecastChart" style="height: 400px;"></div>
+            <!-- Use col-span-2 on the direct child (not nested flex) -->
+            <div class="flex lg:col-span-2 bg-white p-4 rounded-lg shadow">
+                <!-- Container for chart with responsive sizing -->
+                <div id="forecastChart" class="w-4/5" style="min-height: 400px;">
+                    <!-- Chart will be inserted here -->
                 </div>
             </div>
 
@@ -150,7 +151,6 @@
                 type: 'area'
             }],
             chart: {
-                height: 400,
                 type: 'line',
                 zoom: {
                     enabled: false
