@@ -1469,7 +1469,7 @@ class EmployeeManagementSeeder extends Seeder
                     'fixedamount' => '200' // ₱1,000 + ₱750 MPF (max)
                 ],
                 [
-                    'compensation' => '13TH MONTH PAY',
+                    'adjustment' => '13TH MONTH PAY',
                     'rangestart' => 0,
                     'rangeend' => null,
                     'operation' => 'incentive',
@@ -1477,7 +1477,7 @@ class EmployeeManagementSeeder extends Seeder
                     'fixedamount' => null,
                 ],
                 [
-                    'compensation' => 'PERFORMANCE BONUS',
+                    'adjustment' => 'PERFORMANCE BONUS',
                     'rangestart' => 0,
                     'rangeend' => null,
                     'operation' => 'incentive',
@@ -1485,7 +1485,7 @@ class EmployeeManagementSeeder extends Seeder
                     'fixedamount' => null,
                 ],
                 [
-                    'compensation' => 'MATERNITY LEAVE',
+                    'adjustment' => 'MATERNITY LEAVE',
                     'rangestart' => 0,
                     'rangeend' => null,
                     'operation' => 'incentive',
@@ -1493,7 +1493,7 @@ class EmployeeManagementSeeder extends Seeder
                     'fixedamount' => null,
                 ],
                 [
-                    'compensation' => 'PATERNITY LEAVE',
+                    'adjustment' => 'PATERNITY LEAVE',
                     'rangestart' => 0,
                     'rangeend' => null,
                     'operation' => 'incentive',
