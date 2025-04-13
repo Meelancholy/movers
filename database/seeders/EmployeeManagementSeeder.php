@@ -593,6 +593,282 @@ class EmployeeManagementSeeder extends Seeder
                 'email' => 'gina.torres@company.com', 'contact' => '09' . rand(10000000, 99999999),
                 'status' => 'active', 'department' => 'Legal', 'position' => 'Legal Assistant',
                 'bdate' => '1988-06-22', 'job_type' => 'Full-time', 'gender' => 'Female'
+            ],
+            [
+                'first_name' => 'Rafael',
+                'last_name' => 'Basilio',
+                'email' => 'rafael.basilio@company.com',
+                'contact' => '09' . rand(10000000, 99999999),
+                'status' => 'active',
+                'department' => 'Operations',
+                'position' => 'Driver',
+                'bdate' => now()->subYears(rand(21, 30))->format('Y-m-d'),
+                'job_type' => 'Full-time',
+                'gender' => 'Male'
+            ],
+
+            // 2. Customer Support (Operations)
+            [
+                'first_name' => 'Andrea',
+                'last_name' => 'Cortez',
+                'email' => 'andrea.cortez@company.com',
+                'contact' => '09' . rand(10000000, 99999999),
+                'status' => 'active',
+                'department' => 'Operations',
+                'position' => 'Customer Support',
+                'bdate' => now()->subYears(rand(21, 30))->format('Y-m-d'),
+                'job_type' => 'Full-time',
+                'gender' => 'Female'
+            ],
+
+            // 3. Dispatch Assistant (Logistics)
+            [
+                'first_name' => 'Marvin',
+                'last_name' => 'Estrella',
+                'email' => 'marvin.estrella@company.com',
+                'contact' => '09' . rand(10000000, 99999999),
+                'status' => 'active',
+                'department' => 'Logistics',
+                'position' => 'Dispatch Assistant',
+                'bdate' => now()->subYears(rand(21, 30))->format('Y-m-d'),
+                'job_type' => 'Full-time',
+                'gender' => 'Male'
+            ],
+
+            // 4. HR Assistant (HR)
+            [
+                'first_name' => 'Carla',
+                'last_name' => 'Jimenez',
+                'email' => 'carla.jimenez@company.com',
+                'contact' => '09' . rand(10000000, 99999999),
+                'status' => 'active',
+                'department' => 'HR',
+                'position' => 'HR Assistant',
+                'bdate' => now()->subYears(rand(21, 30))->format('Y-m-d'),
+                'job_type' => 'Full-time',
+                'gender' => 'Female'
+            ],
+
+            // 5. Fleet Maintenance (Logistics)
+            [
+                'first_name' => 'Eduardo',
+                'last_name' => 'Magsaysay',
+                'email' => 'eduardo.magsaysay@company.com',
+                'contact' => '09' . rand(10000000, 99999999),
+                'status' => 'active',
+                'department' => 'Logistics',
+                'position' => 'Fleet Maintenance',
+                'bdate' => now()->subYears(rand(21, 30))->format('Y-m-d'),
+                'job_type' => 'Full-time',
+                'gender' => 'Male'
+            ],
+
+            // 6. Finance Clerk (Finance)
+            [
+                'first_name' => 'Lourdes',
+                'last_name' => 'Natividad',
+                'email' => 'lourdes.natividad@company.com',
+                'contact' => '09' . rand(10000000, 99999999),
+                'status' => 'active',
+                'department' => 'Finance',
+                'position' => 'Finance Clerk',
+                'bdate' => now()->subYears(rand(21, 30))->format('Y-m-d'),
+                'job_type' => 'Full-time',
+                'gender' => 'Female'
+            ],
+
+            // 7. Admin Assistant (Admin)
+            [
+                'first_name' => 'Romeo',
+                'last_name' => 'Pascual',
+                'email' => 'romeo.pascual@company.com',
+                'contact' => '09' . rand(10000000, 99999999),
+                'status' => 'active',
+                'department' => 'Admin',
+                'position' => 'Admin Assistant',
+                'bdate' => now()->subYears(rand(21, 30))->format('Y-m-d'),
+                'job_type' => 'Full-time',
+                'gender' => 'Male'
+            ],
+
+            // 8. Part-time Driver (Operations)
+            [
+                'first_name' => 'Teresita',
+                'last_name' => 'Quizon',
+                'email' => 'teresita.quizon@company.com',
+                'contact' => '09' . rand(10000000, 99999999),
+                'status' => 'active',
+                'department' => 'Operations',
+                'position' => 'Driver',
+                'bdate' => now()->subYears(rand(21, 30))->format('Y-m-d'),
+                'job_type' => 'Part-time',
+                'gender' => 'Female'
+            ],
+
+            // 9. Data Entry (Operations)
+            [
+                'first_name' => 'Samuel',
+                'last_name' => 'Rubio',
+                'email' => 'samuel.rubio@company.com',
+                'contact' => '09' . rand(10000000, 99999999),
+                'status' => 'active',
+                'department' => 'Operations',
+                'position' => 'Data Entry',
+                'bdate' => now()->subYears(rand(21, 30))->format('Y-m-d'),
+                'job_type' => 'Full-time',
+                'gender' => 'Male'
+            ],
+
+            // 10. Safety Assistant (Core)
+            [
+                'first_name' => 'Victoria',
+                'last_name' => 'Sison',
+                'email' => 'victoria.sison@company.com',
+                'contact' => '09' . rand(10000000, 99999999),
+                'status' => 'active',
+                'department' => 'Support',
+                'position' => 'Safety Assistant',
+                'bdate' => now()->subYears(rand(21, 30))->format('Y-m-d'),
+                'job_type' => 'Full-time',
+                'gender' => 'Female'
+            ],
+            [
+                'first_name' => 'Benjamin',
+                'last_name' => 'Tolentino',
+                'email' => 'benjamin.tolentino@company.com',
+                'contact' => '09' . rand(10000000, 99999999),
+                'status' => 'active',
+                'department' => 'Operations',
+                'position' => 'Driver',
+                'bdate' => now()->subYears(rand(21, 30))->format('Y-m-d'),
+                'job_type' => 'Full-time',
+                'gender' => 'Male'
+            ],
+
+            // 2. Customer Support (Operations)
+            [
+                'first_name' => 'Danica',
+                'last_name' => 'Umali',
+                'email' => 'danica.umali@company.com',
+                'contact' => '09' . rand(10000000, 99999999),
+                'status' => 'active',
+                'department' => 'Operations',
+                'position' => 'Customer Support',
+                'bdate' => now()->subYears(rand(21, 30))->format('Y-m-d'),
+                'job_type' => 'Full-time',
+                'gender' => 'Female'
+            ],
+
+            // 3. Logistics - Vehicle Inspector
+            [
+                'first_name' => 'Christian',
+                'last_name' => 'Villanueva',
+                'email' => 'christian.villanueva@company.com',
+                'contact' => '09' . rand(10000000, 99999999),
+                'status' => 'active',
+                'department' => 'Logistics',
+                'position' => 'Vehicle Inspector',
+                'bdate' => now()->subYears(rand(21, 30))->format('Y-m-d'),
+                'job_type' => 'Full-time',
+                'gender' => 'Male'
+            ],
+
+            // 4. HR - Recruitment Assistant
+            [
+                'first_name' => 'Erica',
+                'last_name' => 'Yabut',
+                'email' => 'erica.yabut@company.com',
+                'contact' => '09' . rand(10000000, 99999999),
+                'status' => 'active',
+                'department' => 'HR',
+                'position' => 'Recruitment Assistant',
+                'bdate' => now()->subYears(rand(21, 30))->format('Y-m-d'),
+                'job_type' => 'Full-time',
+                'gender' => 'Female'
+            ],
+
+            // 5. Finance - Billing Clerk
+            [
+                'first_name' => 'Francis',
+                'last_name' => 'Zamora',
+                'email' => 'francis.zamora@company.com',
+                'contact' => '09' . rand(10000000, 99999999),
+                'status' => 'active',
+                'department' => 'Finance',
+                'position' => 'Billing Clerk',
+                'bdate' => now()->subYears(rand(21, 30))->format('Y-m-d'),
+                'job_type' => 'Full-time',
+                'gender' => 'Male'
+            ],
+
+            // 6. Admin - Office Clerk
+            [
+                'first_name' => 'Giselle',
+                'last_name' => 'Aguilar',
+                'email' => 'giselle.aguilar@company.com',
+                'contact' => '09' . rand(10000000, 99999999),
+                'status' => 'active',
+                'department' => 'Admin',
+                'position' => 'Office Clerk',
+                'bdate' => now()->subYears(rand(21, 30))->format('Y-m-d'),
+                'job_type' => 'Full-time',
+                'gender' => 'Female'
+            ],
+
+            // 7. Operations - Night Shift Driver
+            [
+                'first_name' => 'Harold',
+                'last_name' => 'Bautista',
+                'email' => 'harold.bautista@company.com',
+                'contact' => '09' . rand(10000000, 99999999),
+                'status' => 'active',
+                'department' => 'Operations',
+                'position' => 'Driver',
+                'bdate' => now()->subYears(rand(21, 30))->format('Y-m-d'),
+                'job_type' => 'Full-time',
+                'gender' => 'Male'
+            ],
+
+            // 8. Core - Safety Monitor
+            [
+                'first_name' => 'Irene',
+                'last_name' => 'Cruz',
+                'email' => 'irene.cruz@company.com',
+                'contact' => '09' . rand(10000000, 99999999),
+                'status' => 'active',
+                'department' => 'Support',
+                'position' => 'Safety Monitor',
+                'bdate' => now()->subYears(rand(21, 30))->format('Y-m-d'),
+                'job_type' => 'Full-time',
+                'gender' => 'Female'
+            ],
+
+            // 9. Logistics - Fleet Assistant
+            [
+                'first_name' => 'Jerome',
+                'last_name' => 'Dela Rosa',
+                'email' => 'jerome.delarosa@company.com',
+                'contact' => '09' . rand(10000000, 99999999),
+                'status' => 'active',
+                'department' => 'Logistics',
+                'position' => 'Fleet Assistant',
+                'bdate' => now()->subYears(rand(21, 30))->format('Y-m-d'),
+                'job_type' => 'Full-time',
+                'gender' => 'Male'
+            ],
+
+            // 10. Operations - Reservation Specialist
+            [
+                'first_name' => 'Katherine',
+                'last_name' => 'Evangelista',
+                'email' => 'katherine.evangelista@company.com',
+                'contact' => '09' . rand(10000000, 99999999),
+                'status' => 'active',
+                'department' => 'Operations',
+                'position' => 'Reservation Specialist',
+                'bdate' => now()->subYears(rand(21, 30))->format('Y-m-d'),
+                'job_type' => 'Full-time',
+                'gender' => 'Female'
             ]
         ];
 
@@ -602,67 +878,632 @@ class EmployeeManagementSeeder extends Seeder
 
         // Seed Adjustments (make sure you have at least 3 adjustments)
         $adjustments = [
-            [
-                'adjustment' => 'Transportation Allowance',
-                'rangestart' => null,
-                'rangeend' => null,
-                'operation' => 'incentive',
-                'percentage' => null,
-                'fixedamount' => '1500.00'
-            ],
-            [
-                'adjustment' => 'Meal Allowance',
-                'rangestart' => null,
-                'rangeend' => null,
-                'operation' => 'incentive',
-                'percentage' => null,
-                'fixedamount' => '2000.00'
-            ],
-            [
-                'adjustment' => 'Tax Deduction',
-                'rangestart' => '10000',
-                'rangeend' => '50000',
-                'operation' => 'deduction',
-                'percentage' => '5.00',
-                'fixedamount' => null
-            ],
-            [
-                'adjustment' => 'SSS Contribution',
-                'rangestart' => null,
-                'rangeend' => null,
-                'operation' => 'deduction',
-                'percentage' => '4.50',
-                'fixedamount' => null
-            ],
-            [
-                'adjustment' => 'Performance Bonus',
-                'rangestart' => null,
-                'rangeend' => null,
-                'operation' => 'incentive',
-                'percentage' => '10.00',
-                'fixedamount' => null
-            ]
+                [
+                    'adjustment' => 'PhilHealth',
+                    'rangestart' => 0,
+                    'rangeend' => 10000,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '250.00' // Employee pays ONLY this
+                ],
+                // Salary ₱10,000.01 - ₱99,999.99 → Employee pays 2.5% (half of 5%)
+                [
+                    'adjustment' => 'PhilHealth',
+                    'rangestart' => 10000.01,
+                    'rangeend' => 99999.99,
+                    'operation' => 'contribution',
+                    'percentage' => '2.5', // 2.5% (employee's half of 5%)
+                    'fixedamount' => null
+                ],
+                // Salary ≥ ₱100,000 → Employee pays ₱2,500 (half of ₱5,000)
+                [
+                    'adjustment' => 'PhilHealth',
+                    'rangestart' => 100000,
+                    'rangeend' => null,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '2500.00' // Employee pays ONLY this
+                ],
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 0,
+                    'rangeend' => 5249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '250.00'
+                ],
+                // ₱5,250 - ₱5,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 5250,
+                    'rangeend' => 5749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '275.00'
+                ],
+                // ₱5,750 - ₱6,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 5750,
+                    'rangeend' => 6249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '300.00'
+                ],
+                // ₱6,250 - ₱6,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 6250,
+                    'rangeend' => 6749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '325.00'
+                ],
+                // ₱6,750 - ₱7,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 6750,
+                    'rangeend' => 7249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '350.00'
+                ],
+                // ₱7,250 - ₱7,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 7250,
+                    'rangeend' => 7749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '375.00'
+                ],
+                // ₱7,750 - ₱8,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 7750,
+                    'rangeend' => 8249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '400.00'
+                ],
+                // ₱8,250 - ₱8,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 8250,
+                    'rangeend' => 8749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '425.00'
+                ],
+                // ₱8,750 - ₱9,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 8750,
+                    'rangeend' => 9249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '450.00'
+                ],
+                // ₱9,250 - ₱9,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 9250,
+                    'rangeend' => 9749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '475.00'
+                ],
+                // ₱9,750 - ₱10,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 9750,
+                    'rangeend' => 10249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '500.00'
+                ],
+                // ₱10,250 - ₱10,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 10250,
+                    'rangeend' => 10749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '525.00'
+                ],
+                // ₱10,750 - ₱11,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 10750,
+                    'rangeend' => 11249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '550.00'
+                ],
+                // ₱11,250 - ₱11,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 11250,
+                    'rangeend' => 11749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '575.00'
+                ],
+                // ₱11,750 - ₱12,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 11750,
+                    'rangeend' => 12249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '600.00'
+                ],
+                // ₱12,250 - ₱12,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 12250,
+                    'rangeend' => 12749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '625.00'
+                ],
+                // ₱12,750 - ₱13,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 12750,
+                    'rangeend' => 13249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '650.00'
+                ],
+                // ₱13,250 - ₱13,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 13250,
+                    'rangeend' => 13749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '675.00'
+                ],
+                // ₱13,750 - ₱14,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 13750,
+                    'rangeend' => 14249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '700.00'
+                ],
+                // ₱14,250 - ₱14,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 14250,
+                    'rangeend' => 14749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '725.00'
+                ],
+                // ₱14,750 - ₱15,249.99 (EC increases to ₱30)
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 14750,
+                    'rangeend' => 15249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '750.00'
+                ],
+                // ₱15,250 - ₱15,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 15250,
+                    'rangeend' => 15749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '775.00'
+                ],
+                // ₱15,750 - ₱16,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 15750,
+                    'rangeend' => 16249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '800.00'
+                ],
+                // ₱16,250 - ₱16,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 16250,
+                    'rangeend' => 16749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '825.00'
+                ],
+                // ₱16,750 - ₱17,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 16750,
+                    'rangeend' => 17249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '850.00'
+                ],
+                // ₱17,250 - ₱17,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 17250,
+                    'rangeend' => 17749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '875.00'
+                ],
+                // ₱17,750 - ₱18,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 17750,
+                    'rangeend' => 18249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '900.00'
+                ],
+                // ₱18,250 - ₱18,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 18250,
+                    'rangeend' => 18749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '925.00'
+                ],
+                // ₱18,750 - ₱19,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 18750,
+                    'rangeend' => 19249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '950.00'
+                ],
+                // ₱19,250 - ₱19,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 19250,
+                    'rangeend' => 19749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '975.00'
+                ],
+                // ₱19,750 - ₱20,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 19750,
+                    'rangeend' => 20249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1000.00'
+                ],
+                // ₱20,250 - ₱20,749.99 (MPF starts)
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 20250,
+                    'rangeend' => 20749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1025.00' // ₱1,000 + ₱25 MPF
+                ],
+                // ₱20,750 - ₱21,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 20750,
+                    'rangeend' => 21249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1050.00' // ₱1,000 + ₱50 MPF
+                ],
+                // ₱21,250 - ₱21,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 21250,
+                    'rangeend' => 21749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1075.00' // ₱1,000 + ₱75 MPF
+                ],
+                // ₱21,750 - ₱22,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 21750,
+                    'rangeend' => 22249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1100.00' // ₱1,000 + ₱100 MPF
+                ],
+                // ₱22,250 - ₱22,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 22250,
+                    'rangeend' => 22749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1125.00' // ₱1,000 + ₱125 MPF
+                ],
+                // ₱22,750 - ₱23,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 22750,
+                    'rangeend' => 23249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1150.00' // ₱1,000 + ₱150 MPF
+                ],
+                // ₱23,250 - ₱23,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 23250,
+                    'rangeend' => 23749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1175.00' // ₱1,000 + ₱175 MPF
+                ],
+                // ₱23,750 - ₱24,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 23750,
+                    'rangeend' => 24249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1200.00' // ₱1,000 + ₱200 MPF
+                ],
+                // ₱24,250 - ₱24,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 24250,
+                    'rangeend' => 24749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1225.00' // ₱1,000 + ₱225 MPF
+                ],
+                // ₱24,750 - ₱25,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 24750,
+                    'rangeend' => 25249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1250.00' // ₱1,000 + ₱250 MPF
+                ],
+                // ₱25,250 - ₱25,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 25250,
+                    'rangeend' => 25749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1275.00' // ₱1,000 + ₱275 MPF
+                ],
+                // ₱25,750 - ₱26,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 25750,
+                    'rangeend' => 26249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1300.00' // ₱1,000 + ₱300 MPF
+                ],
+                // ₱26,250 - ₱26,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 26250,
+                    'rangeend' => 26749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1325.00' // ₱1,000 + ₱325 MPF
+                ],
+                // ₱26,750 - ₱27,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 26750,
+                    'rangeend' => 27249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1350.00' // ₱1,000 + ₱350 MPF
+                ],
+                // ₱27,250 - ₱27,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 27250,
+                    'rangeend' => 27749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1375.00' // ₱1,000 + ₱375 MPF
+                ],
+                // ₱27,750 - ₱28,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 27750,
+                    'rangeend' => 28249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1400.00' // ₱1,000 + ₱400 MPF
+                ],
+                // ₱28,250 - ₱28,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 28250,
+                    'rangeend' => 28749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1425.00' // ₱1,000 + ₱425 MPF
+                ],
+                // ₱28,750 - ₱29,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 28750,
+                    'rangeend' => 29249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1450.00' // ₱1,000 + ₱450 MPF
+                ],
+                // ₱29,250 - ₱29,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 29250,
+                    'rangeend' => 29749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1475.00' // ₱1,000 + ₱475 MPF
+                ],
+                // ₱29,750 - ₱30,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 29750,
+                    'rangeend' => 30249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1500.00' // ₱1,000 + ₱500 MPF
+                ],
+                // ₱30,250 - ₱30,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 30250,
+                    'rangeend' => 30749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1525.00' // ₱1,000 + ₱525 MPF
+                ],
+                // ₱30,750 - ₱31,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 30750,
+                    'rangeend' => 31249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1550.00' // ₱1,000 + ₱550 MPF
+                ],
+                // ₱31,250 - ₱31,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 31250,
+                    'rangeend' => 31749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1575.00' // ₱1,000 + ₱575 MPF
+                ],
+                // ₱31,750 - ₱32,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 31750,
+                    'rangeend' => 32249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1600.00' // ₱1,000 + ₱600 MPF
+                ],
+                // ₱32,250 - ₱32,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 32250,
+                    'rangeend' => 32749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1625.00' // ₱1,000 + ₱625 MPF
+                ],
+                // ₱32,750 - ₱33,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 32750,
+                    'rangeend' => 33249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1650.00' // ₱1,000 + ₱650 MPF
+                ],
+                // ₱33,250 - ₱33,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 33250,
+                    'rangeend' => 33749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1675.00' // ₱1,000 + ₱675 MPF
+                ],
+                // ₱33,750 - ₱34,249.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 33750,
+                    'rangeend' => 34249.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1700.00' // ₱1,000 + ₱700 MPF
+                ],
+                // ₱34,250 - ₱34,749.99
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 34250,
+                    'rangeend' => 34749.99,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1725.00' // ₱1,000 + ₱725 MPF
+                ],
+                // ₱34,750 and above (maximum adjustment)
+                [
+                    'adjustment' => 'SSS',
+                    'rangestart' => 34750,
+                    'rangeend' => null,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '1750.00' // ₱1,000 + ₱750 MPF (max)
+                ],
+                [
+                    'adjustment' => 'PAGIBIG',
+                    'rangestart' => 0,
+                    'rangeend' => 1500,
+                    'operation' => 'contribution',
+                    'percentage' => 1,
+                    'fixedamount' => 'null' // ₱1,000 + ₱750 MPF (max)
+                ],
+                [
+                    'adjustment' => 'PAGIBIG',
+                    'rangestart' => 1500,
+                    'rangeend' => null,
+                    'operation' => 'contribution',
+                    'percentage' => null,
+                    'fixedamount' => '200' // ₱1,000 + ₱750 MPF (max)
+                ],
+                [
+                    'compensation' => '13TH MONTH PAY',
+                    'rangestart' => 0,
+                    'rangeend' => null,
+                    'operation' => 'incentive',
+                    'percentage' => 100,
+                    'fixedamount' => null,
+                ],
+                [
+                    'compensation' => 'PERFORMANCE BONUS',
+                    'rangestart' => 0,
+                    'rangeend' => null,
+                    'operation' => 'incentive',
+                    'percentage' => null,
+                    'fixedamount' => null,
+                ],
+                [
+                    'compensation' => 'MATERNITY LEAVE',
+                    'rangestart' => 0,
+                    'rangeend' => null,
+                    'operation' => 'incentive',
+                    'percentage' => null,
+                    'fixedamount' => null,
+                ],
+                [
+                    'compensation' => 'PATERNITY LEAVE',
+                    'rangestart' => 0,
+                    'rangeend' => null,
+                    'operation' => 'incentive',
+                    'percentage' => null,
+                    'fixedamount' => null,
+                ]
         ];
 
         foreach ($adjustments as $adjustment) {
             Adjustment::create($adjustment);
-        }
-
-        // Attach adjustments to employees
-        $employees = Employee::all();
-        $adjustments = Adjustment::all();
-
-        foreach ($employees as $employee) {
-            // Get a random number between 1 and the total number of adjustments
-            $numAdjustments = rand(1, min(3, count($adjustments)));
-
-            // Safely get random adjustments
-            $employeeAdjustments = $adjustments->random($numAdjustments)
-                ->mapWithKeys(function ($adjustment) {
-                    return [$adjustment->id => ['frequency' => rand(1, 3)]];
-                })->toArray();
-
-            $employee->adjustments()->attach($employeeAdjustments);
         }
     }
 }
