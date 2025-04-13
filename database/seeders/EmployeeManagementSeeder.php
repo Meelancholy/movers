@@ -63,7 +63,7 @@ class EmployeeManagementSeeder extends Seeder
                 'job_type' => 'Part-time', 'gender' => 'Male'
             ],
             [
-                'first_name' => 'Carmen', 'last_name' => 'Reyes', 'email' => 'carmen.reyes@company.com', 'contact' => '09171234008',
+                'first_name' => 'Carment', 'last_name' => 'Reyes', 'email' => 'carment.reyes@company.com', 'contact' => '09171234008',
                 'status' => 'active', 'department' => 'Operations', 'position' => 'Driver', 'bdate' => '1988-04-05',
                 'job_type' => 'Full-time', 'gender' => 'Female'
             ],
@@ -347,7 +347,7 @@ class EmployeeManagementSeeder extends Seeder
                 'job_type' => 'Full-time', 'gender' => 'Female'
             ],
             [
-                'first_name' => 'Ronald', 'last_name' => 'Sison', 'email' => 'ronald.sison@company.com', 'contact' => '09171444002',
+                'first_name' => 'Ronald', 'last_name' => 'Sison', 'email' => 'ronald.sisons@company.com', 'contact' => '09171444002',
                 'status' => 'active', 'department' => 'Customer Support', 'position' => 'Support Agent', 'bdate' => '1991-05-20',
                 'job_type' => 'Full-time', 'gender' => 'Male'
             ],
@@ -401,12 +401,12 @@ class EmployeeManagementSeeder extends Seeder
 
             // Legal (2)
             [
-                'first_name' => 'Atty. Ramon', 'last_name' => 'Hizon', 'email' => 'ramon.hizon@company.com', 'contact' => '09171666001',
+                'first_name' => 'Atty. Ramon', 'last_name' => 'Hizon', 'email' => 'ramon.hizons@company.com', 'contact' => '09171666001',
                 'status' => 'active', 'department' => 'Legal', 'position' => 'Legal Counsel', 'bdate' => '1975-05-10',
                 'job_type' => 'Full-time', 'gender' => 'Male'
             ],
             [
-                'first_name' => 'Atty. Lourdes', 'last_name' => 'Manalo', 'email' => 'lourdes.manalo@company.com', 'contact' => '09171666002',
+                'first_name' => 'Atty. Lourdes', 'last_name' => 'Manalo', 'email' => 'lourdes.manale@company.com', 'contact' => '09171666002',
                 'status' => 'active', 'department' => 'Legal', 'position' => 'Compliance Officer', 'bdate' => '1978-09-15',
                 'job_type' => 'Full-time', 'gender' => 'Female'
             ],
@@ -430,12 +430,12 @@ class EmployeeManagementSeeder extends Seeder
 
             // Executive Team (5)
             [
-                'first_name' => 'Enrique', 'last_name' => 'Delgado', 'email' => 'enrique.delgado@company.com', 'contact' => '09171888001',
+                'first_name' => 'Enrique', 'last_name' => 'Delgado', 'email' => 'enriquezdelgado@company.com', 'contact' => '09171888001',
                 'status' => 'active', 'department' => 'Executive', 'position' => 'CEO', 'bdate' => '1970-03-12',
                 'job_type' => 'Full-time', 'gender' => 'Male'
             ],
             [
-                'first_name' => 'Isabel', 'last_name' => 'Vasquez', 'email' => 'isabel.vasquez@company.com', 'contact' => '09171888002',
+                'first_name' => 'Isabel', 'last_name' => 'Vasquez', 'email' => 'isabela.vasquez@company.com', 'contact' => '09171888002',
                 'status' => 'active', 'department' => 'Executive', 'position' => 'COO', 'bdate' => '1972-06-25',
                 'job_type' => 'Full-time', 'gender' => 'Female'
             ],
@@ -450,7 +450,7 @@ class EmployeeManagementSeeder extends Seeder
                 'job_type' => 'Full-time', 'gender' => 'Female'
             ],
             [
-                'first_name' => 'Alfredo', 'last_name' => 'Santos', 'email' => 'alfredo.santos@company.com', 'contact' => '09171888005',
+                'first_name' => 'Alfredoes', 'last_name' => 'Santos', 'email' => 'alfredoes.santos@company.com', 'contact' => '09171888005',
                 'status' => 'active', 'department' => 'Executive', 'position' => 'CMO', 'bdate' => '1974-11-05',
                 'job_type' => 'Full-time', 'gender' => 'Male'
             ],
@@ -467,12 +467,12 @@ class EmployeeManagementSeeder extends Seeder
                 'job_type' => 'Full-time', 'gender' => 'Female'
             ],
             [
-                'first_name' => 'Fernando', 'last_name' => 'Marquez', 'email' => 'fernando.marquez@company.com', 'contact' => '09171999003',
+                'first_name' => 'Fernandoes', 'last_name' => 'Marquez', 'email' => 'fernandoes.marquez@company.com', 'contact' => '09171999003',
                 'status' => 'active', 'department' => 'Logistics', 'position' => 'Logistics Assistant', 'bdate' => '1987-07-15',
                 'job_type' => 'Full-time', 'gender' => 'Male'
             ],
             [
-                'first_name' => 'Teresita', 'last_name' => 'Santiago', 'email' => 'teresita.santiago@company.com', 'contact' => '09171999004',
+                'first_name' => 'Teresita', 'last_name' => 'Santiago', 'email' => 'teresitat.santiago@company.com', 'contact' => '09171999004',
                 'status' => 'active', 'department' => 'Customer Support', 'position' => 'Support Assistant', 'bdate' => '1990-04-20',
                 'job_type' => 'Full-time', 'gender' => 'Female'
             ],
