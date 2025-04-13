@@ -318,7 +318,7 @@ class EmployeeManagementSeeder extends Seeder
             ],
             [
                 'first_name' => 'Carla', 'last_name' => 'Jimenez',
-                'email' => 'carla.jimenez@company.com', 'contact' => '09' . rand(10000000, 99999999),
+                'email' => 'carla.jimeneez@company.com', 'contact' => '09' . rand(10000000, 99999999),
                 'status' => 'active', 'department' => 'Operations', 'position' => 'Customer Support Lead',
                 'bdate' => '1991-09-15', 'job_type' => 'Full-time', 'gender' => 'Female'
             ],
