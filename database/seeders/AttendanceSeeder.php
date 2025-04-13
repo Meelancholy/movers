@@ -11,16 +11,17 @@ class AttendanceSeeder extends Seeder
 {
     public function run()
     {
-        // Get all employees
         $employees = Employee::all();
 
         foreach ($employees as $employee) {
-            // Generate attendance records
-            $isDriver = (strtolower($employee->department) === 'operations' && strtolower($employee->position)) === 'driver';
+            $isDriver = (strtolower($employee->department) === 'operations' &&
+                        strtolower($employee->position) === 'driver');
 
             Attendance::create([
                 'employee_id' => $employee->id,
-                'hours_worked' => $isDriver ? rand(8, 12) : rand(6, 9), // Drivers work longer hours
+                'hours_worked' => $isDriver ? rand(8, 12) : rand(6, 9),
+                'date' => now()->format('Y-m-d'), // Today's date
+                'status' => 'present',
             ]);
         }
     }
