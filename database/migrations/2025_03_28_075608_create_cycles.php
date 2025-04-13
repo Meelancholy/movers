@@ -18,6 +18,8 @@ return new class extends Migration
             $table->date('payment_date')->nullable();
             $table->enum('status', ['pending', 'processing', 'completed'])->default('pending');
             $table->string('total')->nullable();
+            $table->date('cut_off_date');
+            $table->date('payout_date');
             $table->timestamps();
         });
     }

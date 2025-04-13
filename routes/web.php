@@ -34,6 +34,7 @@ Route::middleware(['auth', 'twofactor'])->group(function () {
 
     Route::prefix('employee')->group(function () {
         Route::get('/list', [EmployeeDashboardController::class, 'list'])->name('employee.list');
+        Route::get('/archived', [EmployeeDashboardController::class, 'archive'])->name('employee.archive');
         Route::get('/', [EmployeeDashboardController::class, 'index'])->name('employee.dashboard');
         Route::get('/{id}/edit', [EmployeeDashboardController::class, 'edit'])->name('employee.edit');
         Route::put('/{id}', [EmployeeDashboardController::class, 'update'])->name('employee.update');

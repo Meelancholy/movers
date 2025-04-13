@@ -20,6 +20,8 @@ class Cycle extends Model
         'payment_date',
         'status',
         'total',
+        'cut_off_date',
+        'payout_date',
     ];
 
     /**
@@ -31,6 +33,8 @@ class Cycle extends Model
         'start_date' => 'date',
         'end_date' => 'date',
         'payment_date' => 'date',
+        'cut_off_date' => 'date',
+        'payout_date' => 'date',
         'total' => 'decimal:2',
     ];
 

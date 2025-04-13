@@ -39,7 +39,6 @@
                 <div class="flex items-center space-x-4 p-2">
                     <label for="rowsPerPage" class="text-sm">Rows per page:</label>
                     <select id="rowsPerPage" class="p-2 border rounded-lg">
-                        <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="20">20</option>
                         <option value="50">50</option>

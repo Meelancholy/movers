@@ -9,7 +9,7 @@ class EmployeeList extends Component
 {
     public function render()
     {
-        $employees = Employee::all();
+        $employees = Employee::where('status', 'active')->get();
 
         return view('livewire.employee-management.employee-list', compact('employees'));
     }

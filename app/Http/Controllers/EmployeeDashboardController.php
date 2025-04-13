@@ -13,6 +13,12 @@ class EmployeeDashboardController extends Controller
     {
         return view('hr1.employee_management.employee_list');
     }
+    public function archive()
+    {
+        $employees = Employee::where('status', 'inactive')->get();
+
+        return view('hr1.employee_management.archive', compact('employees'));
+    }
 // app/Http/Controllers/EmployeeController.php
 public function edit($id)
 {
@@ -53,7 +59,12 @@ public function update(Request $request, $id)
     public function destroy($id)
     {
         $employee = Employee::findOrFail($id);
-        $employee->delete();
+        if ($employee->status === 'active') {
+            $employee->status = 'inactive';
+        } elseif ($employee->status === 'inactive') {
+            $employee->status = 'active';
+        }
+        $employee->save();
         return redirect()->route('employee.list')->with('success', 'Employee deleted successfully.');
     }
 }

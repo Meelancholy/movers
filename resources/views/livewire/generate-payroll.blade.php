@@ -37,6 +37,18 @@
                                    class="w-full p-2 border rounded text-sm">
                             @error('newCycle.end_date') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                         </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Cut-Off Date</label>
+                            <input wire:model="newCycle.cut_off_date" type="date"
+                                   class="w-full p-2 border rounded text-sm">
+                            @error('newCycle.cut_off_date') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Payout Date</label>
+                            <input wire:model="newCycle.payout_date" type="date"
+                                   class="w-full p-2 border rounded text-sm">
+                            @error('newCycle.payout_date') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
                         <div class="flex justify-end space-x-2 pt-2">
                             <button type="button" wire:click="$toggle('showCreateCycleForm')"
                                     class="px-3 py-1 text-sm border rounded hover:bg-gray-100">
@@ -63,6 +75,10 @@
                             <h3 class="font-medium text-sm">
                                 {{ $cycle->start_date->format('M d') }} - {{ $cycle->end_date->format('M d, Y') }}
                             </h3>
+                            <div class="text-xs text-gray-500">
+                                Cut-off: {{ $cycle->cut_off_date->format('M d, Y') }} |
+                                Payout: {{ $cycle->payout_date->format('M d, Y') }}
+                            </div>
                         </div>
                         <button wire:click.stop="confirmDeleteCycle({{ $cycle->id }})"
                                 class="text-gray-400 hover:text-red-500 p-1">
@@ -95,7 +111,8 @@
                         {{ $selectedCycle->start_date->format('M d, Y') }} - {{ $selectedCycle->end_date->format('M d, Y') }}
                     </h2>
                     <div class="text-sm text-gray-500">
-                        {{ $selectedCycle->payrolls->count() }} of {{ $employees->count() }} processed
+                        Cut-off: {{ $selectedCycle->cut_off_date->format('M d, Y') }} |
+                        Payout: {{ $selectedCycle->payout_date->format('M d, Y') }}
                     </div>
                 </div>
 
@@ -104,6 +121,7 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-3 py-2 text-left">Employee</th>
+                                <th class="px-3 py-2 text-left">Department</th>
                                 <th class="px-3 py-2 text-left">Position</th>
                                 <th class="px-3 py-2 text-center">Status</th>
                                 <th class="px-3 py-2 text-right">Amount</th>
@@ -120,16 +138,25 @@
                                     {{ $employee->first_name }} {{ $employee->last_name }}
                                 </td>
                                 <td class="px-3 py-2 whitespace-nowrap">
+                                    {{ $employee->department }}
+                                </td>
+                                <td class="px-3 py-2 whitespace-nowrap">
                                     {{ $employee->position }}
                                 </td>
                                 <td class="px-3 py-2 text-center">
                                     @if($payroll)
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
-                                            Processed
-                                        </span>
+                                        @if($payroll->status === 'paid')
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                                                Paid
+                                            </span>
+                                        @else
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                Pending
+                                            </span>
+                                        @endif
                                     @else
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
-                                            Pending
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600">
+                                            Not Processed
                                         </span>
                                     @endif
                                 </td>
@@ -141,22 +168,29 @@
                                     @endif
                                 </td>
                                 <td class="px-3 py-2 text-right">
-                                    @if($payroll)
+                                    @php
+                                        $cutOffPassed = \Carbon\Carbon::parse($selectedCycle->cut_off_date)->isPast();
+                                    @endphp
+
+                                    @if ($payroll && $payroll->status === 'paid')
                                         <a wire:click="downloadPdf({{ $payroll->id }})"
-                                            class="text-blue-600 hover:text-blue-800 text-sm flex items-center justify-end cursor-pointer">
+                                           class="text-blue-600 hover:text-blue-800 text-sm flex items-center justify-end cursor-pointer">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
                                                 <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
                                             </svg>
                                             PDF
                                         </a>
                                     @else
-                                        <button wire:click="prepareGeneratePayroll({{ $employee->id }})"
-                                            class="text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-right">
-                                            Generate
-                                        </button>
+                                        @if ($cutOffPassed)
+                                            <button wire:click="prepareGeneratePayroll({{ $employee->id }})"
+                                                class="text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-right">
+                                                Generate
+                                            </button>
+                                        @else
+                                            <span class="text-gray-500 text-sm italic">Wait for cut-off</span>
+                                        @endif
                                     @endif
                                 </td>
-
                             </tr>
                             @endforeach
                         </tbody>

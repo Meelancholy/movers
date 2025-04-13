@@ -30,6 +30,8 @@ class GeneratePayroll extends Component
     public $newCycle = [
         'start_date' => '',
         'end_date' => '',
+        'payout_date' => '',
+        'cut_off_date' => '',
     ];
 
     // Cycle deletion properties
@@ -58,15 +60,17 @@ class GeneratePayroll extends Component
         $this->validate([
             'newCycle.start_date' => 'required|date',
             'newCycle.end_date' => 'required|date|after:newCycle.start_date',
+            'newCycle.cut_off_date' => 'required|date',
+            'newCycle.payout_date' => 'required|date',
         ]);
 
-        $overlappingCycle = Cycle::where(function($query) {
+        $overlappingCycle = Cycle::where(function ($query) {
             $query->whereBetween('start_date', [$this->newCycle['start_date'], $this->newCycle['end_date']])
-                  ->orWhereBetween('end_date', [$this->newCycle['start_date'], $this->newCycle['end_date']])
-                  ->orWhere(function($query) {
-                      $query->where('start_date', '<=', $this->newCycle['start_date'])
-                            ->where('end_date', '>=', $this->newCycle['end_date']);
-                  });
+                ->orWhereBetween('end_date', [$this->newCycle['start_date'], $this->newCycle['end_date']])
+                ->orWhere(function ($query) {
+                    $query->where('start_date', '<=', $this->newCycle['start_date'])
+                        ->where('end_date', '>=', $this->newCycle['end_date']);
+                });
         })->exists();
 
         if ($overlappingCycle) {
@@ -78,6 +82,8 @@ class GeneratePayroll extends Component
         $cycle = Cycle::create([
             'start_date' => $this->newCycle['start_date'],
             'end_date' => $this->newCycle['end_date'],
+            'cut_off_date' => $this->newCycle['cut_off_date'],
+            'payout_date' => $this->newCycle['payout_date'],
             'status' => 'pending',
         ]);
 
@@ -86,6 +92,7 @@ class GeneratePayroll extends Component
         $this->reset('newCycle');
         session()->flash('message', 'Cycle created successfully.');
     }
+
 
     public function confirmDeleteCycle($cycleId)
     {
