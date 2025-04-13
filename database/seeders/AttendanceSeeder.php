@@ -14,11 +14,13 @@ class AttendanceSeeder extends Seeder
         // Get all employees
         $employees = Employee::all();
 
-        // Create attendance records for the past 30 days for each employee
         foreach ($employees as $employee) {
+            // Generate attendance records
+            $isDriver = (strtolower($employee->department) === 'operations' && strtolower($employee->position)) === 'driver';
+
             Attendance::create([
                 'employee_id' => $employee->id,
-                'hours_worked' => rand(4, 12), // Random hours worked between 4 and 12
+                'hours_worked' => $isDriver ? rand(8, 12) : rand(6, 9), // Drivers work longer hours
             ]);
         }
     }
