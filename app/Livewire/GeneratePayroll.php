@@ -34,10 +34,15 @@ class GeneratePayroll extends Component
         'cut_off_date' => '',
     ];
 
-    // Cycle deletion properties
-    public $cycleToDelete = null;
-    public $showDeleteModal = false;
-
+    // Replace the delete methods with these edit methods
+    public $editingCycleId = null;
+    public $showEditModal = false;
+    public $form = [
+        'start_date' => '',
+        'end_date' => '',
+        'cut_off_date' => '',
+        'payout_date' => ''
+    ];
     public function mount()
     {
         $this->loadCycles();
@@ -94,29 +99,63 @@ class GeneratePayroll extends Component
     }
 
 
-    public function confirmDeleteCycle($cycleId)
+    public function editCycle($cycleId)
     {
-        $this->cycleToDelete = $cycleId;
-        $this->showDeleteModal = true;
-    }
-
-    public function deleteCycle()
-    {
-        $cycle = Cycle::find($this->cycleToDelete);
+        $this->editingCycleId = $cycleId;
+        $cycle = Cycle::find($cycleId);
 
         if ($cycle) {
-            if ($cycle->payrolls()->exists()) {
-                session()->flash('error', 'Cannot delete cycle with existing payrolls.');
-                $this->showDeleteModal = false;
-                return;
-            }
+            $this->form = [
+                'start_date' => $cycle->start_date->format('Y-m-d'),
+                'end_date' => $cycle->end_date->format('Y-m-d'),
+                'cut_off_date' => $cycle->cut_off_date->format('Y-m-d'),
+                'payout_date' => $cycle->payout_date->format('Y-m-d')
+            ];
+            $this->showEditModal = true;
+        }
+    }
+    public function updateCycle()
+    {
+        $this->validate([
+            'form.start_date' => 'required|date',
+            'form.end_date' => 'required|date|after_or_equal:form.start_date',
+            'form.cut_off_date' => 'required|date|after_or_equal:form.start_date|before_or_equal:form.end_date',
+            'form.payout_date' => 'required|date|after_or_equal:form.end_date'
+        ]);
 
-            $cycle->delete();
-            session()->flash('message', 'Cycle deleted successfully.');
+        // Check for overlapping cycles (excluding the current cycle being edited)
+        $overlappingCycle = Cycle::where('id', '!=', $this->editingCycleId)
+            ->where(function($query) {
+                $query->whereBetween('start_date', [$this->form['start_date'], $this->form['end_date']])
+                      ->orWhereBetween('end_date', [$this->form['start_date'], $this->form['end_date']])
+                      ->orWhere(function($q) {
+                          $q->where('start_date', '<=', $this->form['start_date'])
+                            ->where('end_date', '>=', $this->form['end_date']);
+                      });
+            })
+            ->first();
+
+        if ($overlappingCycle) {
+            $this->addError('overlap', 'This cycle overlaps with an existing cycle ('.$overlappingCycle->start_date->format('M d').' - '.$overlappingCycle->end_date->format('M d, Y').'). Please adjust the dates.');
+            return;
+        }
+
+        $cycle = Cycle::find($this->editingCycleId);
+
+        if ($cycle) {
+            $cycle->update([
+                'start_date' => $this->form['start_date'],
+                'end_date' => $this->form['end_date'],
+                'cut_off_date' => $this->form['cut_off_date'],
+                'payout_date' => $this->form['payout_date']
+            ]);
+
+            session()->flash('message', 'Cycle updated successfully.');
             $this->loadCycles();
         }
 
-        $this->showDeleteModal = false;
+        $this->showEditModal = false;
+        $this->reset(['editingCycleId', 'form']);
     }
 
     public function prepareGeneratePayroll($employeeId)

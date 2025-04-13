@@ -50,14 +50,6 @@
                                         <td class="p-3">{{ $range->rangeend ?? 'N/A' }}</td>
                                         <td class="p-3">{{ $range->percentage ? $range->percentage . '%' : 'N/A' }}</td>
                                         <td class="p-3">{{ $range->fixedamount ?? 'N/A' }}</td>
-                                        <!-- In your Blade template -->
-                                        <td class="">
-                                            <!-- Livewire approach (recommended) -->
-                                            <button wire:click="deleteAdjustment({{ $range->id }})"
-                                                class="px-4 py-2 text-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none rounded-lg">
-                                            Delete
-                                            </button>
-                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

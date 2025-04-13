@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', 'twofactor'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/privacypolicy', [DashboardController::class, 'privacypolicy'])->name('privacypolicy');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -60,6 +61,5 @@ Route::middleware(['auth', 'twofactor'])->group(function () {
     });
     Route::get('/payroll-forecast', [PayrollForecastController::class, 'index'])->name('payroll-forecast.index');
     Route::post('/payroll-forecast/forecast', [PayrollForecastController::class, 'forecast'])->name('payroll-forecast.forecast');
-    Route::post('/assistant', [VirtualAssistant::class, 'virtualassistant'])->name('virtualassistant');
 });
 

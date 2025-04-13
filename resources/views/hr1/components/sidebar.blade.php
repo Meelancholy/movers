@@ -45,7 +45,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5 shrink-0" aria-hidden="true">
                 <path fill-rule="evenodd" d="M1 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H4a3 3 0 0 1-3-3V6Zm4 1.5a2 2 0 1 1 4 0 2 2 0 0 1-4 0Zm2 3a4 4 0 0 0-3.665 2.395.75.75 0 0 0 .416 1A8.98 8.98 0 0 0 7 14.5a8.98 8.98 0 0 0 3.249-.604.75.75 0 0 0 .416-1.001A4.001 4.001 0 0 0 7 10.5Zm5-3.75a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Zm0 6.5a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Zm.75-4a.75.75 0 0 0 0 1.5h2.5a.75.75 0 0 0 0-1.5h-2.5Z" clip-rule="evenodd"/>
             </svg>
-            <span>Employees</span>
+            <span>Employee list</span>
         </a>
         <a
             @if(request()->routeIs('employee.archive'))
@@ -59,7 +59,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5 shrink-0" aria-hidden="true">
                 <path fill-rule="evenodd" d="M1 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H4a3 3 0 0 1-3-3V6Zm4 1.5a2 2 0 1 1 4 0 2 2 0 0 1-4 0Zm2 3a4 4 0 0 0-3.665 2.395.75.75 0 0 0 .416 1A8.98 8.98 0 0 0 7 14.5a8.98 8.98 0 0 0 3.249-.604.75.75 0 0 0 .416-1.001A4.001 4.001 0 0 0 7 10.5Zm5-3.75a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Zm0 6.5a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Zm.75-4a.75.75 0 0 0 0 1.5h2.5a.75.75 0 0 0 0-1.5h-2.5Z" clip-rule="evenodd"/>
             </svg>
-            <span>Archived</span>
+            <span>Archived Employees</span>
         </a>
         <a
             @if(request()->routeIs('payroll.generate'))
@@ -87,6 +87,18 @@
                 <g data-name="18. Bill" id="_18._Bill"> <path d="M16,7h2a1,1,0,0,0,0-2H17a1,1,0,0,0-2,0v.18A3,3,0,0,0,16,11a1,1,0,0,1,0,2H14a1,1,0,0,0,0,2h1a1,1,0,0,0,2,0v-.18A3,3,0,0,0,16,9a1,1,0,0,1,0-2Z"></path> <path d="M31,24H28V3a3,3,0,0,0-3-3H3A3,3,0,0,0,0,3V9a1,1,0,0,0,1,1H4V29a3,3,0,0,0,3,3H29a3,3,0,0,0,3-3V25A1,1,0,0,0,31,24ZM2,3A1,1,0,0,1,4,3V8H2ZM8,25v4a1,1,0,0,1-.31.71A.93.93,0,0,1,7,30a1,1,0,0,1-1-1V3a3,3,0,0,0-.18-1H25a1,1,0,0,1,1,1V24H9A1,1,0,0,0,8,25Zm22,4a1,1,0,0,1-.31.71A.93.93,0,0,1,29,30H9.83A3,3,0,0,0,10,29V26H30Z"></path> <path d="M17,19H9a1,1,0,0,0,0,2h8a1,1,0,0,0,0-2Z"></path> <path d="M23,19H21a1,1,0,0,0,0,2h2a1,1,0,0,0,0-2Z"></path> </g> </g></svg>
             <span>Payroll Records</span>
         </a>
+            <a
+            @if(request()->routeIs('payroll-forecast.index'))
+                class="flex items-center rounded-md gap-2 px-2 py-3 text-sm font-medium border border-blue-500 bg-blue-600 text-white cursor-not-allowed hover:text-blue-900 hover:bg-blue-600/5"
+                href="javascript:void(0);"
+                aria-disabled="true"
+            @else
+                class="flex items-center rounded-md gap-2 px-2 py-3 text-sm font-medium text-neutral-600 underline-offset-2 hover:bg-blue-600/5 hover:text-blue-900 focus-visible:underline focus:outline-none"
+                href="{{ route('payroll-forecast.index') }}"
+            @endif>
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-up-down-icon lucide-trending-up-down"><path d="M14.828 14.828 21 21"/><path d="M21 16v5h-5"/><path d="m21 3-9 9-4-4-6 6"/><path d="M21 8V3h-5"/></svg>
+            <span>Payroll Budget</span>
+        </a>
         <a
             @if(request()->routeIs('compensation.index'))
                 class="flex items-center rounded-md gap-2 px-2 py-3 text-sm font-medium border border-blue-500 bg-blue-600 text-white cursor-not-allowed hover:text-blue-900 hover:bg-blue-600/5"
@@ -101,26 +113,22 @@
             </svg>
             <span>Compensation & Benefits</span>
         </a>
-        <hr class="divider p-2">
-        <h6 class="text-xs font-bold text-neutral-700">Machine Learning</h6>
+    </div>
+    <div class="mt-auto">
+        <h6 class="text-xs font-bold text-neutral-700">Support</h6>
         <a
-            @if(request()->routeIs('payroll-forecast.index'))
+            @if(request()->routeIs('privacypolicy'))
                 class="flex items-center rounded-md gap-2 px-2 py-3 text-sm font-medium border border-blue-500 bg-blue-600 text-white cursor-not-allowed hover:text-blue-900 hover:bg-blue-600/5"
                 href="javascript:void(0);"
                 aria-disabled="true"
             @else
                 class="flex items-center rounded-md gap-2 px-2 py-3 text-sm font-medium text-neutral-600 underline-offset-2 hover:bg-blue-600/5 hover:text-blue-900 focus-visible:underline focus:outline-none"
-                href="{{ route('payroll-forecast.index') }}"
+                href="{{ route('privacypolicy') }}"
             @endif>
-            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-up-down-icon lucide-trending-up-down"><path d="M14.828 14.828 21 21"/><path d="M21 16v5h-5"/><path d="m21 3-9 9-4-4-6 6"/><path d="M21 8V3h-5"/></svg>
-            <span>Payroll Budget</span>
-        </a>
-    </div>
-    <div class="mt-auto">
-        <h6 class="text-xs font-bold text-neutral-700">Support</h6>
-        <a href="#" class="flex items-center rounded-md gap-2 px-2 py-3 text-sm font-medium text-neutral-600 underline-offset-2 hover:bg-blue-600/5 hover:text-blue-900 focus-visible:underline focus:outline-none">
-            <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="size-5 shrink-0"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="currentColor" d="M512 64a448 448 0 1 1 0 896 448 448 0 0 1 0-896zm23.744 191.488c-52.096 0-92.928 14.784-123.2 44.352-30.976 29.568-45.76 70.4-45.76 122.496h80.256c0-29.568 5.632-52.8 17.6-68.992 13.376-19.712 35.2-28.864 66.176-28.864 23.936 0 42.944 6.336 56.32 19.712 12.672 13.376 19.712 31.68 19.712 54.912 0 17.6-6.336 34.496-19.008 49.984l-8.448 9.856c-45.76 40.832-73.216 70.4-82.368 89.408-9.856 19.008-14.08 42.24-14.08 68.992v9.856h80.96v-9.856c0-16.896 3.52-31.68 10.56-45.76 6.336-12.672 15.488-24.64 28.16-35.2 33.792-29.568 54.208-48.576 60.544-55.616 16.896-22.528 26.048-51.392 26.048-86.592 0-42.944-14.08-76.736-42.24-101.376-28.16-25.344-65.472-37.312-111.232-37.312zm-12.672 406.208a54.272 54.272 0 0 0-38.72 14.784 49.408 49.408 0 0 0-15.488 38.016c0 15.488 4.928 28.16 15.488 38.016A54.848 54.848 0 0 0 523.072 768c15.488 0 28.16-4.928 38.72-14.784a51.52 51.52 0 0 0 16.192-38.72 51.968 51.968 0 0 0-15.488-38.016 55.936 55.936 0 0 0-39.424-14.784z"></path></g></svg>
-            <span>About</span>
+            <svg fill="currentColor" class="size-5 shrink-0" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g data-name="10. Growth" id="_10._Growth"> <path d="M17,12.05V11h3a5,5,0,0,0,5-5V4a1,1,0,0,0-1-1H20a4.92,4.92,0,0,0-3,1V1a1,1,0,0,0-2,0V2a4.92,4.92,0,0,0-3-1H8A1,1,0,0,0,7,2V4a5,5,0,0,0,5,5h3v3.05a10,10,0,1,0,2,0Zm3-7h3V6a3,3,0,0,1-3,3H17V8A3,3,0,0,1,20,5ZM9,4V3h3a3,3,0,0,1,3,3V7H12A3,3,0,0,1,9,4Zm7,26a8,8,0,1,1,8-8A8,8,0,0,1,16,30Z"></path> <path d="M16,19h2a1,1,0,0,0,0-2H17a1,1,0,0,0-2,0v.18A3,3,0,0,0,16,23a1,1,0,0,1,0,2H14a1,1,0,0,0,0,2h1a1,1,0,0,0,2,0v-.18A3,3,0,0,0,16,21a1,1,0,0,1,0-2Z"></path> <path d="M5.71,7.29l-2-2a1,1,0,0,0-1.42,0l-2,2A1,1,0,0,0,1.71,8.71L2,8.41V11a1,1,0,0,0,2,0V8.41l.29.3a1,1,0,0,0,1.42,0A1,1,0,0,0,5.71,7.29Z"></path> <path d="M31.71,13.29l-2-2a1,1,0,0,0-1.42,0l-2,2a1,1,0,0,0,1.42,1.42l.29-.3V17a1,1,0,0,0,2,0V14.41l.29.3a1,1,0,0,0,1.42,0A1,1,0,0,0,31.71,13.29Z"></path> </g> </g>
+            </svg>
+            <span>Privacy Policy</span>
         </a>
         <a href="{{route('profile.edit')}}" class="flex items-center rounded-md gap-2 px-2 py-3 text-sm font-medium text-neutral-600 underline-offset-2 hover:bg-blue-600/5 hover:text-blue-900 focus-visible:underline focus:outline-none">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5 shrink-0" aria-hidden="true">

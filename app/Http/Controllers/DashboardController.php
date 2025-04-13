@@ -123,6 +123,9 @@ class DashboardController extends Controller
             'turnoverRate' => $this->calculateTurnoverRate(),
         ]);
     }
+    public function privacypolicy() {
+        return view('hr1.privacy_policy');
+    }
 
     private function getAgeGroup($age)
     {

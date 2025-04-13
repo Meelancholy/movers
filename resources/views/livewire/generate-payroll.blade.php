@@ -63,31 +63,30 @@
                 </form>
             </div>
             @endif
-
-            <!-- Cycles List -->
-            <div class="space-y-2 max-h-[500px] overflow-y-auto">
-                @foreach ($cycles as $cycle)
-                <div wire:click="selectCycle({{ $cycle->id }})"
-                     class="p-3 border rounded-lg cursor-pointer transition-colors
-                            {{ $selectedCycleId === $cycle->id ? 'bg-blue-50 border-blue-200' : 'hover:bg-gray-50' }}">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="font-medium text-sm">
-                                {{ $cycle->start_date->format('M d') }} - {{ $cycle->end_date->format('M d, Y') }}
-                            </h3>
-                            <div class="text-xs text-gray-500">
-                                Cut-off: {{ $cycle->cut_off_date->format('M d, Y') }} |
-                                Payout: {{ $cycle->payout_date->format('M d, Y') }}
+                <!-- Cycles List -->
+                <div class="space-y-2 max-h-[500px] overflow-y-auto">
+                    @foreach ($cycles as $cycle)
+                    <div wire:click="selectCycle({{ $cycle->id }})"
+                        class="p-3 border rounded-lg cursor-pointer transition-colors
+                                {{ $selectedCycleId === $cycle->id ? 'bg-blue-50 border-blue-200' : 'hover:bg-gray-50' }}">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-medium text-sm">
+                                    {{ $cycle->start_date->format('M d') }} - {{ $cycle->end_date->format('M d, Y') }}
+                                </h3>
+                                <div class="text-xs text-gray-500">
+                                    Cut-off: {{ $cycle->cut_off_date->format('M d, Y') }} |
+                                    Payout: {{ $cycle->payout_date->format('M d, Y') }}
+                                </div>
                             </div>
+                            <button wire:click.stop="editCycle({{ $cycle->id }})"
+                                    class="text-gray-400 hover:text-blue-500 p-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                </svg>
+                            </button>
                         </div>
-                        <button wire:click.stop="confirmDeleteCycle({{ $cycle->id }})"
-                                class="text-gray-400 hover:text-red-500 p-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
                     </div>
-                </div>
                 @endforeach
             </div>
         </div>
@@ -204,20 +203,56 @@
         </div>
     </div>
 
-    <!-- Delete Cycle Modal -->
-    @if ($showDeleteModal)
+    <!-- Edit Cycle Modal -->
+    @if ($showEditModal)
     <div class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center p-4 z-50">
         <div class="bg-white rounded-lg max-w-md w-full p-6">
-            <h3 class="font-bold text-lg mb-3">Confirm Deletion</h3>
-            <p class="mb-5">Are you sure you want to delete this payroll cycle? This action cannot be undone.</p>
+            <h3 class="font-bold text-lg mb-3">Edit Payroll Cycle</h3>
+
+            @if($errors->has('overlap'))
+                <div class="mb-4 p-3 bg-red-50 text-red-600 rounded-md text-sm">
+                    {{ $errors->first('overlap') }}
+                </div>
+            @endif
+
+            <div class="space-y-4 mb-5">
+                <div>
+                    <label for="start_date" class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                    <input wire:model="form.start_date" type="date" id="start_date"
+                        class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                    @error('form.start_date') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label for="end_date" class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                    <input wire:model="form.end_date" type="date" id="end_date"
+                        class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                    @error('form.end_date') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label for="cut_off_date" class="block text-sm font-medium text-gray-700 mb-1">Cut-off Date</label>
+                    <input wire:model="form.cut_off_date" type="date" id="cut_off_date"
+                        class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                    @error('form.cut_off_date') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label for="payout_date" class="block text-sm font-medium text-gray-700 mb-1">Payout Date</label>
+                    <input wire:model="form.payout_date" type="date" id="payout_date"
+                        class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                    @error('form.payout_date') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                </div>
+            </div>
+
             <div class="flex justify-end space-x-3">
-                <button wire:click="$set('showDeleteModal', false)"
-                        class="px-4 py-2 border rounded hover:bg-gray-50">
+                <button wire:click="$set('showEditModal', false)"
+                        class="px-4 py-2 border rounded hover:bg-gray-50 transition-colors">
                     Cancel
                 </button>
-                <button wire:click="deleteCycle"
-                        class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
-                    Delete
+                <button wire:click="updateCycle"
+                        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                    Save Changes
                 </button>
             </div>
         </div>
