@@ -21,21 +21,21 @@
                         </svg>
                     </div>
 
-                    <!-- Department Filter -->
-                    <select id="departmentFilter" class="bg-white p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <option value="">All Departments</option>
-                        @foreach($employees as $employee)
-                            <option value="{{ $employee->department }}">{{ $employee->department }}</option>
-                        @endforeach
-                    </select>
+                <!-- Department Filter -->
+                <select id="departmentFilter" class="bg-white p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">All Departments</option>
+                    @foreach($employees->pluck('department')->unique() as $department)
+                        <option value="{{ $department }}">{{ $department }}</option>
+                    @endforeach
+                </select>
 
-                    <!-- Position Filter -->
-                    <select id="positionFilter" class="bg-white p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <option value="">All Positions</option>
-                        @foreach($employees as $employee)
-                            <option value="{{ $employee->position }}">{{ $employee->position }}</option>
-                        @endforeach
-                    </select>
+                <!-- Position Filter -->
+                <select id="positionFilter" class="bg-white p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">All Positions</option>
+                    @foreach($employees->pluck('position')->unique() as $position)
+                        <option value="{{ $position }}">{{ $position }}</option>
+                    @endforeach
+                </select>
 
                     <!-- Hire Date Range Filter -->
                     <div class="flex items-center gap-2 bg-white p-2 border rounded-lg">
@@ -160,7 +160,7 @@
                                                     <svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
                                                     </svg>
-                                                    Archive
+                                                    Inactive
                                                 </button>
                                             </form>
                                         </div>
@@ -197,7 +197,6 @@
                                 </svg>
                             </button>
                             <div id="pageNumbers" class="flex">
-                                <!-- Page numbers will be inserted here by JavaScript -->
                             </div>
                             <button id="nextPage" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-blue-50">
                                 <span class="sr-only">Next</span>
