@@ -24,7 +24,10 @@ class GeneratePayroll extends Component
     public $showGenerateConfirmation = false;
     public $employeeToGenerate = null;
     public $calculatedPayroll = [];
-
+    // Add this property at the top of your component
+    public $showBulkGenerateConfirmation = false;
+    public $selectedDepartment = '';
+    public $selectedPosition = '';
     // Cycle creation properties
     public $showCreateCycleForm = false;
     public $newCycle = [
@@ -223,7 +226,8 @@ class GeneratePayroll extends Component
                 'net_pay' => (string) $this->calculatedPayroll['net_pay'],
                 'adjustments_total' => (string) $this->calculatedPayroll['adjustments_total'],
                 'hours_worked' => $this->calculatedPayroll['hours_worked'],
-                'pdf_path' => $filename
+                'pdf_path' => $filename,
+                'status' => 'pending'
             ]);
 
             $this->updateAdjustmentFrequencies(
@@ -295,6 +299,66 @@ class GeneratePayroll extends Component
             session()->flash('error', 'Failed to download PDF: '.$e->getMessage());
             return back();
         }
+    }
+    public function prepareBulkGeneratePayroll()
+    {
+        $this->showBulkGenerateConfirmation = true;
+    }
+
+    public function confirmBulkGeneratePayroll()
+    {
+        $this->showBulkGenerateConfirmation = false;
+
+        $cycle = Cycle::find($this->selectedCycleId);
+        if (!$cycle) {
+            session()->flash('error', 'Selected cycle not found.');
+            return;
+        }
+
+        // Get filtered employees without payroll for this cycle
+        $query = Employee::whereDoesntHave('payrolls', function($query) use ($cycle) {
+            $query->where('cycle_id', $cycle->id);
+        });
+
+        // Apply department filter if selected
+        if ($this->selectedDepartment) {
+            $query->where('department', $this->selectedDepartment);
+        }
+
+        // Apply position filter if selected
+        if ($this->selectedPosition) {
+            $query->where('position', $this->selectedPosition);
+        }
+
+        $employees = $query->get();
+
+        if ($employees->isEmpty()) {
+            session()->flash('message', 'No employees match the selected filters or all filtered employees already have payroll for this cycle.');
+            return;
+        }
+
+        $successCount = 0;
+        $errorMessages = [];
+
+        foreach ($employees as $employee) {
+            try {
+                $this->prepareGeneratePayroll($employee->id);
+                $this->confirmGeneratePayroll();
+                $successCount++;
+            } catch (\Exception $e) {
+                $errorMessages[] = "Failed to generate payroll for {$employee->first_name}: " . $e->getMessage();
+            }
+        }
+
+        if ($successCount > 0) {
+            session()->flash('message', "Successfully generated payroll for {$successCount} employees.");
+        }
+
+        if (!empty($errorMessages)) {
+            session()->flash('error', implode('<br>', $errorMessages));
+        }
+
+        $this->selectedCycle = $cycle->fresh()->load('payrolls.employee');
     }
 
     protected function updateAdjustmentFrequencies($employee, $adjustments, $payroll)

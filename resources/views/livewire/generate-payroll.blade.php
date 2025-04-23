@@ -103,8 +103,73 @@
                     {{ session('error') }}
                 </div>
             @endif
+            <div x-data="{
+                selectedDepartment: '',
+                selectedPosition: '',
+                filterEmployees() {
+                    const rows = document.querySelectorAll('tbody tr');
+                    rows.forEach(row => {
+                        const department = row.querySelector('td:nth-child(2)').textContent.trim();
+                        const position = row.querySelector('td:nth-child(3)').textContent.trim();
 
-            @if ($selectedCycle)
+                        const departmentMatch = !this.selectedDepartment || department === this.selectedDepartment;
+                        const positionMatch = !this.selectedPosition || position === this.selectedPosition;
+
+                        row.style.display = (departmentMatch && positionMatch) ? '' : 'none';
+                    });
+                }
+            }">
+                <!-- Filter controls -->
+                <div class="mb-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                    <h2 class="text-lg font-medium text-gray-900">Payroll Processing</h2>
+
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <!-- Department Filter -->
+                        <select wire:model="selectedDepartment"
+                                id="department-filter"
+                                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                            <option value="">All Departments</option>
+                            @foreach($employees->pluck('department')->unique()->sort() as $department)
+                                <option value="{{ $department }}">{{ $department }}</option>
+                            @endforeach
+                        </select>
+
+                        <!-- Position Filter -->
+                        <select wire:model="selectedPosition"
+                                id="position-filter"
+                                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                            <option value="">All Positions</option>
+                            @foreach($employees->pluck('position')->unique()->sort() as $position)
+                                <option value="{{ $position }}">{{ $position }}</option>
+                            @endforeach
+                        </select>
+
+                        <!-- Bulk Generate Button -->
+                        @if($selectedCycle)
+                            @php
+                                $cutOffPassed = \Carbon\Carbon::parse($selectedCycle->cut_off_date)->isPast();
+                                $hasUnprocessedEmployees = $employees->count() > $selectedCycle->payrolls->count();
+                            @endphp
+
+                            @if($cutOffPassed && $hasUnprocessedEmployees)
+                                <div class="self-end">
+                                    <button wire:click="prepareBulkGeneratePayroll"
+                                            class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900 focus:outline-none focus:border-green-900 focus:ring focus:ring-green-300 disabled:opacity-25 transition">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                                        </svg>
+                                        Generate Selected
+                                    </button>
+                                </div>
+                            @elseif(!$cutOffPassed)
+                                <span class="text-gray-500 text-sm italic">Wait for cut-off to generate payrolls</span>
+                            @endif
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Your table with filtered employees -->
+                @if($selectedCycle)
                 <div class="mb-4 flex justify-between items-center">
                     <h2 class="text-lg font-semibold">
                         {{ $selectedCycle->start_date->format('M d, Y') }} - {{ $selectedCycle->end_date->format('M d, Y') }}
@@ -201,8 +266,32 @@
                 </div>
             @endif
         </div>
+    @if($showBulkGenerateConfirmation)
+    <div class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50">
+        <div class="fixed inset-0 transform transition-all" wire:click="showBulkGenerateConfirmation = false">
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+        <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:max-w-lg sm:mx-auto sm:my-8">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <h3 class="text-lg font-medium text-gray-900">Generate Payrolls for All Employees</h3>
+                <div class="mt-4">
+                    <p class="text-sm text-gray-500">
+                        This will generate payroll for all employees who don't have one in the selected cycle.
+                        Are you sure you want to continue?
+                    </p>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button wire:click="confirmBulkGeneratePayroll" type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
+                    Generate All
+                </button>
+                <button wire:click="$set('showBulkGenerateConfirmation', false)" type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    Cancel
+                </button>
+            </div>
+        </div>
     </div>
-
+@endif
     <!-- Edit Cycle Modal -->
     @if ($showEditModal)
     <div class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center p-4 z-50">

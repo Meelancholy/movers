@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('net_pay');
             $table->string('adjustments_total');
             $table->string('hours_worked');
+            $table->string('status');
             $table->string('pdf_path')->nullable();
             $table->timestamps();
         });

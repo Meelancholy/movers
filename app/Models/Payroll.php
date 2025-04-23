@@ -20,6 +20,7 @@ class Payroll extends Model
         'adjustments_total',
         'hours_worked',
         'pdf_path',
+        'status',
     ];
 
     // Relationships
