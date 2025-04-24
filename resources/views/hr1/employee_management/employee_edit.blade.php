@@ -110,7 +110,7 @@
                                                (is_array($adjustment) && $adj->id == $adjustment['adjustment_id']) ? 'selected' : '' }}>
                                             {{ $adj->adjustment }}
                                             @if($adj->fixedamount)
-                                                (₱{{ number_format($adj->fixedamount, 2) }})
+                                                (₱{{ number_format((float) $adj->fixedamount, 2) }})
                                             @elseif($adj->percentage)
                                                 ({{ $adj->percentage }}%)
                                             @endif
@@ -201,7 +201,7 @@
                                             data-value="{{ $adj->fixedamount ?? $adj->percentage }}">
                                             {{ $adj->adjustment }}
                                             @if($adj->fixedamount)
-                                                (₱{{ number_format($adj->fixedamount, 2) }})
+                                                (₱{{ number_format((float) $adj->fixedamount, 2) }})
                                             @elseif($adj->percentage)
                                                 ({{ $adj->percentage }}%)
                                             @endif

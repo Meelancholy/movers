@@ -160,7 +160,22 @@ class GeneratePayroll extends Component
         $this->showEditModal = false;
         $this->reset(['editingCycleId', 'form']);
     }
+    // In your main payroll component
+    public function prepareGenerate($employeeId = null)
+    {
+        // Store in session whether this is bulk or individual
+        session()->put('payroll_generation_type', $employeeId ? 'individual' : 'bulk');
 
+        // Store filters and employee ID
+        session()->put('payroll_generation_data', [
+            'employee_id' => $employeeId,
+            'department' => $this->selectedDepartment,
+            'position' => $this->selectedPosition,
+            'cycle_id' => $this->selectedCycleId
+        ]);
+
+        return redirect()->route('payroll.confirmation');
+    }
     public function prepareGeneratePayroll($employeeId)
     {
         $cycle = Cycle::find($this->selectedCycleId);

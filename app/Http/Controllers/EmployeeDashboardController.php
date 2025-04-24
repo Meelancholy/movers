@@ -19,6 +19,14 @@ class EmployeeDashboardController extends Controller
 
         return view('hr1.employee_management.archive', compact('employees'));
     }
+    public function confirmation()
+    {
+        return view('hr1.employee_management.payroll-confirmation');
+    }
+    public function processor()
+    {
+        return view('hr1.employee_management.payroll-processor');
+    }
 // app/Http/Controllers/EmployeeController.php
 public function edit($id)
 {

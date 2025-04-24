@@ -10,6 +10,8 @@ use App\Livewire\CompensationAndBenefits\Salaryadjustment;
 use App\Http\Controllers\landingpageController;
 use App\Http\Controllers\Auth\TwoFactorController;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\PayrollConfirmation;
+use App\Livewire\PayrollProcessor;
 use App\Http\Controllers\VirtualAssistant;
 
 Route::get('/', [landingpageController::class, 'welcome'])->name('welcome');
@@ -36,6 +38,8 @@ Route::middleware(['auth', 'twofactor'])->group(function () {
     Route::prefix('employee')->group(function () {
         Route::get('/list', [EmployeeDashboardController::class, 'list'])->name('employee.list');
         Route::get('/archived', [EmployeeDashboardController::class, 'archive'])->name('employee.archive');
+        Route::get('/payroll/confirm', [EmployeeDashboardController::class, 'confirmation'])->name('payroll.confirmation');
+        Route::get('/payroll/process', [EmployeeDashboardController::class, 'processor'])->name('payroll.process');
         Route::get('/', [EmployeeDashboardController::class, 'index'])->name('employee.dashboard');
         Route::get('/{id}/edit', [EmployeeDashboardController::class, 'edit'])->name('employee.edit');
         Route::put('/{id}', [EmployeeDashboardController::class, 'update'])->name('employee.update');
