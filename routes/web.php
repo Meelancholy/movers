@@ -45,6 +45,8 @@ Route::middleware(['auth', 'twofactor'])->group(function () {
         Route::put('/{id}', [EmployeeDashboardController::class, 'update'])->name('employee.update');
         Route::delete('/{id}', [EmployeeDashboardController::class, 'destroy'])->name('employee.delete');
         Route::get('/{id}', [EmployeeDashboardController::class, 'profile'])->name('employee.profile');
+        Route::post('/{id}/inactive', [EmployeeDashboardController::class, 'active'])->name('employee.active');
+
     });
     Route::get('/employees/{id}', [EmployeeDashboardController::class, 'show'])->name('employees.show');
     Route::prefix('compensation-benefits')->name('compensation.')->group(function () {

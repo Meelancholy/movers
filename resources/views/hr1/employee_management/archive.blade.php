@@ -5,9 +5,9 @@
     <div class="container min-w-full bg-white p-6 rounded-lg shadow-md">
         <div class="flex justify-between items-center">
             <h1 class="text-3xl font-bold text-gray-800">Employee Management</h1>
-            <button id="toggleArchiveView" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                View Archived Employees
-            </button>
+            <a href="{{ route('employee.list')}}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                View Active Employees
+            </a>
         </div>
     </div>
 
@@ -165,7 +165,7 @@
                                                     Edit
                                                 </div>
                                             </a>
-                                            <form method="POST" action="{{ route('employee.archive', $employee->id) }}"
+                                            <form method="POST" action="{{ route('employee.active', $employee->id) }}"
                                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600"
                                                 role="menuitem">
                                                 @csrf
@@ -173,7 +173,7 @@
                                                     <svg class="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
                                                     </svg>
-                                                    Inactive
+                                                    Active
                                                 </button>
                                             </form>
                                         </div>

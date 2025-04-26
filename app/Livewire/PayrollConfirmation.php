@@ -126,9 +126,10 @@ protected function calculateEmployeeSummary($employee)
 
 protected function calculateBulkSummary($data)
 {
-    $query = Employee::whereDoesntHave('payrolls', function($q) {
-        $q->where('cycle_id', $this->cycle->id);
-    });
+    $query = Employee::where('status', 'active')
+        ->whereDoesntHave('payrolls', function($q) {
+            $q->where('cycle_id', $this->cycle->id);
+        });
 
     if (!empty($data['department'])) {
         $query->where('department', $data['department']);

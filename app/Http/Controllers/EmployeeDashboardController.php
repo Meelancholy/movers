@@ -19,6 +19,15 @@ class EmployeeDashboardController extends Controller
 
         return view('hr1.employee_management.archive', compact('employees'));
     }
+        public function active($id)
+    {
+        $employee = Employee::findOrFail($id);
+        $employee->status = 'active';
+        $employee->save();
+
+        return redirect()->back()->with('success', 'Employee set to active successfully.');
+    }
+
     public function confirmation()
     {
         return view('hr1.employee_management.payroll-confirmation');

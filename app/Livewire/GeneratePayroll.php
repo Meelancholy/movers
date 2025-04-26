@@ -49,7 +49,7 @@ class GeneratePayroll extends Component
     public function mount()
     {
         $this->loadCycles();
-        $this->employees = Employee::all();
+        $this->employees = Employee::where('status', 'active')->get();
     }
 
     protected function loadCycles()
@@ -458,7 +458,9 @@ class GeneratePayroll extends Component
     public function render()
     {
         $this->selectedCycle = Cycle::with(['payrolls' => function($query) {
-            $query->with('employee');
+            $query->with(['employee' => function($employeeQuery) {
+                $employeeQuery->where('status', 'active');
+            }]);
         }])->find($this->selectedCycleId);
 
         return view('livewire.generate-payroll', [
