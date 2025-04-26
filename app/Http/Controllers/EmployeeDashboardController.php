@@ -35,6 +35,13 @@ public function edit($id)
 // Temporary debug in your controller
     return view('hr1.employee_management.employee_edit', compact('employee', 'allAdjustments'));
 }
+public function show($id)
+{
+    $employee = Employee::with(['salary', 'attendances', 'adjustments'])->findOrFail($id);
+    $allAdjustments = Adjustment::all();
+    $employee->bdate = \Carbon\Carbon::parse($employee->bdate);
+    return view('hr1.employee_management.employee_show', compact('employee'));
+}
 
 public function update(Request $request, $id)
 {
@@ -44,6 +51,11 @@ public function update(Request $request, $id)
         'email' => 'required|string|max:255',
         'status' => 'required|string',
         'contact' => 'required|string|min:11|max:11',
+        'job_type' => 'required|string',
+        'gender' => 'required|string',
+        'position' => 'required|string',
+        'department' => 'required|string',
+        'bdate' => 'required|date',
         'adjustments.*.adjustment_id' => 'required|exists:adjustments,id',
         'adjustments.*.frequency' => 'required|integer|min:-12|max:12',
     ]);

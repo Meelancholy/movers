@@ -19,7 +19,7 @@ class AttendanceSeeder extends Seeder
 
             Attendance::create([
                 'employee_id' => $employee->id,
-                'hours_worked' => $isDriver ? rand(8, 12) : rand(6, 9),
+                'hours_worked' => $isDriver ? rand(170, 250) : rand(160, 184),
             ]);
         }
     }

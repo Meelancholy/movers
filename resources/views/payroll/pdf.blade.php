@@ -119,7 +119,8 @@
     <div class="amounts-section">
         <div class="amount-row"><span>Hours Worked:</span><span><strong>{{ $payroll->hours_worked }} hours</strong></span></div>
         <div class="amount-row"><span>Basic Pay:</span><span><strong>PHP {{ number_format($payroll->base_pay, 2) }}</strong></span></div>
-    </div>
+        <div class="amount-row"><span>Tax:</span><span><strong>PHP {{ number_format($payroll->tax, 2) }}</strong></span></div>
+</div>
 
     <div class="section-title">Payroll Adjustments</div>
     @if($payroll->payrollAdjustments->count() > 0)

@@ -68,6 +68,52 @@
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>
+            <div>
+                <label for="department" class="block text-lg font-semibold mb-2">Department</label>
+                <input type="text" name="department" id="department"
+                       class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300"
+                       value="{{ old('first_name', $employee->department) }}" required>
+                @error('department')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+            <div>
+                <label for="position" class="block text-lg font-semibold mb-2">Position</label>
+                <input type="text" name="position" id="position"
+                       class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300"
+                       value="{{ old('first_name', $employee->position) }}" required>
+                @error('position')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+            <div>
+                <label for="bdate" class="block text-lg font-semibold mb-2">Bdate</label>
+                <input type="text" name="bdate" id="bdate"
+                       class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300"
+                       value="{{ old('first_name', $employee->bdate) }}" required>
+                @error('bdate')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+            <div>
+                <label for="gender" class="block text-lg font-semibold mb-2">Gender</label>
+                <input type="text" name="gender" id="gender"
+                       class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300"
+                       value="{{ old('first_name', $employee->gender) }}" required>
+                @error('gender')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+            <div>
+                <label for="job_type" class="block text-lg font-semibold mb-2">Job Type</label>
+                <input type="text" name="job_type" id="job_type"
+                       class="border border-gray-300 rounded-full px-4 py-2 w-full focus:ring focus:ring-blue-300"
+                       value="{{ old('first_name', $employee->job_type) }}" required>
+                @error('job_type')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+
         </div>
 
         @php
@@ -131,15 +177,20 @@
                             <label class="block text-sm font-semibold mb-1">Amount</label>
                             <div class="border border-gray-300 rounded-full px-4 py-2 w-full adjustment-amount">
                                 @php
-                                    $adj = is_object($adjustment) ? $adjustment : $allAdjustments->firstWhere('id', $adjustment['adjustment_id']);
-                                    $amount = 0;
-                                    if ($adj->fixedamount) {
-                                        $amount = $adj->fixedamount;
-                                    } elseif ($adj->percentage) {
-                                        $amount = $baseSalary * $adj->percentage / 100;
-                                    }
-                                    echo '₱' . number_format($amount, 2);
-                                @endphp
+                                $adj = is_object($adjustment)
+                                    ? $adjustment
+                                    : $allAdjustments->firstWhere('id', $adjustment['adjustment_id']);
+
+                                $amount = '0';
+                                if ($adj->fixedamount) {
+                                    $amount = $adj->fixedamount; // Keep it string
+                                } elseif ($adj->percentage) {
+                                    $amount = (string) ($baseSalary * $adj->percentage / 100);
+                                }
+                            @endphp
+
+                            ₱{{ number_format((float) $amount, 2) }}
+
                             </div>
                         </div>
                     </div>

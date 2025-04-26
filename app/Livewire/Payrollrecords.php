@@ -5,62 +5,57 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Payroll;
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Cycle;
 
-class Payrollrecords extends Component
+class PayrollRecords extends Component
 {
     use WithPagination;
 
+    public $selectedCycleId = '';
     public $search = '';
-    protected $queryString = ['search'];
+    public $perPage = 10;
+    public $sortField = 'created_at';
+    public $sortDirection = 'desc';
 
-    public function searchEmployees()
+    protected $queryString = [
+        'selectedCycleId' => ['except' => ''],
+        'search' => ['except' => ''],
+        'perPage' => ['except' => 10],
+        'sortField' => ['except' => 'created_at'],
+        'sortDirection' => ['except' => 'desc'],
+    ];
+
+    public function sortBy($field)
     {
-        $this->resetPage();
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortDirection = 'asc';
+        }
+        $this->sortField = $field;
     }
 
-public function downloadPdf($payrollId)
-{
-    try {
-        $payroll = Payroll::with(['employee', 'cycle', 'payrollAdjustments.adjustment'])
-                        ->findOrFail($payrollId);
-
-        // Configure PDF options
-        $pdf = Pdf::loadView('payroll.pdf', ['payroll' => $payroll])
-                ->setOption('defaultFont', 'DejaVu Sans')
-                ->setOption('isHtml5ParserEnabled', true)
-                ->setOption('isRemoteEnabled', true)
-                ->setOption('isPhpEnabled', true)
-                ->setOption('encoding', 'UTF-8');
-
-        return response()->streamDownload(
-            fn () => print($pdf->output()),
-            "payroll-{$payroll->employee->id}-{$payroll->created_at->format('Ymd')}.pdf",
-            [
-                'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'attachment'
-            ]
-        );
-
-    } catch (\Exception $e) {
-        session()->flash('error', 'Failed to generate PDF: '.$e->getMessage());
-        return back();
-    }
-}
     public function render()
     {
-        $payrolls = Payroll::with(['employee', 'cycle'])
-            ->whereHas('employee', function($query) {
-                $query->when($this->search, function($q) {
+        $cycles = Cycle::orderBy('start_date', 'desc')->get();
+
+        $payrolls = Payroll::with(['employee', 'cycle', 'payrollAdjustments.adjustment'])
+            ->when($this->selectedCycleId, function ($query) {
+                $query->where('cycle_id', $this->selectedCycleId);
+            })
+            ->when($this->search, function ($query) {
+                $query->whereHas('employee', function ($q) {
                     $q->where('first_name', 'like', '%'.$this->search.'%')
-                      ->orWhere('last_name', 'like', '%'.$this->search.'%');
+                      ->orWhere('last_name', 'like', '%'.$this->search.'%')
+                      ->orWhere('employee_id', 'like', '%'.$this->search.'%');
                 });
             })
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->orderBy($this->sortField, $this->sortDirection)
+            ->paginate($this->perPage);
 
-        return view('livewire.payrollrecords', [
-            'payrolls' => $payrolls
+        return view('livewire.payroll-records', [
+            'payrolls' => $payrolls,
+            'cycles' => $cycles,
         ]);
     }
 }

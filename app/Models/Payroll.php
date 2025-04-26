@@ -21,6 +21,7 @@ class Payroll extends Model
         'hours_worked',
         'pdf_path',
         'status',
+        'tax',
     ];
 
     // Relationships
